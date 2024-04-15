@@ -1,0 +1,41 @@
+# Copyright © 2024 Apple Inc. and the Pkl project authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
+load("@rules_pkl//pkl:defs.bzl", "pkl_eval", "pkl_test")
+
+pkl_eval(
+    name = "pkl_eval_with_deps",
+    srcs = [
+        "example.pkl",
+    ],
+    entrypoints = [
+        "example.pkl",
+    ],
+    format = "yaml",
+    deps = [
+        "@mypkl//:packages",
+    ],
+)
+
+diff_test(
+    name = "pkl_eval_with_deps_diff_test",
+    file1 = "expected_output.yaml",
+    file2 = ":pkl_eval_with_deps",
+)
+
+pkl_test(
+    name = "pkl_deps_cache_entry_test",
+    srcs = ["metadataDepsTest.pkl"],
+    deps = ["@mypkl//:packages"],
+)
