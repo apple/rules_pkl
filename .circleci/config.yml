@@ -1,16 +1,64 @@
 # Generated from CircleCI.pkl. DO NOT EDIT.
-version: 2.1
+version: '2.1'
+orbs:
+  pr-approval: apple/pr-approval@0.1.0
 jobs:
   test:
     steps:
+    - checkout
     - run:
-        command: echo hello
+        command: buildifier -lint=warn -mode=check -r .
+        name: Buildifier lint
+    - run:
+        command: bazel test --curses=no --color=yes --show_timestamps //...
+        name: Bazel tests
     docker:
-    - image: cimg/base
+    - image: gcr.io/bazel-public/bazel:7.1.1
+  github-release:
+    steps:
+    - attach_workspace:
+        at: '.'
+    - run:
+        command: echo "export VERSION=$(bazel mod path rules_pkl | awk -F'@' '/rules_pkl/{ print substr($2, 1, length($2)-1) }')" >> $BASH_ENV
+        name: Setup environment
+    - run:
+        command: tar -cavf rules_pkl-$VERSION.tar.gz --anchored --exclude-from .tar-exclude-from-file.conf *
+        name: Build archive
+    - run:
+        command: |-
+          gh release create "${CIRCLE_TAG}" \
+            --title "${CIRCLE_TAG}" \
+            --target "${CIRCLE_SHA1}" \
+            --verify-tag \
+            --repo "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
+            rules_pkl-$VERSION.tar.gz
+        name: Publish release on GitHub
+    docker:
+    - image: maniator/gh:v2.40.1
 workflows:
+  prb:
+    jobs:
+    - hold:
+        type: approval
+    - pr-approval/authenticate:
+        context: pkl-pr-approval
+    - test:
+        requires:
+        - hold
+    when:
+      matches:
+        value: << pipeline.git.branch >>
+        pattern: ^pull/\d+(/head)?$
   main:
-    jobs: []
+    jobs:
+    - test
     when:
       equal:
       - main
       - << pipeline.git.branch >>
+  release-branch:
+    jobs:
+    - hold:
+        type: approval
+    - pr-approval/authenticate:
+        context: pkl-pr-approval

@@ -1,0 +1,93 @@
+# Copyright © 2024 Apple Inc. and the Pkl project authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+load("//pkl:defs.bzl", "pkl_library", "pkl_test", "pkl_test_suite")
+
+pkl_test(
+    name = "simple_test",
+    srcs = ["srcs/catTest.pkl"],
+    data = ["srcs/cat.pkl"],
+)
+
+pkl_library(
+    name = "dogs_pkl_lib",
+    srcs = ["srcs/dogs.pkl"],
+)
+
+pkl_test(
+    name = "simple_pkl_test_with_lib_dep",
+    srcs = ["srcs/dogsTest.pkl"],
+    entrypoints = ["srcs/dogsTest.pkl"],
+    deps = [
+        ":dogs_pkl_lib",
+    ],
+)
+
+pkl_test(
+    name = "empty_pkl_test",
+    srcs = ["srcs/EmptyTest.pkl"],
+)
+
+pkl_test_suite(
+    name = "test",
+    srcs = glob(["*.pkl"]),
+)
+
+genrule(
+    name = "generated_pkl",
+    outs = ["generated.pkl"],
+    cmd_bash = """
+cat << EOF >> $@
+pets: Listing<String> = new {
+  "dog"
+  "cat"
+  "rabbit"
+  "hamster"
+}
+EOF
+    """,
+)
+
+pkl_library(
+    name = "generated_pkl_lib",
+    srcs = ["generated_pkl"],
+)
+
+pkl_test(
+    name = "pkl_test_with_generated_src_test",
+    srcs = [
+        "srcs/generatedPklTest.pkl",
+        ":generated_pkl",
+    ],
+    entrypoints = ["srcs/generatedPklTest.pkl"],
+)
+
+pkl_test(
+    name = "pkl_test_with_generated_lib_dep_test",
+    srcs = [
+        "srcs/generatedPklTest.pkl",
+    ],
+    entrypoints = ["srcs/generatedPklTest.pkl"],
+    deps = [
+        ":generated_pkl_lib",
+    ],
+)
+
+pkl_test(
+    name = "pkl_test_with_generated_src_lib_test",
+    srcs = [
+        "srcs/generatedPklTest.pkl",
+        ":generated_pkl_lib",
+    ],
+    entrypoints = ["srcs/generatedPklTest.pkl"],
+)
