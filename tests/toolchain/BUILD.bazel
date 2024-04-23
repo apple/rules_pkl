@@ -1,0 +1,65 @@
+# Copyright © 2024 Apple Inc. and the Pkl project authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# buildifier: disable=bzl-visibility
+load("//pkl/private:toolchain.bzl", "current_pkl_toolchain")
+
+current_pkl_toolchain(
+    name = "current_toolchain",
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "current_toolchain_at_build_time_test_bash",
+    srcs = [
+        "test_current_toolchain.sh",
+    ],
+    outs = ["out.txt"],
+    cmd = "bash tests/toolchain/test_current_toolchain.sh $(PKL_BIN) > $@",
+    executable = True,
+    toolchains = [
+        ":current_toolchain",
+    ],
+    tools = [
+        ":current_toolchain",
+    ],
+)
+
+sh_test(
+    name = "current_toolchain_at_build_time_test",
+    srcs = ["current_toolchain_at_build_time_test_bash"],
+    toolchains = [
+        ":current_toolchain",
+    ],
+)
+
+sh_test(
+    name = "current_toolchain_at_runtime_test",
+    srcs = ["test_current_toolchain_runtime.sh"],
+    data = [":current_toolchain"],
+    env = {
+        "PKL_BIN": "$(PKL_BIN)",
+    },
+    toolchains = [":current_toolchain"],
+)
+
+sh_test(
+    name = "current_toolchain_at_runtime_pkl_java_test",
+    srcs = ["test_current_toolchain_runtime.sh"],
+    data = ["//pkl:pkl_java"],
+    env = {
+        "PKL_BIN": "$(PKL_BIN)",
+    },
+    toolchains = ["//pkl:pkl_java"],
+)

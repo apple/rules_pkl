@@ -1,28 +1,105 @@
-amends "../../pkl/.circleci/CircleCI.pkl"
+//===----------------------------------------------------------------------===//
+// Copyright © 2024 Apple Inc. and the Pkl project authors. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//===----------------------------------------------------------------------===//
+// File gets rendered to .circleci/config.yml via git hook.
+amends "package://pkg.pkl-lang.org/pkl-project-commons/pkl.impl.circleci@1.1.0#/PklCI.pkl"
 
-version = 2.1
+prb {
+  jobs {
+    "test"
+  }
+}
+
+main {
+  jobs {
+    "test"
+  }
+}
 
 jobs {
   ["test"] {
     docker {
-      new {
-        image = "cimg/base"
-      }
+      new { image = "gcr.io/bazel-public/bazel:7.1.1" }
     }
     steps {
+      "checkout"
       new RunStep {
-        command = "echo hello"
+        name = "Buildifier lint"
+        command = "bazel run buildifier"
+      }
+      new RunStep {
+        name = "Bazel tests"
+        command = "bazel test --curses=no --color=yes --show_timestamps //..."
+      }
+    }
+  }
+  ["github-release"] {
+    docker {
+      new { image = "maniator/gh:v2.40.1" }
+    }
+    steps {
+      local archiveName = "rules_pkl-$VERSION.tar.gz"
+      new AttachWorkspaceStep { at = "." }
+      new RunStep {
+        name = "Setup environment"
+        // There SHOULD be a better way to extract the bazel module version from the bazel metadata.
+        command = """
+          echo "export VERSION=$(bazel mod path rules_pkl | awk -F'@' '/rules_pkl/{ print substr($2, 1, length($2)-1) }')" >> $BASH_ENV
+          """
+      }
+      new RunStep {
+        name = "Build archive"
+        command = "tar -cavf \(archiveName) --anchored --exclude-from .tar-exclude-from-file.conf *"
+      }
+      new RunStep {
+        name = "Publish release on GitHub"
+        command = #"""
+          gh release create "${CIRCLE_TAG}" \
+            --title "${CIRCLE_TAG}" \
+            --target "${CIRCLE_SHA1}" \
+            --verify-tag \
+            --repo "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
+            \#(archiveName)
+          """#
       }
     }
   }
 }
 
-workflows {
-  ["main"] {
-    `when` {
-      equal {
-        #"main"#
-        module.pipelineValues.`pipeline.git.branch`
+circleCi {
+  workflows {
+    ["release-branch"] {
+      jobs = new Listing<Mapping<String, WorkflowJob>> {
+        new {
+          ["hold"] {
+            type = "approval"
+          }
+        }
+        new {
+          ["pr-approval/authenticate"] {
+            context = "pkl-pr-approval"
+          }
+        }
+        for (job in super.jobs) {
+          (if (job is Mapping) job else new Mapping<String, WorkflowJob> { [job] {} }) {
+            local thisMapping = this
+            [thisMapping.keys.first] {
+              requires { "hold" }
+            }
+          }
+        }
       }
     }
   }

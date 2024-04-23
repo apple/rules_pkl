@@ -1,0 +1,9 @@
+examples/
+
+# Do not include other files and directories in tests/integration_test, which
+# need to live in this workspace.
+tests/integration_tests/example_workspaces/simple/bazel-bin
+tests/integration_tests/example_workspaces/simple/bazel-out
+tests/integration_tests/example_workspaces/simple/bazel-simple
+tests/integration_tests/example_workspaces/simple/bazel-testlogs
+tests/integration_tests/example_workspaces/pkl_cache/bazel-pkl_cache

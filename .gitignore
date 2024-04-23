@@ -1,0 +1,20 @@
+*~
+
+# macOS
+.DS_STORE
+
+# IntelliJ
+.idea/
+.ijwb
+*.iml
+!.idea/codestyles/
+!.idea/inspectionProfiles/
+!.idea/runConfigurations/
+!.idea/scopes/
+!.idea/vcs.xml
+
+# Bazel
+bazel-*
+/examples/*/bazel-*
+/tests/*/bazel-*
+MODULE.bazel.lock
