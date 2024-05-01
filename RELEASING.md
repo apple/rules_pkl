@@ -58,6 +58,7 @@ bazel_dep(name = "rules_pkl", version = "X.Y.Z")
 See the `examples/` directory for complete examples of how to use `rules_pkl`.
 
 ## Ruleset Docs
+
 For further information on the rules provided, check out the [`rules_pkl` documentation].
 
 [`rules_pkl` documentation]: https://github.com/apple/rules_pkl/blob/main/docs/rules_pkl_docs.md
