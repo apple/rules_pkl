@@ -13,6 +13,8 @@
 # limitations under the License.
 "Bazel dependencies"
 
+load("@rules_pkl//pkl:workspace.bzl", "PKL_DEPS")
+
 module(
     name = "rules_pkl",
     version = "0.1.0",
@@ -48,12 +50,7 @@ register_toolchains(
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "rules_pkl_deps",
-    artifacts = [
-        "org.pkl-lang:pkl-cli-java:0.25.3",
-        "org.pkl-lang:pkl-doc:0.25.3",
-        "org.pkl-lang:pkl-tools:0.25.3",
-        "com.google.code.gson:gson:2.10.1",
-    ],
+    artifacts = PKL_DEPS,
     lock_file = "//pkl/private:pkl_deps_install.json",
     repositories = [
         "https://repo1.maven.org/maven2/",
