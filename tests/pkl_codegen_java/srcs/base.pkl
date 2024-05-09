@@ -1,0 +1,11 @@
+module org.dogs
+
+class Dog {
+    name: String
+}
+
+class Litter {
+    dogs: Listing<Dog>
+}
+
+puppies: Litter

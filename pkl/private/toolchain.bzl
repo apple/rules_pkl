@@ -56,6 +56,24 @@ pkl_toolchain = rule(
     },
 )
 
+def _pkl_codegen_java_toolchain_impl(ctx):
+    toolchain_info = platform_common.ToolchainInfo(
+        codegen_cli = ctx.executable.cli,
+        cli_files_to_run = ctx.attr.cli[DefaultInfo].files_to_run,
+    )
+    return [toolchain_info]
+
+pkl_codegen_java_toolchain = rule(
+    _pkl_codegen_java_toolchain_impl,
+    attrs = {
+        "cli": attr.label(
+            default = "//pkl:pkl_codegen_java_cli",
+            executable = True,
+            cfg = "exec",
+        ),
+    },
+)
+
 def _pkl_doc_toolchain_impl(ctx):
     toolchain_info = platform_common.ToolchainInfo(
         pkl_doc_cli = ctx.executable.cli,

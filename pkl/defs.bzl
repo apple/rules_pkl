@@ -21,6 +21,11 @@ load(
     _pkl_test = "pkl_test",
 )
 load(
+    "//pkl/private:pkl_codegen.bzl",
+    _pkl_config_java_library = "pkl_config_java_library",
+    _pkl_config_src = "pkl_config_src",
+)
+load(
     "//pkl/private:pkl_doc.bzl",
     _pkl_doc = "pkl_doc",
 )
@@ -38,10 +43,14 @@ load(
 )
 load(
     "//pkl/private:toolchain.bzl",
+    _pkl_codegen_java_toolchain = "pkl_codegen_java_toolchain",
     _pkl_doc_toolchain = "pkl_doc_toolchain",
     _pkl_toolchain = "pkl_toolchain",
 )
 
+pkl_codegen_java_toolchain = _pkl_codegen_java_toolchain
+pkl_config_java_library = _pkl_config_java_library
+pkl_config_src = _pkl_config_src
 pkl_doc = _pkl_doc
 pkl_doc_toolchain = _pkl_doc_toolchain
 pkl_library = _pkl_library
