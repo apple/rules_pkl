@@ -29,6 +29,10 @@ load(
     _pkl_library = "pkl_library",
 )
 load(
+    "//pkl/private:pkl_package.bzl",
+    _pkl_package = "pkl_package",
+)
+load(
     "//pkl/private:pkl_test_suite.bzl",
     _pkl_test_suite = "pkl_test_suite",
 )
@@ -42,6 +46,7 @@ pkl_doc = _pkl_doc
 pkl_doc_toolchain = _pkl_doc_toolchain
 pkl_library = _pkl_library
 pkl_eval = _pkl_eval
+pkl_package = _pkl_package
 pkl_test = _pkl_test
 pkl_test_suite = _pkl_test_suite
 pkl_toolchain = _pkl_toolchain

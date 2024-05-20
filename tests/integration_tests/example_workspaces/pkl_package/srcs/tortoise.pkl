@@ -13,18 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //===----------------------------------------------------------------------===//
-/// An Animal
-module com.animals.Rabbits
 
-/// An animal.
-///
-/// Has [name] property
-class Animal {
-    /// The name of the animal
-    name: String
+name = "Tortoise"
+
+classification {
+  kingdom = "Animalia"
+  phylum = "Chordata"
 }
 
-/// An individual animal
-peter: Animal = new {
-    name = "Peter"
+characteristics {
+  lifespan = "50-150+ years"
+  diet = "Herbivore (mostly)"
+  behaviour = "Diurnal (active during the day)"
+  locomotion = "Slow and steady"
 }

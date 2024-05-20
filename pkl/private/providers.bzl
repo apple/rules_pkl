@@ -28,7 +28,29 @@ PklCacheInfo = provider(
     fields = {
         "root": "A `File` representing the root of the cache",
         "label": "The `Label` of the rule that produced this cache info",
-        "pkl_project": "A `File` representing the PklProjet that this cache was created from. Used for mapping shortnames to cache entries.",
-        "pkl_project_deps": "A `File` representing the PklProjet.deps.json that this cache was created from.",
+        "pkl_project": "A `File` representing the PklProject that this cache was created from. Used for mapping shortnames to cache entries.",
+        "pkl_project_deps": "A `File` representing the PklProject.deps.json that this cache was created from.",
+    },
+)
+
+PklPackageInfo = provider(
+    doc = "The artifacts generated as a result of executing the pkl project package command",
+    fields = {
+        "metadata_file": "the package metadata file",
+        "metadata_file_checksum": "the dependency metadata files's SHA-256 checksum",
+        "package_archive": "the package archive",
+        "package_archive_checksum": "the package archive's SHA-256 checksum",
+        "project_metadata_info": "the PklMetadataInfo provider",
+    },
+)
+
+PklMetadataInfo = provider(
+    doc = "Metadata from the PklProject file",
+    fields = {
+        "base_uri": "the value of the base uri field in the PklProject file",
+        "pkl_project_file": "The PklProject file",
+        "pkl_project_deps": "The PklProject.deps.json file",
+        "pkl_project_name": "the name of the project in the PklProject file",
+        "pkl_project_version": "the version of the project in the PklProject file",
     },
 )
