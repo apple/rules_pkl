@@ -16,6 +16,7 @@ Implementation for 'pkl_eval' and 'pkl_test' rules.
 """
 
 load(":providers.bzl", "PklFileInfo")
+load(":repositories.bzl", "root_caches_and_dependencies")
 
 def _prepare_pkl_script(ctx, is_test_target):
     pkl_toolchain = ctx.toolchains["//pkl:toolchain_type"]
@@ -36,11 +37,6 @@ def _prepare_pkl_script(ctx, is_test_target):
         symlinks[file] = "%s/%s" % (working_dir, file.short_path)
 
     file_infos = [dep[PklFileInfo] for dep in ctx.attr.srcs + ctx.attr.deps if PklFileInfo in dep]
-    caches = depset(transitive = [i.caches for i in file_infos]).to_list()
-
-    if len(caches) > 1:
-        cache_labels = [c.label for c in caches]
-        fail("Only one cache item is allowed. The following labels of caches were seen: ", cache_labels)
 
     for info in file_infos:
         for file in info.dep_files.to_list():
@@ -65,6 +61,7 @@ def _prepare_pkl_script(ctx, is_test_target):
             else:
                 path_to_symlink_target[file.path] = path
 
+    cache_root_path, caches, cache_deps = root_caches_and_dependencies(ctx.attr.srcs + ctx.attr.deps)
     if len(caches):
         path_to_symlink_target[caches[0].pkl_project.path] = "%s/PklProject" % working_dir
         path_to_symlink_target[caches[0].pkl_project_deps.path] = "%s/PklProject.deps.json" % working_dir
@@ -85,7 +82,7 @@ def _prepare_pkl_script(ctx, is_test_target):
         " ".join([f.path for f in (ctx.files.entrypoints or ctx.files.srcs)]),
         ctx.attr.multiple_outputs,
         working_dir,
-        caches[0].root.path if len(caches) else "",
+        cache_root_path if len(caches) else "",
     ]
 
     for k, v in ctx.attr.properties.items():
@@ -113,7 +110,7 @@ def _prepare_pkl_script(ctx, is_test_target):
 
     direct_files = [script, symlinks_json_file] + all_files
     if len(caches):
-        direct_files += [caches[0].root, caches[0].pkl_project, caches[0].pkl_project_deps]
+        direct_files += cache_deps
 
     runfiles = ctx.runfiles(
         files = direct_files + [
