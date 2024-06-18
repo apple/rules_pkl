@@ -19,6 +19,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("//pkl/private:constants.bzl", "PKL_DEPS")
+load("//pkl/private:repositories.bzl", _project_cache_path_and_dependencies = "root_caches_and_dependencies")
 
 def pkl_cli_binaries():
     maybe(
@@ -63,3 +64,5 @@ def pkl_setup():
             "https://repo1.maven.org/maven2/",
         ],
     )
+
+project_cache_path_and_dependencies = _project_cache_path_and_dependencies
