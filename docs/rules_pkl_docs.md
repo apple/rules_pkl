@@ -7,6 +7,8 @@ Public API re-exports
 ## pkl_doc_toolchain
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_doc_toolchain")
+
 pkl_doc_toolchain(<a href="#pkl_doc_toolchain-name">name</a>, <a href="#pkl_doc_toolchain-cli">cli</a>)
 </pre>
 
@@ -26,6 +28,8 @@ pkl_doc_toolchain(<a href="#pkl_doc_toolchain-name">name</a>, <a href="#pkl_doc_
 ## pkl_eval
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_eval")
+
 pkl_eval(<a href="#pkl_eval-name">name</a>, <a href="#pkl_eval-deps">deps</a>, <a href="#pkl_eval-srcs">srcs</a>, <a href="#pkl_eval-data">data</a>, <a href="#pkl_eval-outs">outs</a>, <a href="#pkl_eval-entrypoints">entrypoints</a>, <a href="#pkl_eval-expression">expression</a>, <a href="#pkl_eval-format">format</a>, <a href="#pkl_eval-multiple_outputs">multiple_outputs</a>,
          <a href="#pkl_eval-properties">properties</a>)
 </pre>
@@ -54,6 +58,8 @@ Evaluate Pkl module(s).
 ## pkl_library
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_library")
+
 pkl_library(<a href="#pkl_library-name">name</a>, <a href="#pkl_library-deps">deps</a>, <a href="#pkl_library-srcs">srcs</a>, <a href="#pkl_library-data">data</a>)
 </pre>
 
@@ -75,6 +81,8 @@ Collect Pkl sources together so they can be used by other `rules_pkl` rules.
 ## pkl_test
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_test")
+
 pkl_test(<a href="#pkl_test-name">name</a>, <a href="#pkl_test-deps">deps</a>, <a href="#pkl_test-srcs">srcs</a>, <a href="#pkl_test-data">data</a>, <a href="#pkl_test-outs">outs</a>, <a href="#pkl_test-entrypoints">entrypoints</a>, <a href="#pkl_test-expression">expression</a>, <a href="#pkl_test-format">format</a>, <a href="#pkl_test-multiple_outputs">multiple_outputs</a>,
          <a href="#pkl_test-properties">properties</a>)
 </pre>
@@ -103,6 +111,8 @@ Create a Pkl test that can be run with Bazel.
 ## pkl_toolchain
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_toolchain")
+
 pkl_toolchain(<a href="#pkl_toolchain-name">name</a>, <a href="#pkl_toolchain-cli">cli</a>)
 </pre>
 
@@ -122,6 +132,8 @@ pkl_toolchain(<a href="#pkl_toolchain-name">name</a>, <a href="#pkl_toolchain-cl
 ## pkl_doc
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_doc")
+
 pkl_doc(<a href="#pkl_doc-name">name</a>, <a href="#pkl_doc-srcs">srcs</a>, <a href="#pkl_doc-kwargs">kwargs</a>)
 </pre>
 
@@ -142,6 +154,8 @@ Generate documentation website for Pkl files.
 ## pkl_test_suite
 
 <pre>
+load("@rules_pkl//pkl:defs.bzl", "pkl_test_suite")
+
 pkl_test_suite(<a href="#pkl_test_suite-name">name</a>, <a href="#pkl_test_suite-srcs">srcs</a>, <a href="#pkl_test_suite-deps">deps</a>, <a href="#pkl_test_suite-tags">tags</a>, <a href="#pkl_test_suite-visibility">visibility</a>, <a href="#pkl_test_suite-size">size</a>, <a href="#pkl_test_suite-test_suffix">test_suffix</a>, <a href="#pkl_test_suite-kwargs">kwargs</a>)
 </pre>
 
