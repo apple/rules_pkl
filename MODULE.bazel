@@ -84,7 +84,7 @@ bazel_dep(
 
 bazel_dep(
     name = "platforms",
-    version = "0.0.8",
+    version = "0.0.10",
 )
 
 bazel_dep(
