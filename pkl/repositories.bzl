@@ -63,6 +63,7 @@ def pkl_setup():
         repositories = [
             "https://repo1.maven.org/maven2/",
         ],
+        lock_file = "//pkl/private:pkl_deps_install.json",
     )
 
 project_cache_path_and_dependencies = _project_cache_path_and_dependencies
