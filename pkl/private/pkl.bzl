@@ -158,7 +158,7 @@ _PKL_EVAL_ATTRS = {
         be exposed. Otherwise, a single directory, with the name of the target, containing all generated files will be exposed.
         (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).""",
     ),
-    "outs": attr.string_list(
+    "outs": attr.output_list(
         doc = "Name of the output file to generate. Defaults to `<rule name>.<format>`. If the format attribute is unset, use `<rule name>.pcf`. Expects a single file if `multiple_outputs` is not set to `True`.",
     ),
     "properties": attr.string_dict(
@@ -191,18 +191,19 @@ def _pkl_eval_impl(ctx):
 
     if ctx.attr.multiple_outputs:
         if len(ctx.attr.outs) > 0:
-            for output_name in ctx.attr.outs:
-                relative_path = "{}/{}".format(ctx.label.name, output_name)
-                outputs.append(ctx.actions.declare_file(relative_path))
-            output_location = outputs[0].path.removesuffix(ctx.attr.outs[0])
+            for output in ctx.outputs.outs:
+                outputs.append(output)
+            output_location = _find_common_prefix([o.path for o in outputs])
         else:
             output_location = ctx.actions.declare_directory(ctx.label.name)
             outputs.append(output_location)
     else:
-        output_format = ctx.attr.format or "pcf"
-        filename = ctx.attr.outs[0] if len(ctx.attr.outs) > 0 else "{}.{}".format(ctx.label.name, output_format)
-        relative_path = "{}/{}".format(ctx.label.name, filename)
-        output_location = ctx.actions.declare_file(relative_path)
+        if len(ctx.outputs.outs) > 0:
+            output_location = ctx.outputs.outs[0]
+        else:
+            output_format = ctx.attr.format or "pcf"
+            filename = "{}.{}".format(ctx.label.name, output_format)
+            output_location = ctx.actions.declare_file(filename)
         outputs.append(output_location)
 
     pkl_command = "eval"
@@ -230,6 +231,15 @@ def _pkl_eval_impl(ctx):
         },
     )
     return [DefaultInfo(files = depset(outputs), runfiles = ctx.runfiles(outputs))]
+
+def _find_common_prefix(strings):
+    reference = strings[0]
+
+    for i in range(len(reference)):
+        if any([s[i] != reference[i] for s in strings if i < len(s)]):
+            return reference[:i]
+
+    return reference
 
 pkl_eval = rule(
     _pkl_eval_impl,
