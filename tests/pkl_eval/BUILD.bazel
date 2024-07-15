@@ -194,3 +194,25 @@ diff_test(
     file1 = ":pkl_eval_with_generated_src",
     file2 = "expected/pets.pcf",
 )
+
+pkl_eval(
+    name = "pkl_eval_multiple_with_overlapping_directory_outs",
+    srcs = [
+        "srcs/multipleOutputsOverlappingDirectory.pkl",
+    ],
+    outs = [
+        "fiat/cinquecento.yaml",
+        "fiat/panda.yaml",
+    ],
+    multiple_outputs = True,
+)
+
+sh_test(
+    name = "pkl_eval_multiple_with_overlapping_directory_outs_test",
+    srcs = ["verify_pkl_eval_output.sh"],
+    args = ["multiple_outputs_specific_overlapping_directory"],
+    data = [
+        "expected/multiple_outputs_specific_overlapping_directory.txt",
+        ":pkl_eval_multiple_with_overlapping_directory_outs",
+    ],
+)

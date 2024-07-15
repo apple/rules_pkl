@@ -193,7 +193,10 @@ def _pkl_eval_impl(ctx):
         if len(ctx.attr.outs) > 0:
             for output in ctx.outputs.outs:
                 outputs.append(output)
-            output_location = _find_common_prefix([o.path for o in outputs])
+            output_location = "{genfiles}/{package}".format(
+                genfiles = ctx.genfiles_dir.path,
+                package = ctx.label.package,
+            )
         else:
             output_location = ctx.actions.declare_directory(ctx.label.name)
             outputs.append(output_location)
@@ -231,16 +234,6 @@ def _pkl_eval_impl(ctx):
         },
     )
     return [DefaultInfo(files = depset(outputs), runfiles = ctx.runfiles(outputs))]
-
-def _find_common_prefix(strings):
-    paths = [s.split("/") for s in strings]
-    reference = paths[0]
-
-    for i in range(len(reference)):
-        if any([s[i] != reference[i] for s in paths if i < len(s)]):
-            return "/".join(reference[:i])
-
-    return reference
 
 pkl_eval = rule(
     _pkl_eval_impl,
