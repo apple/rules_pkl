@@ -233,11 +233,12 @@ def _pkl_eval_impl(ctx):
     return [DefaultInfo(files = depset(outputs), runfiles = ctx.runfiles(outputs))]
 
 def _find_common_prefix(strings):
-    reference = strings[0]
+    paths = [s.split("/") for s in strings]
+    reference = paths[0]
 
     for i in range(len(reference)):
-        if any([s[i] != reference[i] for s in strings if i < len(s)]):
-            return reference[:i]
+        if any([s[i] != reference[i] for s in paths if i < len(s)]):
+            return "/".join(reference[:i])
 
     return reference
 
