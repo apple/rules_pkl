@@ -159,7 +159,7 @@ _PKL_EVAL_ATTRS = {
         (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).""",
     ),
     "outs": attr.output_list(
-        doc = "Name of the output file to generate. Defaults to `<rule name>.<format>`. If the format attribute is unset, use `<rule name>.pcf`. Expects a single file if `multiple_outputs` is not set to `True`.",
+        doc = "Names of the output files to generate. Defaults to `<rule name>.<format>`. If the format attribute is unset, use `<rule name>.pcf`. Expects a single file if `multiple_outputs` is not set to `True`.",
     ),
     "properties": attr.string_dict(
         doc = """Dictionary of name value pairs used to pass in Pkl external properties.
