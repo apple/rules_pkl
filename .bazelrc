@@ -9,5 +9,5 @@ test --test_output=all
 
 # To update these lines, execute
 # `bazel run @rules_bazel_integration_test//tools:update_deleted_packages`
-build --deleted_packages=examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/simple
-query --deleted_packages=examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/simple
+build --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/simple
+query --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/simple
