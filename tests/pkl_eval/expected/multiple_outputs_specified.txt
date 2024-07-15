@@ -1,2 +1,2 @@
-tests/pkl_eval/pkl_eval_multiple_with_outs/cars/fiat.yaml
-tests/pkl_eval/pkl_eval_multiple_with_outs/vans/ford.json
+tests/pkl_eval/cars/fiat.yaml
+tests/pkl_eval/vans/ford.json
