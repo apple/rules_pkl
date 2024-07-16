@@ -29,3 +29,20 @@ use_repo(
     pkl,
     "mypkl",
 )
+
+bazel_dep(
+    name = "rules_python",
+    version = "0.34.0",
+    dev_dependency = True,
+)
+
+python = use_extension(
+    "@rules_python//python/extensions:python.bzl",
+    "python",
+    dev_dependency = True,
+)
+python.toolchain(
+    configure_coverage_tool = True,
+    ignore_root_user_error = True,
+    python_version = "3.12",
+)
