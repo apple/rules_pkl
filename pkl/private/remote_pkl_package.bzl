@@ -26,8 +26,8 @@ def _remote_pkl_package_impl(rctx):
 
     file_name = get_terminal_package_name(url)
 
-    metadata_file = "package-1/%s/%s.json" % (url_without_scheme, file_name)
-    package_archive = "package-1/%s/%s.zip" % (url_without_scheme, file_name)
+    metadata_file = "package-2/%s/%s.json" % (url_without_scheme, file_name)
+    package_archive = "package-2/%s/%s.zip" % (url_without_scheme, file_name)
 
     # Grab the JSON from the original location
     rctx.download(url, sha256 = rctx.attr.sha256, output = metadata_file)

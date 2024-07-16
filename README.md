@@ -30,3 +30,9 @@ See the `examples/` directory for complete examples of how to use `rules_pkl`.
 For further information on the rules provided, check out the [`rules_pkl` documentation].
 
 [`rules_pkl` documentation]: https://github.com/apple/rules_pkl/blob/main/docs/rules_pkl_docs.md
+
+## Minimum required JVM version
+
+From `0.26.0` onwards, Pkl [requires at least JDK17](https://pkl-lang.org/main/current/release-notes/0.26.html#minimum-java-version-bump).
+
+This has been reflected in the `.bazelrc`.

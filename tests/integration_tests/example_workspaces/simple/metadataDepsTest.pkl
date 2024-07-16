@@ -18,7 +18,7 @@ amends "pkl:test"
 import "@io.k8s/api/core/v1/ConfigMap.pkl"
 import "pkl:json"
 
-local k8sMetadataFile = read("../cache/package-1/pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1/k8s@1.0.1.json")
+local k8sMetadataFile = read("../cache/package-2/pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1/k8s@1.0.1.json")
 local metadata = new json.Parser {}.parse(k8sMetadataFile)
 
 facts {

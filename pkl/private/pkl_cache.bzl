@@ -65,7 +65,7 @@ mkdir -p "$OUTPUT_DIR"
         args.add_all([info.json, info.zip])
         inputs.extend([info.json, info.zip])
 
-        stem = "$OUTPUT_DIR/package-1/" + info.package_name
+        stem = "$OUTPUT_DIR/package-2/" + info.package_name
 
         file_name = get_terminal_package_name(info.package_name)
 

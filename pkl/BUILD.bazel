@@ -151,7 +151,7 @@ java_binary(
     ],
     runtime_deps = [
         artifact(
-            "org.pkl-lang:pkl-doc:0.25.3",
+            "org.pkl-lang:pkl-doc:0.26.1",
             repository_name = "rules_pkl_deps",
         ),
     ],

@@ -51,6 +51,6 @@ sed -i.bak "s,$mangle_repository,doesnotexist-$mangle_repository,g" \
 "$zip_file"
 
 # Move the poisoned cache package to its expected location based on the poisoned uri of the Pkl package.
-mv "$cache_dir/package-1/$mangle_repository" "$cache_dir/package-1/doesnotexist-$mangle_repository"
+mv "$cache_dir/package-2/$mangle_repository" "$cache_dir/package-2/doesnotexist-$mangle_repository"
 
-mv "$cache_dir/package-1" "$new_cache_dir"
+mv "$cache_dir/package-2" "$new_cache_dir"
