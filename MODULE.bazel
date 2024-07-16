@@ -89,7 +89,7 @@ bazel_dep(
 
 bazel_dep(
     name = "rules_python",
-    version = "0.27.0",
+    version = "0.34.0",
     dev_dependency = True,
 )
 bazel_dep(
@@ -106,7 +106,7 @@ python = use_extension(
 python.toolchain(
     configure_coverage_tool = True,
     ignore_root_user_error = True,
-    python_version = "3.11",
+    python_version = "3.12",
 )
 
 pip = use_extension(
@@ -116,7 +116,7 @@ pip = use_extension(
 )
 pip.parse(
     hub_name = "pip",
-    python_version = "3.11",
+    python_version = "3.12",
     requirements_lock = "//tests:requirements_lock.txt",
 )
 use_repo(
