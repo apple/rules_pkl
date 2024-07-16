@@ -17,7 +17,6 @@ Constants.
 
 PKL_DEPS = {
     "0.26.1": [
-        "org.pkl-lang:pkl-cli-java:0.26.1",
         "org.pkl-lang:pkl-doc:0.26.1",
         "org.pkl-lang:pkl-tools:0.26.1",
         "com.google.code.gson:gson:2.10.1",
