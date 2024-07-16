@@ -99,7 +99,7 @@ java_binary(
     main_class = "org.pkl.cli.Main",
     runtime_deps = [
         artifact(
-            "org.pkl-lang:pkl-cli-java",
+            "org.pkl-lang:pkl-tools",
             repository_name = "rules_pkl_deps",
         ),
     ],
