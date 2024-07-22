@@ -60,7 +60,7 @@ class Symlinks {
                 }
 
                 Files.createDirectories(link.getParent());
-                Files.createSymbolicLink(link, target);
+                Files.copy(target, link);
             }
         }
     }
