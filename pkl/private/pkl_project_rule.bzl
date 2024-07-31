@@ -33,9 +33,11 @@ pkl_project_rule = rule(
         ),
         "pkl_project_file": attr.label(
             allow_single_file = True,
+            default = "PklProject",
         ),
         "pkl_project_deps": attr.label(
             allow_single_file = True,
+            default = "PklProject.deps.json",
         ),
         "pkl_project_name": attr.string(
             mandatory = True,

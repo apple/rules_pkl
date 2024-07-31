@@ -91,15 +91,13 @@ package(default_visibility = ["//visibility:public"])
 pkl_project_rule(
     name = "project",
     base_uri = "{base_uri}",
-    pkl_project_file = "{pkl_project_file}",
-    pkl_project_deps = "{pkl_project_deps}",
+    pkl_project_file = "PklProject",
+    pkl_project_deps = "PklProject.deps.json",
     pkl_project_name = "{pkl_project_name}",
     pkl_project_version = "{pkl_project_version}",
 )
 """.format(
             base_uri = base_uri,
-            pkl_project_file = "PklProject",
-            pkl_project_deps = "PklProject.deps.json",
             pkl_project_name = pkl_project_name,
             pkl_project_version = pkl_project_version,
         )
@@ -107,8 +105,8 @@ pkl_project_rule(
     build_bazel_content += """
 pkl_cache(
     name = "packages",
-    pkl_project = "{pkl_project_file}",
-    pkl_project_deps = "{pkl_project_deps}",
+    pkl_project = "PklProject",
+    pkl_project_deps = "PklProject.deps.json",
     items = {targets_for_all},
 )
 
@@ -130,11 +128,13 @@ pkl_project = repository_rule(
     attrs = {
         "pkl_project": attr.label(
             doc = "The PklProject file",
+            default = "PklProject",
             allow_single_file = True,
             mandatory = True,
         ),
         "pkl_project_deps": attr.label(
             doc = "The PklProject.deps.json file",
+            default = "PklProject.deps.json",
             allow_single_file = True,
             mandatory = True,
         ),
