@@ -13,6 +13,7 @@
 # limitations under the License.
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_jvm_external//:defs.bzl", "artifact")
+load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION")
 load(":defs.bzl", "pkl_doc_toolchain", "pkl_toolchain")
 
 filegroup(
@@ -151,7 +152,7 @@ java_binary(
     ],
     runtime_deps = [
         artifact(
-            "org.pkl-lang:pkl-doc:0.26.1",
+            "org.pkl-lang:pkl-doc:{}".format(DEFAULT_PKL_VERSION),
             repository_name = "rules_pkl_deps",
         ),
     ],
