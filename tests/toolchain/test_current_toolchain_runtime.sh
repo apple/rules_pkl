@@ -14,10 +14,14 @@
 # limitations under the License.
 set -eu
 
-value=$(eval "$PKL_BIN" --version)
+version=$(eval "$PKL_BIN" --version)
 
-if [ -z "$value" ]; then
+if [ -z "${version}" ]; then
+  echo "The version is empty"
   exit 1
-else
-  exit 0
+fi
+
+if [[ "${version}" != *"${DEFAULT_PKL_VERSION}"* ]]; then
+  echo "Expected '${version}' to contain the default Pkl version of '${DEFAULT_PKL_VERSION}'"
+  exit 1
 fi

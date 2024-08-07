@@ -17,7 +17,11 @@ set -eu
 version=$(eval "$1" --version)
 
 if [ -z "$version" ]; then
+  echo "The version value is empty"
   exit 1
-else
-  exit 0
+fi
+
+if [[ "${version}" != *"${DEFAULT_PKL_VERSION}"* ]]; then
+  echo "Expected '${value}' to contain the default Pkl version of '${DEFAULT_PKL_VERSION}'"
+  exit 1
 fi
