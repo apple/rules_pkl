@@ -16,8 +16,10 @@ Export rules_pkl dependencies.
 """
 
 load("//pkl/private:constants.bzl", _PKL_DEPS = "PKL_DEPS")
-load("//pkl/private:pkl_deps.bzl", _pkl_deps = "pkl_deps")
+load("//pkl/private:pkl_project.bzl", _parse_pkl_project_deps_json = "parse_pkl_project_deps_json", _pkl_project = "pkl_project")
+load("//pkl/private:remote_pkl_package.bzl", _remote_pkl_package = "remote_pkl_package")
 
 PKL_DEPS = _PKL_DEPS
-
-pkl_deps = _pkl_deps
+pkl_project = _pkl_project
+parse_pkl_project_deps_json = _parse_pkl_project_deps_json
+remote_pkl_package = _remote_pkl_package

@@ -16,7 +16,7 @@ Module extension for using rules_pkl with bzlmod.
 """
 
 load("//pkl:repositories.bzl", "pkl_cli_binaries")
-load("//pkl/private:pkl_deps.bzl", "parse_pkl_project_deps_json", "pkl_deps")
+load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", _pkl_project = "pkl_project")
 load("//pkl/private:remote_pkl_package.bzl", "remote_pkl_package")
 
 pkl_project = tag_class(
@@ -57,7 +57,7 @@ def _toolchain_extension(module_ctx):
                 )
 
             # Now set up all the targets that people will rely on in their builds.
-            pkl_deps(
+            _pkl_project(
                 name = proj.name,
                 pkl_project = proj.pkl_project,
                 pkl_project_deps = proj.pkl_project_deps,
