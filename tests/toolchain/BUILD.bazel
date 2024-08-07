@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION")
+
 # buildifier: disable=bzl-visibility
 load("//pkl/private:toolchain.bzl", "current_pkl_toolchain")
 
@@ -26,7 +28,7 @@ genrule(
         "test_current_toolchain.sh",
     ],
     outs = ["out.txt"],
-    cmd = "bash tests/toolchain/test_current_toolchain.sh $(PKL_BIN) > $@",
+    cmd = "DEFAULT_PKL_VERSION={} bash tests/toolchain/test_current_toolchain.sh $(PKL_BIN) > $@".format(DEFAULT_PKL_VERSION),
     executable = True,
     toolchains = [
         ":current_toolchain",
@@ -50,6 +52,7 @@ sh_test(
     data = [":current_toolchain"],
     env = {
         "PKL_BIN": "$(PKL_BIN)",
+        "DEFAULT_PKL_VERSION": DEFAULT_PKL_VERSION,
     },
     toolchains = [":current_toolchain"],
 )
@@ -60,6 +63,7 @@ sh_test(
     data = ["//pkl:pkl_java"],
     env = {
         "PKL_BIN": "$(PKL_BIN)",
+        "DEFAULT_PKL_VERSION": DEFAULT_PKL_VERSION,
     },
     toolchains = ["//pkl:pkl_java"],
 )
