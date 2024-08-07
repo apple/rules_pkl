@@ -228,7 +228,7 @@ def _pkl_eval_impl(ctx):
             pkl_toolchain.symlink_tool[DefaultInfo].files_to_run,
         ],
         arguments = [args],
-        mnemonic = "PklRun",
+        mnemonic = "PklEval",
         execution_requirements = {
             "supports-path-mapping": "1",
         },
