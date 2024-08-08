@@ -60,7 +60,15 @@ def _pkl_package_impl(ctx):
     src_symlinks.append(pkl_project_deps_symlink)
 
     for f in ctx.files.srcs:
-        src_symlink = ctx.actions.declare_file("{}/{}".format(working_dir, f.path))
+        f_path = f.path
+        if ctx.attr.strip_prefix:
+            strip_prefix = ctx.attr.strip_prefix + "/"
+            if not f_path.startswith(strip_prefix):
+                fail("User asked to strip '{}' prefix from srcs, but source file {} does not start with the prefix".format(
+                    strip_prefix, f_path
+                ))
+            f_path = f_path.removeprefix(strip_prefix)
+        src_symlink = ctx.actions.declare_file("{}/{}".format(working_dir, f_path))
         ctx.actions.symlink(
             target_file = f,
             output = src_symlink,
@@ -105,6 +113,7 @@ pkl_package = rule(
             mandatory = True,
         ),
         "srcs": attr.label_list(allow_files = [".pkl"]),
+        "strip_prefix": attr.string(doc = "Strip a directory prefix from the srcs."),
         "extra_flags": attr.string_list(default = []),
     },
     toolchains = [
