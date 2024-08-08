@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import unittest
+import zipfile
+import tempfile
 
 from pathlib import Path
 from bazel_tools.tools.python.runfiles import runfiles
@@ -33,6 +35,27 @@ class TestPklPackage(unittest.TestCase):
 
         got_artifacts = [f.name for f in entry_point.iterdir() if f.is_file()]
         self.assertTrue(all(item in got_artifacts for item in want_artifacts))
+
+    def test_zipfile_contains_srcs(self):
+        r = runfiles.Create()
+        entry_point = Path(r.Rlocation("_main/"))
+
+        zip_file = None
+        for item in entry_point.iterdir():
+            if item.is_file() and item.suffix == ".zip":
+                zip_file = item
+                break
+
+        self.assertIsNotNone(zip_file)
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            extract_to = Path(temp_dir)
+
+            with zipfile.ZipFile(zip_file, "r") as zipped:
+                zipped.extractall(extract_to)
+
+            want_src = extract_to/"srcs/tortoise.pkl"
+            self.assertTrue(want_src.exists())
 
 
 if __name__ == '__main__':
