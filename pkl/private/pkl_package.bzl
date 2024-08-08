@@ -41,15 +41,42 @@ def _pkl_package_impl(ctx):
         parts.append(ctx.label.package)
     output_dir = "/".join(parts)
 
+    working_dir = "%s/work" % ctx.label.name
+
+    src_symlinks = []
+
+    pkl_project_symlink = ctx.actions.declare_file("{}/{}".format(working_dir, "PklProject"))
+    ctx.actions.symlink(
+        target_file = pkl_project_file,
+        output = pkl_project_symlink,
+    )
+    src_symlinks.append(pkl_project_symlink)
+
+    pkl_project_deps_symlink = ctx.actions.declare_file("{}/{}".format(working_dir, "PklProject.deps.json"))
+    ctx.actions.symlink(
+        target_file = pkl_project_deps,
+        output = pkl_project_deps_symlink,
+    )
+    src_symlinks.append(pkl_project_deps_symlink)
+
+    for f in ctx.files.srcs:
+        src_symlink = ctx.actions.declare_file("{}/{}".format(working_dir, f.path))
+        ctx.actions.symlink(
+            target_file = f,
+            output = src_symlink,
+        )
+        src_symlinks.append(src_symlink)
+
+    print([s.path for s in src_symlinks])
     args = ctx.actions.args()
-    args.add_all(["project", "package", "{file_dir}".format(file_dir = pkl_project_file.dirname)])
+    args.add_all(["project", "package", pkl_project_symlink.dirname])
     args.add_all(["--output-path", "{output_dir}".format(output_dir = output_dir)])
     args.add("{extra_flags}".format(extra_flags = " ".join(ctx.attr.extra_flags)))
 
     ctx.actions.run(
         executable = executable,
         outputs = outputs,
-        inputs = [pkl_project_file, pkl_project_deps] + ctx.files.srcs,
+        inputs = [pkl_project_file, pkl_project_deps] + src_symlinks,
         arguments = [args],
     )
 
