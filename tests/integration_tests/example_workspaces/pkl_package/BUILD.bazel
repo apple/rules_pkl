@@ -19,23 +19,45 @@ exports_files([
     "PklProject.deps.json",
 ])
 
+# A regular project would not have multiple packages for one pkl project but having two packages for one project here
+# helps us test different cases.
 pkl_package(
     name = "mypklpackage",
     srcs = [
-        "srcs/tortoise.pkl",
+        "srcs/pkg1/tortoise.pkl",
+        "//srcs/pkg2:hare_generated_pkl",
     ],
-    # --skip-publish-check has been added for the purpose of the tests as it skips the HTTP request normally
-    # executed by the pkl project package command. This however means there is no validation as to whether the package
-    # has already been published.
     extra_flags = ["--skip-publish-check"],
     project = "@mypklproject//:project",
 )
 
+pkl_package(
+    name = "mypklpackage2",
+    srcs = [
+        "srcs/pkg1/tortoise.pkl",
+        "//srcs/pkg2:hare_generated_pkl",
+    ],
+    extra_flags = ["--skip-publish-check"],
+    project = "@mypklproject//:project",
+    strip_prefix = "srcs",
+)
+
 py_test(
-    name = "pkl_package_test",
-    srcs = ["pkl_package_test.py"],
+    name = "pkl_package_test_one",
+    srcs = ["pkl_package_test_one.py"],
     data = [
         ":mypklpackage",
+    ],
+    deps = [
+        "@bazel_tools//tools/python/runfiles",
+    ],
+)
+
+py_test(
+    name = "pkl_package_test_two",
+    srcs = ["pkl_package_test_two.py"],
+    data = [
+        ":mypklpackage2",
     ],
     deps = [
         "@bazel_tools//tools/python/runfiles",

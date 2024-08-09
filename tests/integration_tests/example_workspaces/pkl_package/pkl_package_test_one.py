@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import os
 import unittest
 import zipfile
 import tempfile
@@ -54,8 +54,14 @@ class TestPklPackage(unittest.TestCase):
             with zipfile.ZipFile(zip_file, "r") as zipped:
                 zipped.extractall(extract_to)
 
-            want_src = extract_to/"srcs/tortoise.pkl"
-            self.assertTrue(want_src.exists())
+            want_srcs = [extract_to/"srcs/pkg1/tortoise.pkl", "srcs/pkg2/hare-generated.pkl"]
+
+            for src in want_srcs:
+                file_path = extract_to / src
+                self.assertTrue(file_path.exists())
+
+
+
 
 
 if __name__ == '__main__':

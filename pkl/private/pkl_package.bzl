@@ -61,11 +61,15 @@ def _pkl_package_impl(ctx):
 
     for f in ctx.files.srcs:
         f_path = f.path
+        bin_path = ctx.bin_dir.path + "/"
+        if f_path.startswith(bin_path):
+            f_path = f_path.removeprefix(bin_path)
         if ctx.attr.strip_prefix:
             strip_prefix = ctx.attr.strip_prefix + "/"
             if not f_path.startswith(strip_prefix):
                 fail("User asked to strip '{}' prefix from srcs, but source file {} does not start with the prefix".format(
-                    strip_prefix, f_path
+                    strip_prefix,
+                    f_path,
                 ))
             f_path = f_path.removeprefix(strip_prefix)
         src_symlink = ctx.actions.declare_file("{}/{}".format(working_dir, f_path))
@@ -75,7 +79,6 @@ def _pkl_package_impl(ctx):
         )
         src_symlinks.append(src_symlink)
 
-    print([s.path for s in src_symlinks])
     args = ctx.actions.args()
     args.add_all(["project", "package", pkl_project_symlink.dirname])
     args.add_all(["--output-path", "{output_dir}".format(output_dir = output_dir)])
