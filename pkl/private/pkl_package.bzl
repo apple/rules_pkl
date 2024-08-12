@@ -60,7 +60,7 @@ def _pkl_package_impl(ctx):
     src_symlinks.append(pkl_project_deps_symlink)
 
     for f in ctx.files.srcs:
-        f_path = f.path
+        f_path = f.short_path
         bin_path = ctx.bin_dir.path + "/"
         if f_path.startswith(bin_path):
             f_path = f_path.removeprefix(bin_path)
