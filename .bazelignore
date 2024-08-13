@@ -6,4 +6,11 @@ tests/integration_tests/example_workspaces/simple/bazel-bin
 tests/integration_tests/example_workspaces/simple/bazel-out
 tests/integration_tests/example_workspaces/simple/bazel-simple
 tests/integration_tests/example_workspaces/simple/bazel-testlogs
+tests/integration_tests/example_workspaces/pkl_cache/bazel-bin
+tests/integration_tests/example_workspaces/pkl_cache/bazel-out
 tests/integration_tests/example_workspaces/pkl_cache/bazel-pkl_cache
+tests/integration_tests/example_workspaces/pkl_cache/bazel-testlogs
+tests/integration_tests/example_workspaces/pkl_package/bazel-bin
+tests/integration_tests/example_workspaces/pkl_package/bazel-out
+tests/integration_tests/example_workspaces/pkl_package/bazel-pkl_package
+tests/integration_tests/example_workspaces/pkl_package/bazel-testlogs
