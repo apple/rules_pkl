@@ -107,8 +107,8 @@ load("@rules_pkl//pkl:defs.bzl", "pkl_package")
 pkl_package(<a href="#pkl_package-name">name</a>, <a href="#pkl_package-srcs">srcs</a>, <a href="#pkl_package-extra_flags">extra_flags</a>, <a href="#pkl_package-project">project</a>, <a href="#pkl_package-strip_prefix">strip_prefix</a>)
 </pre>
 
-Prepares a pkl project to be published as a package as per the pkl project package command, using Bazel.
-You should have at most 1 pkl_package rule per pkl_project repo rule.
+Prepares a Pkl project to be published as a package as per the `pkl project package` command, using Bazel.
+You should have at most one `pkl_package` rule per `pkl_project` repo rule.
 
 **ATTRIBUTES**
 
