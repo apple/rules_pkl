@@ -2,27 +2,6 @@
 
 Public API re-exports
 
-<a id="pkl_codegen_java_toolchain"></a>
-
-## pkl_codegen_java_toolchain
-
-<pre>
-load("@rules_pkl//pkl:defs.bzl", "pkl_codegen_java_toolchain")
-
-pkl_codegen_java_toolchain(<a href="#pkl_codegen_java_toolchain-name">name</a>, <a href="#pkl_codegen_java_toolchain-cli">cli</a>)
-</pre>
-
-
-
-**ATTRIBUTES**
-
-
-| Name  | Description | Type | Mandatory | Default |
-| :------------- | :------------- | :------------- | :------------- | :------------- |
-| <a id="pkl_codegen_java_toolchain-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
-| <a id="pkl_codegen_java_toolchain-cli"></a>cli |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | optional |  `"@rules_pkl//pkl:pkl_codegen_java_cli"`  |
-
-
 <a id="pkl_doc_toolchain"></a>
 
 ## pkl_doc_toolchain
@@ -171,55 +150,6 @@ pkl_toolchain(<a href="#pkl_toolchain-name">name</a>, <a href="#pkl_toolchain-cl
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="pkl_toolchain-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
 | <a id="pkl_toolchain-cli"></a>cli |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | optional |  `None`  |
-
-
-<a id="pkl_config_java_library"></a>
-
-## pkl_config_java_library
-
-<pre>
-load("@rules_pkl//pkl:defs.bzl", "pkl_config_java_library")
-
-pkl_config_java_library(<a href="#pkl_config_java_library-name">name</a>, <a href="#pkl_config_java_library-files">files</a>, <a href="#pkl_config_java_library-module_path">module_path</a>, <a href="#pkl_config_java_library-generate_getters">generate_getters</a>, <a href="#pkl_config_java_library-deps">deps</a>, <a href="#pkl_config_java_library-tags">tags</a>, <a href="#pkl_config_java_library-kwargs">kwargs</a>)
-</pre>
-
-Create a compiled JAR of Java source files generated from Pkl source files.
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="pkl_config_java_library-name"></a>name |  A unique name for this target.   |  none |
-| <a id="pkl_config_java_library-files"></a>files |  The Pkl files that are used to generate the Java source files.   |  none |
-| <a id="pkl_config_java_library-module_path"></a>module_path |  List of Java module targets. Must export provide the JavaInfo provider.   |  `[]` |
-| <a id="pkl_config_java_library-generate_getters"></a>generate_getters |  Generate private final fields and public getter methods instead of public final fields. Defaults to True.   |  `None` |
-| <a id="pkl_config_java_library-deps"></a>deps |  Other targets to include in the Pkl module path when building this Java library. Must be pkl_* targets.   |  `[]` |
-| <a id="pkl_config_java_library-tags"></a>tags |  Bazel tags to add to this target.   |  `[]` |
-| <a id="pkl_config_java_library-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility   |  none |
-
-
-<a id="pkl_config_src"></a>
-
-## pkl_config_src
-
-<pre>
-load("@rules_pkl//pkl:defs.bzl", "pkl_config_src")
-
-pkl_config_src(<a href="#pkl_config_src-name">name</a>, <a href="#pkl_config_src-files">files</a>, <a href="#pkl_config_src-module_path">module_path</a>, <a href="#pkl_config_src-kwargs">kwargs</a>)
-</pre>
-
-Create a JAR containing the generated Java source files from Pkl files.
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="pkl_config_src-name"></a>name |  A unique name for this target.   |  none |
-| <a id="pkl_config_src-files"></a>files |  The Pkl source files used to generate the Java source files.   |  none |
-| <a id="pkl_config_src-module_path"></a>module_path |  List of Java module targets. Must export provide the JavaInfo provider.   |  `None` |
-| <a id="pkl_config_src-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility   |  none |
 
 
 <a id="pkl_doc"></a>
