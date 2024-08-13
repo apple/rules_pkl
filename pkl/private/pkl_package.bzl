@@ -105,8 +105,8 @@ def _pkl_package_impl(ctx):
 pkl_package = rule(
     _pkl_package_impl,
     doc = """
-    Prepares a pkl project to be published as a package as per the pkl project package command, using Bazel.
-    You should have at most 1 pkl_package rule per pkl_project repo rule.
+    Prepares a Pkl project to be published as a package as per the `pkl project package` command, using Bazel.
+    You should have at most one `pkl_package` rule per `pkl_project` repo rule.
     """,
     attrs = {
         "project": attr.label(
