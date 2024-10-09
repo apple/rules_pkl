@@ -83,9 +83,10 @@ fi
 
 if [[ "$command" == eval ]]; then
   if [ "$multiple_outputs" == true ]; then
-       mv "${working_dir}/_generated_files"/* "$expected_output"
-
+    if [ -d "${working_dir}/_generated_files" ]; then
+      mv "${working_dir}/_generated_files"/* "$expected_output"
+    fi
   else
-     mv "${working_dir}/${expected_output}" "$expected_output"
+    mv "${working_dir}/${expected_output}" "$expected_output"
   fi
 fi
