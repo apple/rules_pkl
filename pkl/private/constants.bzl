@@ -26,6 +26,12 @@ PKL_DEPS = {
         "org.pkl-lang:pkl-tools:0.26.3",
         "com.google.code.gson:gson:2.10.1",
     ],
+    "0.27.0": [
+        "org.pkl-lang:pkl-doc:0.27.0",
+        "org.pkl-lang:pkl-tools:0.27.0",
+        "com.google.code.gson:gson:2.10.1",
+        "com.github.ajalt.clikt:clikt-jvm:3.5.4",
+    ],
 }
 
 VERSIONS = {
@@ -40,5 +46,11 @@ VERSIONS = {
         "macos-amd64": "80a7ba06439c6c09468f83173f8ef72c042144a1414aee0d2c6c043d691f8fa4",
         "linux-aarch64": "fd4ade3411d382eaf3685edf1a976e3244ff4999fde0f5a470ee549f9aed8e6e",
         "linux-amd64": "34a082cb603b7924788762058a230e238b6b3e1b5c525549fac5a0765769c47e",
+    },
+    "0.27.0": {
+        "macos-aarch64": "33f9941c6830e6ff0ad0dcbe954ba028638a5c2b7c2f9d7c04b04c7dbc961432",
+        "macos-amd64": "d64904d44f5e0db9d1c4cf69c32be45083daa0fdec02056a37b65d4020b3017b",
+        "linux-aarch64": "e38c1102ce1b5fc453dc4fbc35b41b35907fe5ac84c1b7cbfb142d402fb77c07",
+        "linux-amd64": "e4c76b6dd02456dac8d300ea1f1c50102f6414cb947567436477cbf7c2dab3aa",
     },
 }
