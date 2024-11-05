@@ -65,7 +65,7 @@ def _pkl_project_impl(rctx):
     else:
         fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = rctx.os.name, arch = rctx.os.arch))
 
-    rendered_result = rctx.execute(["{pkl_executable}".format(pkl_executable = pkl_executable), "eval", "PklProject", "-f", "json"])
+    rendered_result = rctx.execute(["{pkl_executable}".format(pkl_executable = pkl_executable), "eval", "PklProject", "-f", "json"] + rctx.attr.extra_flags)
     if rendered_result.return_code != 0:
         fail("Error evaluating and rendering PklProject file as json: {}".format(rendered_result.stderr))
     metadata = rendered_result.stdout
@@ -137,6 +137,10 @@ pkl_project = repository_rule(
             default = "PklProject.deps.json",
             allow_single_file = True,
             mandatory = True,
+        ),
+        "extra_flags": attr.string_list(
+            doc = "The extra flags passed to pkl executable",
+            default = [],
         ),
     },
 )
