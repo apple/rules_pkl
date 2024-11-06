@@ -155,5 +155,9 @@ java_binary(
             "org.pkl-lang:pkl-doc:{}".format(DEFAULT_PKL_VERSION),
             repository_name = "rules_pkl_deps",
         ),
+        artifact(
+            "com.github.ajalt.clikt:clikt-jvm:3.5.4",
+            repository_name = "rules_pkl_deps",
+        ),
     ],
 )

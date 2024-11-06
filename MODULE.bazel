@@ -49,8 +49,9 @@ maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "rules_pkl_deps",
     artifacts = [
-        "org.pkl-lang:pkl-doc:0.26.3",
-        "org.pkl-lang:pkl-tools:0.26.3",
+        "org.pkl-lang:pkl-doc:0.27.0",
+        "org.pkl-lang:pkl-tools:0.27.0",
+        "com.github.ajalt.clikt:clikt-jvm:3.5.4",
         "com.google.code.gson:gson:2.10.1",
     ],
     lock_file = "//pkl/private:pkl_deps_install.json",
