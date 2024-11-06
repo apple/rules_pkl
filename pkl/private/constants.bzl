@@ -27,10 +27,8 @@ PKL_DEPS = {
         "com.google.code.gson:gson:2.10.1",
     ],
     "0.27.0": [
-        "org.pkl-lang:pkl-doc:0.27.0",
         "org.pkl-lang:pkl-tools:0.27.0",
         "com.google.code.gson:gson:2.10.1",
-        "com.github.ajalt.clikt:clikt-jvm:3.5.4",
     ],
 }
 
