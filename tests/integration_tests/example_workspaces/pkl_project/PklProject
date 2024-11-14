@@ -1,0 +1,15 @@
+amends "pkl:Project"
+
+package {
+  name = read("env:PACKAGE_NAME")
+  version = read("env:PACKAGE_VERSION")
+  baseUri = "package://example.com/\(name)"
+  packageZipUrl = "https://example.com/\(name)/\(name)@\(version).zip"
+}
+
+
+dependencies {
+  ["io.k8s"] {
+    uri = "package://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"
+  }
+}
