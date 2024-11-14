@@ -60,7 +60,7 @@ def convert_dict_to_options(option_name, items_dict):
     list = []
     for key, value in items_dict.items():
         list.append(option_name)
-        list.append(key + "=" + value)
+        list.append("{key}={value}".format(key = key, value = value))
     return list
 
 def _pkl_project_impl(rctx):
@@ -86,7 +86,7 @@ def _pkl_project_impl(rctx):
     env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
     properties = convert_dict_to_options("--property", rctx.attr.properties)
     rendered_result = rctx.execute(
-        ["{pkl_executable}".format(pkl_executable = pkl_executable), "eval", "PklProject", "-f", "json"] + env_vars + properties + rctx.attr.extra_flags
+        ["{}".format(pkl_executable), "eval", "PklProject", "-f", "json"] + env_vars + properties + rctx.attr.extra_flags
     )
     if rendered_result.return_code != 0:
         fail("Error evaluating and rendering PklProject file as json: {}".format(rendered_result.stderr))
