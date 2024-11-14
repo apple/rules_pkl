@@ -29,6 +29,7 @@ exports_files(["defs.bzl"])
 
 toolchain_type(
     name = "toolchain_type",
+    visibility = ["//visibility:public"],
 )
 
 pkl_toolchain(
