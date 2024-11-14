@@ -11,14 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os
 import unittest
-import zipfile
-import tempfile
-
-from pathlib import Path
-from bazel_tools.tools.python.runfiles import runfiles
-
 
 class MyTestCase(unittest.TestCase):
     def test_pklproject_has_been_evaluated_successfully(self):

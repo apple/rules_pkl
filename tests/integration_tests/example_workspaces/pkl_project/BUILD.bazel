@@ -13,8 +13,8 @@
 # limitations under the License.
 
 py_test(
-    name = "pkl_package_test",
-    srcs = ["pkl_package_test.py"],
+    name = "pkl_project_test",
+    srcs = ["pkl_project_test.py"],
     data = [
         # To ensure 'PklProject' is fully evaluated before proceeding 
         "@mypkl//:project",
