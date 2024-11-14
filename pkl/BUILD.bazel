@@ -152,7 +152,11 @@ java_binary(
     ],
     runtime_deps = [
         artifact(
-            "org.pkl-lang:pkl-doc:{}".format(DEFAULT_PKL_VERSION),
+            "org.pkl-lang:pkl-tools:{}".format(DEFAULT_PKL_VERSION),
+            repository_name = "rules_pkl_deps",
+        ),
+        artifact(
+            "org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
             repository_name = "rules_pkl_deps",
         ),
     ],
