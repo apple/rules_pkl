@@ -19,9 +19,6 @@ py_test(
         # To ensure 'PklProject' is fully evaluated before proceeding 
         "@mypkl//:project",
     ],
-    deps = [
-        "@bazel_tools//tools/python/runfiles",
-    ],
 )
 
 
