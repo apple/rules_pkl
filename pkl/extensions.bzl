@@ -43,11 +43,6 @@ pkl_project = tag_class(
             doc = """Dictionary of name value pairs used to pass in Pkl env vars.
                 See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
             default = {},
-        ),
-        "properties": attr.string_dict(
-            doc = """Dictionary of name value pairs used to pass in Pkl properties.
-                See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
-            default = {},
         )
     },
 )
@@ -77,7 +72,6 @@ def _toolchain_extension(module_ctx):
                 pkl_project = proj.pkl_project,
                 pkl_project_deps = proj.pkl_project_deps,
                 environment = proj.environment,
-                properties = proj.properties,
                 extra_flags = proj.extra_flags
             )
 

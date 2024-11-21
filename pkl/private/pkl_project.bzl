@@ -84,9 +84,8 @@ def _pkl_project_impl(rctx):
         fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = rctx.os.name, arch = rctx.os.arch))
 
     env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
-    properties = convert_dict_to_options("--property", rctx.attr.properties)
     rendered_result = rctx.execute(
-        ["{}".format(pkl_executable), "eval", "PklProject", "-f", "json"] + env_vars + properties + rctx.attr.extra_flags
+        ["{}".format(pkl_executable), "eval", "PklProject", "-f", "json"] + env_vars + rctx.attr.extra_flags
     )
     if rendered_result.return_code != 0:
         fail("Error evaluating and rendering PklProject file as json: {}".format(rendered_result.stderr))
@@ -167,11 +166,6 @@ pkl_project = repository_rule(
         ),
         "environment": attr.string_dict(
             doc = """Dictionary of name value pairs used to pass in Pkl env vars.
-                See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
-            default = {},
-        ),
-        "properties": attr.string_dict(
-            doc = """Dictionary of name value pairs used to pass in Pkl properties.
                 See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
             default = {},
         )
