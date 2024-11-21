@@ -34,6 +34,7 @@ pkl.project(
     # Simpler way to pass environment variables during the evaluation of the PklProject file.
     environment = { 
         "PACKAGE_VERSION": "1.0.0",
+        "RANDOM_VARIABLE": "Alternative '\"😀 content!!&;"
     },
 )
 use_repo(
