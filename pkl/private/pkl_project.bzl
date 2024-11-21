@@ -54,7 +54,7 @@ def convert_dict_to_options(option_name, items_dict):
             - **Keys** are the names of the item (e.g., "key1", "key2").
             - **Values** are the corresponding values for each item (e.g., "value1", "value2").
     Returns:
-        A list of strings containing PKL CLI options.
+        A list of strings containing Pkl CLI options.
     """
 
     list = []
