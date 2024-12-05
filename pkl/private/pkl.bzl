@@ -62,6 +62,10 @@ def _prepare_pkl_script(ctx, is_test_target):
                 path_to_symlink_target[file.path] = path
 
     cache_root_path, caches, cache_deps = root_caches_and_dependencies(ctx.attr.srcs + ctx.attr.deps)
+
+    if is_test_target and cache_root_path != None:
+        cache_root_path = cache_root_path.removeprefix(ctx.genfiles_dir.path)[1:]
+
     if len(caches):
         path_to_symlink_target[caches[0].pkl_project.path] = "%s/PklProject" % working_dir
         path_to_symlink_target[caches[0].pkl_project_deps.path] = "%s/PklProject.deps.json" % working_dir
