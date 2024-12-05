@@ -21,7 +21,6 @@ public class TestPklCodegen {
         org.Dogs.Litter actual = config.get("puppies").as(JavaType.of(Dogs.Litter.class));
         org.Dogs.Litter expected = new org.Dogs.Litter(List.of(new Dogs.Dog("Bruno"), new Dogs.Dog("Bruce")));
 
-
         assertEquals(expected, actual);
     }
 
