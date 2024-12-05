@@ -4,7 +4,7 @@ Implementation for 'pkl_config_src' and 'pkl_config_java_library' macros.
 
 load("@rules_jvm_external//:defs.bzl", "artifact")
 
-def _to_short_path(f, expander):
+def _to_short_path(f, _expander):
     return f.tree_relative_path + "=" + f.path
 
 def _zipit(ctx, outfile, files):
