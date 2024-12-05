@@ -1,0 +1,8 @@
+amends "base.pkl"
+
+puppies = new Litter {
+    dogs {
+        new { name = "Bruno" }
+        new { name = "Bruce" }
+    }
+}

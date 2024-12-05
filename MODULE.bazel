@@ -19,11 +19,11 @@ module(
     compatibility_level = 1,
 )
 
-bazel_dep(name = "aspect_bazel_lib", version = "2.5.3")
+bazel_dep(name = "aspect_bazel_lib", version = "2.9.4")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "platforms", version = "0.0.10")
-bazel_dep(name = "rules_java", version = "8.3.2")
-bazel_dep(name = "rules_jvm_external", version = "6.2")
+bazel_dep(name = "rules_java", version = "8.6.1")
+bazel_dep(name = "rules_jvm_external", version = "6.6")
 
 pkl = use_extension("//pkl:extensions.bzl", "pkl")
 use_repo(
@@ -35,10 +35,11 @@ use_repo(
 )
 
 register_toolchains(
-    "@rules_pkl//pkl:pkl_toolchain_macos_aarch64",
-    "@rules_pkl//pkl:pkl_toolchain_macos_amd64",
+    "@rules_pkl//pkl:pkl_toolchain_codegen_java",
     "@rules_pkl//pkl:pkl_toolchain_linux_aarch64",
     "@rules_pkl//pkl:pkl_toolchain_linux_amd64",
+    "@rules_pkl//pkl:pkl_toolchain_macos_aarch64",
+    "@rules_pkl//pkl:pkl_toolchain_macos_amd64",
 )
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
@@ -48,6 +49,7 @@ maven.install(
         "org.pkl-lang:pkl-tools:0.27.0",
         "org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
         "com.google.code.gson:gson:2.10.1",
+        "org.junit.vintage:junit-vintage-engine:5.7.0",
     ],
     lock_file = "//pkl/private:pkl_deps_install.json",
     repositories = [
@@ -63,7 +65,7 @@ use_repo(
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.1", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "6.1.0", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.35.0", dev_dependency = True, repo_name = "bazel_gazelle")
-bazel_dep(name = "stardoc", version = "0.7.0", dev_dependency = True)
+bazel_dep(name = "stardoc", version = "0.7.2", dev_dependency = True)
 bazel_dep(name = "rules_python", version = "0.34.0", dev_dependency = True)
 
 python = use_extension(

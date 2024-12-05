@@ -15,7 +15,7 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_java//java:defs.bzl", "java_binary")
 load("@rules_jvm_external//:defs.bzl", "artifact")
 load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION")
-load(":defs.bzl", "pkl_doc_toolchain", "pkl_toolchain")
+load(":defs.bzl", "pkl_codegen_java_toolchain", "pkl_doc_toolchain", "pkl_toolchain")
 
 filegroup(
     name = "all_files",
@@ -121,6 +121,21 @@ toolchain(
 )
 
 toolchain_type(
+    name = "codegen_toolchain_type",
+)
+
+pkl_codegen_java_toolchain(
+    name = "pkl_codegen_java",
+    visibility = ["//visibility:public"],
+)
+
+toolchain(
+    name = "pkl_toolchain_codegen_java",
+    toolchain = ":pkl_codegen_java",
+    toolchain_type = ":codegen_toolchain_type",
+)
+
+toolchain_type(
     name = "doc_toolchain_type",
 )
 
@@ -143,6 +158,21 @@ bzl_library(
         "//pkl/private:docs",
         "@bazel_tools//tools/build_defs/repo:http.bzl",
         "@bazel_tools//tools/build_defs/repo:utils.bzl",
+        "@rules_java//java/private:proto_support",
+    ],
+)
+
+java_binary(
+    name = "pkl_codegen_java_cli",
+    main_class = "org.pkl.codegen.java.Main",
+    visibility = [
+        "//visibility:public",
+    ],
+    runtime_deps = [
+        artifact(
+            "org.pkl-lang:pkl-tools",
+            repository_name = "rules_pkl_deps",
+        ),
     ],
 )
 
