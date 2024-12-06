@@ -22,7 +22,7 @@ jobs:
         command: echo "export VERSION=$(bazel mod path rules_pkl | awk -F'@' '/rules_pkl/{ print substr($2, 1, length($2)-1) }')" >> $BASH_ENV
         name: Setup environment
     - run:
-        command: tar -cavf rules_pkl-$VERSION.tar.gz --anchored --exclude-from .tar-exclude-from-file.conf *
+        command: tar -cavf rules_pkl-$VERSION.tar.gz -X .tar-exclude-from-file.conf *
         name: Build archive
     - run:
         command: |-
