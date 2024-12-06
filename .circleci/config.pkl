@@ -71,7 +71,7 @@ jobs {
       }
       new RunStep {
         name = "Build archive"
-        command = "tar -cavf \(archiveName) --anchored --exclude-from .tar-exclude-from-file.conf *"
+        command = "tar -cavf \(archiveName) -X .tar-exclude-from-file.conf *"
       }
       new RunStep {
         name = "Publish release on GitHub"
