@@ -16,8 +16,8 @@
 module(
     name = "rules_pkl",
     version = "0.2.0",
-    compatibility_level = 1,
     bazel_compatibility = [">=7.0.0"],
+    compatibility_level = 1,
 )
 
 bazel_dep(name = "aspect_bazel_lib", version = "2.9.4")
