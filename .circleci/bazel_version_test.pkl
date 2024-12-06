@@ -1,0 +1,24 @@
+amends "pkl:test"
+
+import "config.pkl"
+
+local bazelVersionPath = read("prop:bazelVersionPath")
+local bazelVersion = read("file:\(bazelVersionPath)").text.trim()
+
+local bazelImage: String = new Listing {
+  for (_, job in config.jobs) {
+    when (job.docker != null) {
+      for (docker in job.docker) {
+        when (docker.image.contains("bazel")) {
+          docker.image
+        }
+      }
+    }
+  }
+}.single
+
+facts {
+  [".bazelversion (\(bazelVersion)) matches the version in use for CI (\(bazelImage))"] {
+    bazelImage.endsWith(bazelVersion)
+  }
+}

@@ -14,6 +14,10 @@
 load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 
+exports_files([
+    ".bazelversion",
+])
+
 gazelle_binary(
     name = "gazelle_bin",
     languages = ["@bazel_skylib_gazelle_plugin//bzl"],
