@@ -11,10 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-bazel_dep(name = "rules_pkl", version = "1.0")
+bazel_dep(name = "rules_pkl", version = "0.0.0")
 local_path_override(
     module_name = "rules_pkl",
     path = "..",
 )
 
 bazel_dep(name = "rules_pkg", version = "0.10.1")
+
+pkl = use_extension("@rules_pkl//pkl:extensions.bzl", "pkl")
+pkl.project(
+    name = "mypkl",
+    pkl_project = "//pkl_project:PklProject",
+    pkl_project_deps = "//pkl_project:PklProject.deps.json",
+)
+use_repo(
+    pkl,
+    "mypkl",
+)
