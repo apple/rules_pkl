@@ -1,10 +1,9 @@
 # The normal release process for a ruleset is to run `git archive` to generate the tarball or zip file.
 # We strip out anything that isn't strictly necessary at runtime by users.
-/.bazel* export-ignore
 /.circleci export-ignore
 /.git* export-ignore
 /.pre-commit-config.yaml export-ignore
-/.tar-exclude-from-file.conf
+/.tar-exclude-from-file.conf export-ignore
 /renovate.json export-ignore
 /scripts export-ignore
 /tests export-ignore
