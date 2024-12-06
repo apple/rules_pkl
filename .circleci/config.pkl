@@ -14,7 +14,7 @@
 // limitations under the License.
 //===----------------------------------------------------------------------===//
 // File gets rendered to .circleci/config.yml via git hook.
-amends "package://pkg.pkl-lang.org/pkl-project-commons/pkl.impl.circleci@1.1.0#/PklCI.pkl"
+amends "package://pkg.pkl-lang.org/pkl-project-commons/pkl.impl.circleci@1.1.1#/PklCI.pkl"
 
 prb {
   jobs {
@@ -25,6 +25,16 @@ prb {
 main {
   jobs {
     "test"
+  }
+}
+
+release {
+  jobs {
+    new {
+      ["github-release"] {
+        context = "pkl-github-release"
+      }
+    }
   }
 }
 
@@ -80,27 +90,5 @@ jobs {
 
 circleCi {
   workflows {
-    ["release-branch"] {
-      jobs = new Listing<Mapping<String, WorkflowJob>> {
-        new {
-          ["hold"] {
-            type = "approval"
-          }
-        }
-        new {
-          ["pr-approval/authenticate"] {
-            context = "pkl-pr-approval"
-          }
-        }
-        for (job in super.jobs) {
-          (if (job is Mapping) job else new Mapping<String, WorkflowJob> { [job] {} }) {
-            local thisMapping = this
-            [thisMapping.keys.first] {
-              requires { "hold" }
-            }
-          }
-        }
-      }
-    }
   }
 }

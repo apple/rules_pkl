@@ -56,9 +56,12 @@ workflows:
       equal:
       - main
       - << pipeline.git.branch >>
-  release-branch:
+  release:
     jobs:
-    - hold:
-        type: approval
-    - pr-approval/authenticate:
-        context: pkl-pr-approval
+    - github-release:
+        context: pkl-github-release
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v?\d+\.\d+\.\d+$/
