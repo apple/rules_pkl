@@ -8,5 +8,6 @@ VERSION="$1"
 
 ARCHIVE_NAME="rules_pkl-${VERSION}.tar.gz"
 
-git archive --format=tar --prefix=rules_pkl-${VERSION}/ "v${VERSION}" ":!tests" ":!.circleci" ":!scripts" | gzip > "${ARCHIVE_NAME}"
+# Note: we use `.gitattributes` to filter things from the release archive
+git archive --format=tar --prefix=rules_pkl-${VERSION}/ "v${VERSION}" | gzip > "${ARCHIVE_NAME}"
 gh release upload "v${VERSION}" "${ARCHIVE_NAME}" --clobber
