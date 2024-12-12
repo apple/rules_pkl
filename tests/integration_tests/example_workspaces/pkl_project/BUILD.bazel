@@ -16,10 +16,7 @@ py_test(
     name = "pkl_project_test",
     srcs = ["pkl_project_test.py"],
     data = [
-        # To ensure 'PklProject' is fully evaluated before proceeding 
+        # To ensure 'PklProject' is fully evaluated before proceeding
         "@mypkl//:project",
     ],
 )
-
-
-

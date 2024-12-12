@@ -74,9 +74,9 @@ bazel_integration_test(
 test_suite(
     name = "all_integration_tests",
     tests = [
-        ":pkl_project_test",
         ":pkl_cache_poisoning_test",
         ":pkl_deps_test",
+        ":pkl_project_test",
     ],
     visibility = ["//:__subpackages__"],
 )
