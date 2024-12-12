@@ -34,6 +34,16 @@ pkl_project = tag_class(
             allow_single_file = True,
             mandatory = True,
         ),
+        "extra_flags": attr.string_list(
+            doc = """Dictionary of name value pairs used to pass in Pkl external flags.
+                See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
+            default = [],
+        ),
+        "environment": attr.string_dict(
+            doc = """Dictionary of name value pairs used to pass in Pkl env vars.
+                See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
+            default = {},
+        ),
     },
 )
 
@@ -61,6 +71,8 @@ def _toolchain_extension(module_ctx):
                 name = proj.name,
                 pkl_project = proj.pkl_project,
                 pkl_project_deps = proj.pkl_project_deps,
+                environment = proj.environment,
+                extra_flags = proj.extra_flags,
             )
 
 pkl = module_extension(

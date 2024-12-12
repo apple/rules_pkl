@@ -45,6 +45,24 @@ def parse_pkl_project_deps_json(pkl_deps_json_string_path):
 
     return seen_remote_pkl_packages.values()
 
+def convert_dict_to_options(option_name, items_dict):
+    """Converts the dictioinary to a list with each "key=value" pair preceded by the option name (e.g. --my-option).
+
+    Args:
+        option_name (str): The name of the option, typically in the form of `--option` or `-o`.
+        items_dict (dict[str, str]): A dictionary of items where:
+            - **Keys** are the names of the item (e.g., "key1", "key2").
+            - **Values** are the corresponding values for each item (e.g., "value1", "value2").
+    Returns:
+        A list of strings containing Pkl CLI options.
+    """
+
+    list = []
+    for key, value in items_dict.items():
+        list.append(option_name)
+        list.append("{key}={value}".format(key = key, value = value))
+    return list
+
 def _pkl_project_impl(rctx):
     packages = parse_pkl_project_deps_json(rctx.read(rctx.attr.pkl_project_deps))
     targets_for_all = []
@@ -65,7 +83,10 @@ def _pkl_project_impl(rctx):
     else:
         fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = rctx.os.name, arch = rctx.os.arch))
 
-    rendered_result = rctx.execute(["{pkl_executable}".format(pkl_executable = pkl_executable), "eval", "PklProject", "-f", "json"])
+    env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
+    rendered_result = rctx.execute(
+        ["{}".format(pkl_executable), "eval", "PklProject", "-f", "json"] + env_vars + rctx.attr.extra_flags,
+    )
     if rendered_result.return_code != 0:
         fail("Error evaluating and rendering PklProject file as json: {}".format(rendered_result.stderr))
     metadata = rendered_result.stdout
@@ -137,6 +158,16 @@ pkl_project = repository_rule(
             default = "PklProject.deps.json",
             allow_single_file = True,
             mandatory = True,
+        ),
+        "extra_flags": attr.string_list(
+            doc = """Dictionary of name value pairs used to pass in Pkl external flags.
+                See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
+            default = [],
+        ),
+        "environment": attr.string_dict(
+            doc = """Dictionary of name value pairs used to pass in Pkl env vars.
+                See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
+            default = {},
         ),
     },
 )

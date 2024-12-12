@@ -53,6 +53,21 @@ bazel_integration_test(
     workspace_path = "example_workspaces/pkl_cache",
 )
 
+bazel_integration_test(
+    name = "pkl_project_test",
+    bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
+        # file permission issues when accessing/writing to the cache.
+        "no-sandbox",
+    ],
+    test_runner = ":simple_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/pkl_project") + [
+        "//:workspace_files",
+    ],
+    workspace_path = "example_workspaces/pkl_project",
+)
+
 # By default, the integration test targets are tagged as `manual`, so we need
 # define a `test_suite` target for the integration test to be executed during
 # bazel test //...
@@ -61,6 +76,7 @@ test_suite(
     tests = [
         ":pkl_cache_poisoning_test",
         ":pkl_deps_test",
+        ":pkl_project_test",
     ],
     visibility = ["//:__subpackages__"],
 )
