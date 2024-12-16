@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-load("@pip//:requirements.bzl", "requirement")
+load("@rules_jvm_external//:defs.bzl", "artifact")
 load("//pkl:defs.bzl", "pkl_library")
 
 pkl_library(
@@ -31,13 +31,17 @@ filegroup(
     output_group = "pkl_sources",
 )
 
-py_test(
+java_test(
     name = "transitive_sources_test",
-    srcs = ["transitive_sources_test.py"],
-    data = [
-        ":transitive_sources",
-    ],
+    srcs = ["TransitiveSourcesTest.java"],
+    data = [":transitive_sources"],
+    env = {"TRANSITIVE_SOURCES": "$(rlocationpaths :transitive_sources)"},
+    test_class = "tests.pkl_library.TransitiveSourcesTest",
     deps = [
-        requirement("bazel-runfiles"),
+        "@rules_java//java/runfiles",
+        artifact(
+            "junit:junit",
+            repository_name = "rules_pkl_deps",
+        ),
     ],
 )

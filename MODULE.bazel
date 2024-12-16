@@ -67,34 +67,6 @@ bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.1", dev_dependenc
 bazel_dep(name = "buildifier_prebuilt", version = "6.1.0", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.35.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "stardoc", version = "0.7.2", dev_dependency = True)
-bazel_dep(name = "rules_python", version = "0.34.0", dev_dependency = True)
-
-python = use_extension(
-    "@rules_python//python/extensions:python.bzl",
-    "python",
-    dev_dependency = True,
-)
-python.toolchain(
-    configure_coverage_tool = True,
-    ignore_root_user_error = True,
-    python_version = "3.12",
-)
-
-pip = use_extension(
-    "@rules_python//python/extensions:pip.bzl",
-    "pip",
-    dev_dependency = True,
-)
-pip.parse(
-    hub_name = "pip",
-    python_version = "3.12",
-    requirements_lock = "//tests:requirements_lock.txt",
-)
-use_repo(
-    pip,
-    "pip",
-)
-
 bazel_dep(name = "rules_bazel_integration_test", version = "0.23.0", dev_dependency = True)
 
 bazel_binaries = use_extension(
