@@ -20,10 +20,7 @@ module(
     compatibility_level = 1,
 )
 
-bazel_dep(
-    name = "rules_pkl",
-    version = "0.0.0-local-override",
-)
+bazel_dep(name = "rules_pkl", version = "0.0.0-local-override")
 local_path_override(
     module_name = "rules_pkl",
     path = "../../../..",

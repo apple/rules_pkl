@@ -26,6 +26,12 @@ bazel_dep(name = "platforms", version = "0.0.10")
 bazel_dep(name = "rules_java", version = "8.6.1")
 bazel_dep(name = "rules_jvm_external", version = "6.6")
 
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.1", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "6.1.0", dev_dependency = True)
+bazel_dep(name = "gazelle", version = "0.35.0", dev_dependency = True, repo_name = "bazel_gazelle")
+bazel_dep(name = "rules_bazel_integration_test", version = "0.23.0", dev_dependency = True)
+bazel_dep(name = "stardoc", version = "0.7.2", dev_dependency = True)
+
 pkl = use_extension("//pkl:extensions.bzl", "pkl")
 use_repo(
     pkl,
@@ -62,12 +68,6 @@ use_repo(
     "rules_pkl_deps",
     "unpinned_rules_pkl_deps",
 )
-
-bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.1", dev_dependency = True)
-bazel_dep(name = "buildifier_prebuilt", version = "6.1.0", dev_dependency = True)
-bazel_dep(name = "gazelle", version = "0.35.0", dev_dependency = True, repo_name = "bazel_gazelle")
-bazel_dep(name = "stardoc", version = "0.7.2", dev_dependency = True)
-bazel_dep(name = "rules_bazel_integration_test", version = "0.23.0", dev_dependency = True)
 
 bazel_binaries = use_extension(
     "@rules_bazel_integration_test//:extensions.bzl",
