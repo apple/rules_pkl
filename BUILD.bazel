@@ -43,6 +43,10 @@ filegroup(
 
 buildifier(
     name = "buildifier",
+    exclude_patterns = [
+        "./.git/*",
+        "./.ijwb/*",
+    ],
     lint_mode = "warn",
     mode = "check",
 )
