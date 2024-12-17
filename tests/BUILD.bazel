@@ -11,21 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 load(":repositories_test.bzl", "project_cache_path_and_dependencies_test_suite")
 
 package(default_visibility = ["//visibility:private"])
-
-compile_pip_requirements(
-    name = "requirements",
-    requirements_in = "requirements.txt",
-    requirements_txt = "requirements_lock.txt",
-    tags = [
-        # This generates a test case that validates that the requirements,
-        # but that needs remote access
-        "manual",
-    ],
-)
 
 project_cache_path_and_dependencies_test_suite(
     name = "project_cache_path_and_dependencies_tests",

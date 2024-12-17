@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+load("@rules_jvm_external//:defs.bzl", "artifact")
 load("//pkl:defs.bzl", "pkl_doc")
 
 pkl_doc(
@@ -21,13 +22,16 @@ pkl_doc(
     ],
 )
 
-py_test(
+java_test(
     name = "pkl_doc_test",
-    srcs = ["pkl_doc_test.py"],
-    data = [
-        ":pkl_doc_docs.zip",
-    ],
+    srcs = ["PklDocTest.java"],
+    data = [":pkl_doc_docs.zip"],
+    test_class = "tests.pkl_doc.PklDocTest",
     deps = [
-        "@bazel_tools//tools/python/runfiles",
+        "@rules_java//java/runfiles",
+        artifact(
+            "junit:junit",
+            repository_name = "rules_pkl_deps",
+        ),
     ],
 )
