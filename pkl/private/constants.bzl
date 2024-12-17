@@ -33,6 +33,10 @@ PKL_DEPS = {
         "org.pkl-lang:pkl-tools:0.27.0",
         "com.google.code.gson:gson:2.10.1",
     ],
+    "0.27.1": [
+        "org.pkl-lang:pkl-tools:0.27.1",
+        "com.google.code.gson:gson:2.10.1",
+    ],
 }
 
 VERSIONS = {
@@ -53,5 +57,11 @@ VERSIONS = {
         "macos-amd64": "d64904d44f5e0db9d1c4cf69c32be45083daa0fdec02056a37b65d4020b3017b",
         "linux-aarch64": "e38c1102ce1b5fc453dc4fbc35b41b35907fe5ac84c1b7cbfb142d402fb77c07",
         "linux-amd64": "e4c76b6dd02456dac8d300ea1f1c50102f6414cb947567436477cbf7c2dab3aa",
+    },
+    "0.27.1": {
+        "macos-aarch64": "195e6213deaf5c171846a0963b96ab7a6f0bb4eb2672762d2bab8a6363e47aa3",
+        "macos-amd64": "100c5e9123576e21d1311f9c4e83da6f5c4cf8c7e721ec9b3668d35943ea24a5",
+        "linux-aarch64": "56d13d340a397c47799bdaa18227a9546a5d0d5c1f117b11983900fd21b6a20a",
+        "linux-amd64": "a78766b239442e341537c6fa8c4bfe95839f7765d58f81a3ac3c4b923a13a149",
     },
 }
