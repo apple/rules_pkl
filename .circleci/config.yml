@@ -10,6 +10,9 @@ jobs:
         command: bazel run buildifier
         name: Buildifier lint
     - run:
+        command: bazel run //tests/version:bazel_version_test -- "${PWD}"
+        name: Bazel version consistency
+    - run:
         command: bazel test --curses=no --color=yes --show_timestamps //...
         name: Bazel tests
     docker:

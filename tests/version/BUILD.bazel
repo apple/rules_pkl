@@ -1,0 +1,4 @@
+sh_binary(
+    name = "bazel_version_test",
+    srcs = ["bazel_version_test.sh"],
+)

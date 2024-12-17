@@ -49,6 +49,10 @@ jobs {
         command = "bazel run buildifier"
       }
       new RunStep {
+        name = "Bazel version consistency"
+        command = "bazel run //tests/version:bazel_version_test -- \"${PWD}\""
+      }
+      new RunStep {
         name = "Bazel tests"
         command = "bazel test --curses=no --color=yes --show_timestamps //..."
       }
