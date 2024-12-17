@@ -17,7 +17,7 @@ local_path_override(
     path = "../../../..",
 )
 
-bazel_dep(name = "aspect_bazel_lib", version = "2.5.3")
+bazel_dep(name = "aspect_bazel_lib", version = "2.10.0")
 
 bazel_dep(name = "rules_python", version = "0.34.0", dev_dependency = True)
 
