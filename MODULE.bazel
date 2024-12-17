@@ -15,7 +15,7 @@
 
 module(
     name = "rules_pkl",
-    version = "0.2.0",
+    version = "0.3.0",
     bazel_compatibility = [">=7.0.0"],
     compatibility_level = 1,
 )
