@@ -216,3 +216,26 @@ sh_test(
         ":pkl_eval_multiple_with_overlapping_directory_outs",
     ],
 )
+
+genrule(
+    name = "gen_entrypoint",
+    outs = ["entrypoint.pkl"],
+    cmd = """
+cat << EOF >> $(location entrypoint.pkl)
+pets = List("dog", "cat", "rabbit", "hamster")
+EOF
+    """,
+)
+
+pkl_eval(
+    name = "pkl_eval_with_genrule_entrypoint",
+    srcs = ["entrypoint.pkl"],
+    entrypoints = ["entrypoint.pkl"],
+    expression = "pets.filter((x) -> x != \"rabbit\")",
+)
+
+diff_test(
+    name = "pkl_eval_with_genrule_entrypoint_diff_test",
+    file1 = ":pkl_eval_with_genrule_entrypoint",
+    file2 = "expected/filtered_animals.pcf",
+)
