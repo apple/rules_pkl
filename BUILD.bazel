@@ -35,6 +35,7 @@ filegroup(
         "MODULE.bazel",
         "WORKSPACE",
         "//pkl:all_files",
+        "//pkl/extensions:all_files",
         "//pkl/private:all_files",
         "//pkl/private/org/pkl_lang/bazel/symlinks:all_files",
     ],
