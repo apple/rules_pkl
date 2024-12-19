@@ -17,6 +17,7 @@ Module extension for using rules_pkl with bzlmod.
 
 load("//pkl/extensions:pkl.bzl", _pkl = "pkl")
 
+# buildifier: disable=print
 print("Please load the `pkl` extension from `//pkl/extensions:pkl.bzl`")
 
 pkl = _pkl
