@@ -21,7 +21,7 @@ bazel_dep(name = "aspect_bazel_lib", version = "2.10.0")
 
 bazel_dep(name = "rules_python", version = "0.34.0", dev_dependency = True)
 
-pkl = use_extension("@rules_pkl//pkl:extensions.bzl", "pkl")
+pkl = use_extension("@rules_pkl//pkl/extensions:pkl.bzl", "pkl")
 pkl.project(
     name = "mypkl",
     pkl_project = "@//:PklProject",

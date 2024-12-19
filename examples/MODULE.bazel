@@ -19,7 +19,7 @@ local_path_override(
 
 bazel_dep(name = "rules_pkg", version = "0.10.1")
 
-pkl = use_extension("@rules_pkl//pkl:extensions.bzl", "pkl")
+pkl = use_extension("@rules_pkl//pkl/extensions:pkl.bzl", "pkl")
 pkl.project(
     name = "mypkl",
     pkl_project = "//pkl_project:PklProject",
