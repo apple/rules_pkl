@@ -1,3 +1,5 @@
+.circleci/
+.ijwb/
 examples/
 
 # Do not include other files and directories in tests/integration_test, which
