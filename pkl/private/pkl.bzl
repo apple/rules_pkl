@@ -83,7 +83,7 @@ def _prepare_pkl_script(ctx, is_test_target):
         symlinks_json_file.short_path if is_test_target else symlinks_json_file,
         pkl_symlink_tool.short_path if is_test_target else pkl_symlink_tool,
         "--format {}".format(ctx.attr.format) if ctx.attr.format else "",
-        " ".join([f.path for f in (ctx.files.entrypoints or ctx.files.srcs)]),
+        " ".join([f.short_path for f in (ctx.files.entrypoints or ctx.files.srcs)]),
         ctx.attr.multiple_outputs,
         working_dir,
         cache_root_path if len(caches) else "",
