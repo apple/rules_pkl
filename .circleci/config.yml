@@ -25,8 +25,12 @@ jobs:
         - /tmp/bazel_cache/disk
         - /tmp/bazel_cache/repositories
         key: v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
+    - run:
+        command: mkdir -p /tmp/bazel-testlogs && find -L bazel-testlogs -name \*.xml -exec cp --parents {} /tmp/bazel-testlogs \;
+        name: Copy test.xml files
+        when: always
     - store_test_results:
-        path: ./bazel-testlogs
+        path: /tmp/bazel-testlogs
     docker:
     - image: gcr.io/bazel-public/bazel:7.4.1
   github-release:

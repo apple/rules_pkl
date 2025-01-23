@@ -43,6 +43,7 @@ local bazelCacheKeys: Listing<String> = new {
   #"v1-bazel-cache-"#
 }
 local bazelCacheKeySpecific = bazelCacheKeys.first
+local bazelTestLogs = "/tmp/bazel-testlogs"
 
 jobs {
   ["test"] {
@@ -73,8 +74,13 @@ jobs {
           "/tmp/bazel_cache/repositories"
         }
       }
+      new RunStep {
+        name = "Copy test.xml files"
+        command = "mkdir -p \(bazelTestLogs) && find -L bazel-testlogs -name \\*.xml -exec cp --parents {} \(bazelTestLogs) \\;"
+        `when` = "always"
+      }
       new StoreTestResults {
-        path = "./bazel-testlogs"
+        path = bazelTestLogs
       }
     }
   }
