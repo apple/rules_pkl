@@ -21,7 +21,7 @@ def _zipit(ctx, outfile, srcs):
         progress_message = "Writing via zip: %s" % outfile.basename,
     )
 
-def _pkl_java_jar_impl(ctx):
+def _pkl_java_src_jar_impl(ctx):
     modules = depset(transitive = [depset(dep[JavaInfo].runtime_output_jars) for dep in ctx.attr.module_path]).to_list()
     java_codegen_toolchain = ctx.toolchains["//pkl:codegen_toolchain_type"]
 
@@ -59,8 +59,8 @@ def _pkl_java_jar_impl(ctx):
     # Return JAR
     return OutputGroupInfo(out = [outjar])
 
-_pkl_java_jar = rule(
-    _pkl_java_jar_impl,
+_pkl_java_src_jar = rule(
+    _pkl_java_src_jar_impl,
     doc = """Create a JAR containing the generated Java source files from Pkl files.
 
         Args:
@@ -114,7 +114,7 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
     """
     name_generated_code = name + "_pkl"
 
-    _pkl_java_jar(
+    _pkl_java_src_jar(
         name = name_generated_code,
         srcs = srcs,
         generate_getters = generate_getters,
