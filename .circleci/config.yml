@@ -26,7 +26,7 @@ jobs:
         - /tmp/bazel_cache/repositories
         key: v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
     - store_test_results:
-        path: bazel-testlogs
+        path: ./bazel-testlogs
     docker:
     - image: gcr.io/bazel-public/bazel:7.4.1
   github-release:

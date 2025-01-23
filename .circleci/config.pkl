@@ -74,7 +74,7 @@ jobs {
         }
       }
       new StoreTestResults {
-        path = "bazel-testlogs"
+        path = "./bazel-testlogs"
       }
     }
   }
