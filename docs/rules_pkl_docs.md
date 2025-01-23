@@ -192,7 +192,7 @@ Generate documentation website for Pkl files.
 | :------------- | :------------- | :------------- |
 | <a id="pkl_doc-name"></a>name |  A unique name for this target.   |  none |
 | <a id="pkl_doc-srcs"></a>srcs |  The Pkl source files to be documented.   |  none |
-| <a id="pkl_doc-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility   |  none |
+| <a id="pkl_doc-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility.   |  none |
 
 
 <a id="pkl_java_library"></a>
@@ -218,7 +218,7 @@ Create a compiled JAR of Java source files generated from Pkl source files.
 | <a id="pkl_java_library-generate_getters"></a>generate_getters |  Generate private final fields and public getter methods instead of public final fields. Defaults to True.   |  `None` |
 | <a id="pkl_java_library-deps"></a>deps |  Other targets to include in the Pkl module path when building this Java library. Must be pkl_* targets.   |  `[]` |
 | <a id="pkl_java_library-tags"></a>tags |  Bazel tags to add to this target.   |  `[]` |
-| <a id="pkl_java_library-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility   |  none |
+| <a id="pkl_java_library-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility.   |  none |
 
 
 <a id="pkl_test_suite"></a>

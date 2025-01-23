@@ -67,7 +67,7 @@ _pkl_java_src_jar = rule(
           name: A unique name for this target.
           srcs: The Pkl source files used to generate the Java source files.
           module_path: List of Java module targets. Must export provide the JavaInfo provider.
-          **kwargs: Further keyword arguments. E.g. visibility
+          **kwargs: Further keyword arguments. E.g. visibility.
         """,
     attrs = {
         "srcs": attr.label_list(
@@ -110,7 +110,7 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         generate_getters: Generate private final fields and public getter methods instead of public final fields. Defaults to True.
         deps: Other targets to include in the Pkl module path when building this Java library. Must be pkl_* targets.
         tags: Bazel tags to add to this target.
-        **kwargs: Further keyword arguments. E.g. visibility
+        **kwargs: Further keyword arguments. E.g. visibility.
     """
     name_generated_code = name + "_pkl"
 
