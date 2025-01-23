@@ -56,20 +56,21 @@ jobs {
       }
       new RunStep {
         name = "Buildifier lint"
-        command = "bazel run buildifier"
+        command = "bazel run --config=circleci buildifier"
       }
       new RunStep {
         name = "Bazel version consistency"
-        command = "bazel run //tests/version:bazel_version_test -- \"${PWD}\""
+        command = "bazel run --config=circleci //tests/version:bazel_version_test -- \"${PWD}\""
       }
       new RunStep {
         name = "Bazel tests"
-        command = "bazel test --curses=no --color=yes --show_timestamps //..."
+        command = "bazel test --config=circleci //..."
       }
       new SaveCacheStep {
         key = bazelCacheKeySpecific
         paths {
-          "~/.cache/bazel"
+          "/tmp/bazel_cache/disk"
+          "/tmp/bazel_cache/repositories"
         }
       }
       new StoreTestResults {

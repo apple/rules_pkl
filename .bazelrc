@@ -14,3 +14,13 @@ test --test_output=all
 # This command must be run whenever integration test workspaces are added or removed.
 build --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
 query --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
+
+
+#####
+# Circle CI specific configuration
+#####
+build:circleci --curses=no --color=yes --show_timestamps
+test:circleci --curses=no --color=yes --show_timestamps
+
+# Use a consitent disk and repository cache.
+build:circleci --disk_cache=/tmp/bazel_cache/disk --repository_cache=/tmp/bazel_cache/repositories
