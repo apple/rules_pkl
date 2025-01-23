@@ -37,7 +37,12 @@ release {
   }
 }
 
-local bazelCacheKey = #"bazel-cache-{{ checksum "MODULE.bazel" }}"#
+local bazelCacheKeys: Listing<String> = new {
+  #"bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}"#
+  #"bazel-cache-{{ arch }}-"#
+  #"bazel-cache-"#
+}
+local bazelCacheKeySpecific = bazelCacheKeys.first
 
 jobs {
   ["test"] {
@@ -47,7 +52,7 @@ jobs {
     steps {
       "checkout"
       new RestoreCacheStep {
-        key = bazelCacheKey
+        keys = bazelCacheKeys
       }
       new RunStep {
         name = "Buildifier lint"
@@ -62,10 +67,13 @@ jobs {
         command = "bazel test --curses=no --color=yes --show_timestamps //..."
       }
       new SaveCacheStep {
-        key = bazelCacheKey
+        key = bazelCacheKeySpecific
         paths {
           "~/.cache/bazel"
         }
+      }
+      new StoreTestResults {
+        path = "bazel-testlogs"
       }
     }
   }
