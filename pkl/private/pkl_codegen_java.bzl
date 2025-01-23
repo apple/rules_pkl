@@ -112,6 +112,10 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         tags: Bazel tags to add to this target.
         **kwargs: Further keyword arguments. E.g. visibility.
     """
+    depsets = [depset([dep]) for dep in deps if PklFileInfo in dep or PklCacheInfo in dep]
+    if len(depsets) != len(deps):
+        fail("`deps` were provided, but there were no `PklFileInfo` or `PklCacheInfo` providers present within:", deps)
+
     name_generated_code = name + "_pkl"
 
     _pkl_java_src_jar(
@@ -128,7 +132,7 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
     # Ensure that there are no duplicate entries in the deps
     all_deps = depset(
         pkl_deps + module_path,
-        transitive = [depset([dep]) for dep in deps if PklFileInfo in dep or PklCacheInfo in dep],
+        transitive = depsets,
     )
 
     native.java_library(
