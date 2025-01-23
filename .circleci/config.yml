@@ -6,6 +6,8 @@ jobs:
   test:
     steps:
     - checkout
+    - restore_cache:
+        key: bazel-cache-{{ checksum "MODULE.bazel" }}
     - run:
         command: bazel run buildifier
         name: Buildifier lint
@@ -15,6 +17,10 @@ jobs:
     - run:
         command: bazel test --curses=no --color=yes --show_timestamps //...
         name: Bazel tests
+    - save_cache:
+        paths:
+        - ~/.cache/bazel
+        key: bazel-cache-{{ checksum "MODULE.bazel" }}
     docker:
     - image: gcr.io/bazel-public/bazel:7.4.1
   github-release:
