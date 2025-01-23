@@ -16,7 +16,7 @@ jobs:
         command: bazel test --curses=no --color=yes --show_timestamps //...
         name: Bazel tests
     docker:
-    - image: gcr.io/bazel-public/bazel:7.4.0
+    - image: gcr.io/bazel-public/bazel:7.4.1
   github-release:
     steps:
     - attach_workspace:

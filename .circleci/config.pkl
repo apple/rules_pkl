@@ -40,7 +40,7 @@ release {
 jobs {
   ["test"] {
     docker {
-      new { image = "gcr.io/bazel-public/bazel:7.4.0" }
+      new { image = "gcr.io/bazel-public/bazel:7.4.1" }
     }
     steps {
       "checkout"
