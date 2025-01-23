@@ -199,29 +199,6 @@ Create a compiled JAR of Java source files generated from Pkl source files.
 | <a id="pkl_config_java_library-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility   |  none |
 
 
-<a id="pkl_config_src"></a>
-
-## pkl_config_src
-
-<pre>
-load("@rules_pkl//pkl:defs.bzl", "pkl_config_src")
-
-pkl_config_src(<a href="#pkl_config_src-name">name</a>, <a href="#pkl_config_src-files">files</a>, <a href="#pkl_config_src-module_path">module_path</a>, <a href="#pkl_config_src-kwargs">kwargs</a>)
-</pre>
-
-Create a JAR containing the generated Java source files from Pkl files.
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="pkl_config_src-name"></a>name |  A unique name for this target.   |  none |
-| <a id="pkl_config_src-files"></a>files |  The Pkl source files used to generate the Java source files.   |  none |
-| <a id="pkl_config_src-module_path"></a>module_path |  List of Java module targets. Must export provide the JavaInfo provider.   |  `None` |
-| <a id="pkl_config_src-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility   |  none |
-
-
 <a id="pkl_doc"></a>
 
 ## pkl_doc

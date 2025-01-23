@@ -19,7 +19,7 @@ def _zipit(ctx, outfile, files):
         progress_message = "Writing via zip: %s" % outfile.basename,
     )
 
-def _pkl_codegen_impl(ctx):
+def _pkl_java_jar_impl(ctx):
     modules = depset(transitive = [depset(dep[JavaInfo].runtime_output_jars) for dep in ctx.attr.module_path]).to_list()
     java_codegen_toolchain = ctx.toolchains["//pkl:codegen_toolchain_type"]
 
@@ -57,8 +57,16 @@ def _pkl_codegen_impl(ctx):
     # Return JAR
     return OutputGroupInfo(out = [outjar])
 
-_pkl_codegen = rule(
-    _pkl_codegen_impl,
+_pkl_java_jar = rule(
+    _pkl_java_jar_impl,
+    doc = """Create a JAR containing the generated Java source files from Pkl files.
+
+        Args:
+          name: A unique name for this target.
+          files: The Pkl source files used to generate the Java source files.
+          module_path: List of Java module targets. Must export provide the JavaInfo provider.
+          **kwargs: Further keyword arguments. E.g. visibility
+        """,
     attrs = {
         "files": attr.label_list(
             mandatory = True,
@@ -90,23 +98,6 @@ _pkl_codegen = rule(
     ],
 )
 
-def pkl_config_src(name, files, module_path = None, **kwargs):
-    """Create a JAR containing the generated Java source files from Pkl files.
-
-    Args:
-        name: A unique name for this target.
-        files: The Pkl source files used to generate the Java source files.
-        module_path: List of Java module targets. Must export provide the JavaInfo provider.
-        **kwargs: Further keyword arguments. E.g. visibility
-    """
-    _pkl_codegen(
-        name = name,
-        files = files,
-        module_path = module_path,
-        out = name + "_codegen.srcjar",
-        **kwargs
-    )
-
 def pkl_config_java_library(name, files, module_path = [], generate_getters = None, deps = [], tags = [], **kwargs):
     """Create a compiled JAR of Java source files generated from Pkl source files.
 
@@ -121,11 +112,12 @@ def pkl_config_java_library(name, files, module_path = [], generate_getters = No
     """
     name_generated_code = name + "_pkl"
 
-    pkl_config_src(
+    _pkl_java_jar(
         name = name_generated_code,
         files = files,
         generate_getters = generate_getters,
         module_path = module_path,
+        out = "{name}_codegen.srcjar".format(name = name_generated_code),
         tags = tags,
     )
 

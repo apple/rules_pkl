@@ -1,20 +1,11 @@
 load("@rules_jvm_external//:defs.bzl", "artifact")
-load("//pkl:defs.bzl", "pkl_config_java_library", "pkl_config_src")
+load("//pkl:defs.bzl", "pkl_config_java_library")
 
-pkl_config_src(
+pkl_config_java_library(
     name = "base",
     files = [
         "srcs/base.pkl",
     ],
-)
-
-java_library(
-    name = "gen_lib",
-    srcs = [":base"],
-    deps = [artifact(
-        "org.pkl-lang:pkl-tools",
-        repository_name = "rules_pkl_deps",
-    )],
 )
 
 java_test(
@@ -35,13 +26,6 @@ java_test(
             "org.pkl-lang:pkl-tools",
             repository_name = "rules_pkl_deps",
         ),
-        ":gen_lib",
-    ],
-)
-
-pkl_config_java_library(
-    name = "pkl_config_java_lib",
-    files = [
-        "srcs/base.pkl",
+        ":base",
     ],
 )
