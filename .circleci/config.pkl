@@ -38,9 +38,9 @@ release {
 }
 
 local bazelCacheKeys: Listing<String> = new {
-  #"bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}"#
-  #"bazel-cache-{{ arch }}-"#
-  #"bazel-cache-"#
+  #"v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}"#
+  #"v1-bazel-cache-{{ arch }}-"#
+  #"v1-bazel-cache-"#
 }
 local bazelCacheKeySpecific = bazelCacheKeys.first
 

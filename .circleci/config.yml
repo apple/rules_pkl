@@ -8,22 +8,23 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
-        - bazel-cache-{{ arch }}-
-        - bazel-cache-
+        - v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
+        - v1-bazel-cache-{{ arch }}-
+        - v1-bazel-cache-
     - run:
-        command: bazel run buildifier
+        command: bazel run --config=circleci buildifier
         name: Buildifier lint
     - run:
-        command: bazel run //tests/version:bazel_version_test -- "${PWD}"
+        command: bazel run --config=circleci //tests/version:bazel_version_test -- "${PWD}"
         name: Bazel version consistency
     - run:
-        command: bazel test --curses=no --color=yes --show_timestamps //...
+        command: bazel test --config=circleci //...
         name: Bazel tests
     - save_cache:
         paths:
-        - ~/.cache/bazel
-        key: bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
+        - /tmp/bazel_cache/disk
+        - /tmp/bazel_cache/repositories
+        key: v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
     - store_test_results:
         path: bazel-testlogs
     docker:
