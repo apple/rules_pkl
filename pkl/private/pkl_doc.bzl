@@ -89,7 +89,7 @@ def pkl_doc(name, srcs, **kwargs):
     Args:
         name: A unique name for this target.
         srcs: The Pkl source files to be documented.
-        **kwargs: Further keyword arguments. E.g. visibility
+        **kwargs: Further keyword arguments. E.g. visibility.
     """
     if "out" not in kwargs:
         kwargs["out"] = name + "_docs.zip"
