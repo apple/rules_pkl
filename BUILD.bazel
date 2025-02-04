@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
+load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle", "gazelle_binary")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 
 exports_files([
@@ -20,7 +20,7 @@ exports_files([
 
 gazelle_binary(
     name = "gazelle_bin",
-    languages = ["@bazel_skylib_gazelle_plugin//bzl"],
+    languages = DEFAULT_LANGUAGES,
 )
 
 gazelle(
