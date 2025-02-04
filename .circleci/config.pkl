@@ -60,6 +60,10 @@ jobs {
         command = "bazel run --config=circleci buildifier"
       }
       new RunStep {
+        name = "Gazelle"
+        command = "bazel run --config=circleci //:gazelle && git diff --exit-code"
+      }
+      new RunStep {
         name = "Bazel version consistency"
         command = "bazel run --config=circleci //tests/version:bazel_version_test -- \"${PWD}\""
       }
