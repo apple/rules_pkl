@@ -1,4 +1,4 @@
-sh_binary(
-    name = "bazel_version_test",
-    srcs = ["bazel_version_test.sh"],
+py_binary(
+    name = "version_test",
+    srcs = ["version_test.py"],
 )

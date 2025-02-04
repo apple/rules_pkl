@@ -65,7 +65,7 @@ jobs {
       }
       new RunStep {
         name = "Bazel version consistency"
-        command = "bazel run --config=circleci //tests/version:bazel_version_test -- \"${PWD}\""
+        command = "WORKING_DIRECTORY=\"${PWD}\" bazel run --config=circleci //tests/version:version_test -- --verbose"
       }
       new RunStep {
         name = "Bazel tests"
