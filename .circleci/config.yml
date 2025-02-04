@@ -15,6 +15,9 @@ jobs:
         command: bazel run --config=circleci buildifier
         name: Buildifier lint
     - run:
+        command: bazel run --config=circleci //:gazelle && git diff --exit-code
+        name: Gazelle
+    - run:
         command: bazel run --config=circleci //tests/version:bazel_version_test -- "${PWD}"
         name: Bazel version consistency
     - run:
