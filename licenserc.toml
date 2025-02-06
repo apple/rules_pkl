@@ -1,0 +1,55 @@
+headerPath = "scripts/license-header.txt"
+
+excludes = [
+    # Bazel files
+    ".bazelignore",
+    ".bazelrc",
+    ".bazelversion",
+    "BUILD.bazel",
+    "MODULE.bazel.lock",
+    "WORKSPACE",
+
+    # Root license file is more verbose
+    "LICENSE",
+
+    # Ignore scripts that drive releases
+    "scripts/*",
+
+    # Configuration files
+    "*.conf",
+    "*.toml",
+    "*.yaml",
+    "*.yml",
+
+    # Documentation files
+    "*.md",
+
+    # Pkl generated files
+    'PklProject.deps.json',
+
+    # Test specification files
+    "tests/**/*.txt",
+]
+
+[git]
+attrs = 'auto'
+ignore = 'auto'
+
+[properties]
+inceptionYear = 2024
+copyrightOwner = "Apple Inc. and the Pkl project authors"
+
+[mapping.DOUBLESLASH_STYLE]
+extensions = [
+    'pkl',
+    'pcf',
+    'bzl'
+]
+filenames = [
+    "PklProject",
+]
+
+[mapping.SCRIPT_STYLE]
+filenames = [
+    "MODULE.bazel",
+]
