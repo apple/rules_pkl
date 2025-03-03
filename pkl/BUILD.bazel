@@ -191,7 +191,7 @@ java_binary(
             repository_name = "rules_pkl_deps",
         ),
         artifact(
-            "org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+            "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
             repository_name = "rules_pkl_deps",
         ),
     ],
