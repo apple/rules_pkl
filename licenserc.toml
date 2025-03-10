@@ -1,0 +1,31 @@
+additionalHeaders = ["scripts/pkl-header-style.toml"]
+
+headerPath = "scripts/license-header.txt"
+
+includes = [
+    "*.bazel",
+    "*.bzl",
+    "*.java",
+    "*.pkl",
+    "*.py",
+    "*.sh",
+    "PklProject",
+]
+
+[git]
+attrs = 'auto'
+ignore = 'auto'
+
+[properties]
+copyrightOwner = "Apple Inc. and the Pkl project authors"
+
+# TODO: Remove this once hawkeye supports Pkl.
+[mapping.PKL_STYLE]
+extensions = ['pkl']
+filenames = ["PklProject"]
+
+[mapping.SCRIPT_STYLE]
+extensions = [
+    "bazel",
+    "bzl",
+]
