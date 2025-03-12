@@ -1,0 +1,30 @@
+headerPath = "scripts/license-header.txt"
+
+includes = [
+    "*.BUILD",
+    "*.bazel",
+    "*.bzl",
+    "*.java",
+    "*.pkl",
+    "*.py",
+    "*.sh",
+    "PklProject",
+]
+
+excludes = [
+    "examples",
+]
+
+[git]
+attrs = 'auto'
+ignore = 'auto'
+
+[properties]
+copyrightOwner = "Apple Inc. and the Pkl project authors"
+
+[mapping.SCRIPT_STYLE]
+extensions = [
+    "BUILD",
+    "bazel",
+    "bzl",
+]

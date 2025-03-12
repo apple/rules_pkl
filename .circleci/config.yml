@@ -15,6 +15,9 @@ jobs:
         command: bazel run --config=circleci buildifier
         name: Buildifier lint
     - run:
+        command: bazel run --config=circleci //scripts:hawkeye -- check --fail-if-unknown
+        name: Check licenses
+    - run:
         command: bazel run --config=circleci //:gazelle && git diff --exit-code
         name: Gazelle
     - run:

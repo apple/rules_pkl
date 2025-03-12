@@ -60,6 +60,10 @@ jobs {
         command = "bazel run --config=circleci buildifier"
       }
       new RunStep {
+        name = "Check licenses"
+        command = "bazel run --config=circleci //scripts:hawkeye -- check --fail-if-unknown"
+      }
+      new RunStep {
         name = "Gazelle"
         command = "bazel run --config=circleci //:gazelle && git diff --exit-code"
       }
