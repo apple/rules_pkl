@@ -1,0 +1,8 @@
+sh_test(
+    name = "tickle_issues",
+    srcs = ["test.sh"],
+    data = [
+        "//project1:example",
+        "//project2:example",
+    ],
+)
