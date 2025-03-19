@@ -16,7 +16,6 @@
 Implementation for 'pkl_java_library' macro.
 """
 
-load("@rules_jvm_external//:defs.bzl", "artifact")
 load("@rules_pkl//pkl/private:providers.bzl", "PklCacheInfo", "PklFileInfo")
 
 def _to_short_path(f, _expander):
@@ -141,7 +140,6 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         tags = tags,
     )
 
-#    pkl_deps = [artifact("org.pkl-lang:pkl-tools", repository_name = "rules_pkl_deps")]
     pkl_deps = [Label("//pkl/private:pkl-tools")]
 
     # Ensure that there are no duplicate entries in the deps

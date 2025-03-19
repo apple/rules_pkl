@@ -43,8 +43,11 @@ sh_binary(
 # can link against it.
 java_library(
     name = "pkl-tools",
-    exports = [
-        artifact("org.pkl-lang:pkl-tools", repository_name = "rules_pkl_deps")
-    ],
     visibility = ["//visibility:public"],
+    exports = [
+        artifact(
+            "org.pkl-lang:pkl-tools",
+            repository_name = "rules_pkl_deps",
+        ),
+    ],
 )
