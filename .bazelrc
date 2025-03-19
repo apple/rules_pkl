@@ -12,8 +12,8 @@ test --test_output=all
 # To update these lines, execute
 # `bazel run @rules_bazel_integration_test//tools:update_deleted_packages`.
 # This command must be run whenever integration test workspaces are added or removed.
-build --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
-query --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
+build --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/multiple_pkl_projects,tests/integration_tests/example_workspaces/multiple_pkl_projects/project1,tests/integration_tests/example_workspaces/multiple_pkl_projects/project2,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
+query --deleted_packages=examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/multiple_pkl_projects,tests/integration_tests/example_workspaces/multiple_pkl_projects/project1,tests/integration_tests/example_workspaces/multiple_pkl_projects/project2,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
 
 
 #####

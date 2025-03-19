@@ -25,6 +25,21 @@ default_test_runner(
 )
 
 bazel_integration_test(
+    name = "multiple_pkl_projects_test",
+    bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
+        # file permission issues when accessing/writing to the cache.
+        "no-sandbox",
+    ],
+    test_runner = ":simple_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/multiple_pkl_projects") + [
+        "//:workspace_files",
+    ],
+    workspace_path = "example_workspaces/multiple_pkl_projects",
+)
+
+bazel_integration_test(
     name = "pkl_deps_test",
     bazel_version = bazel_binaries.versions.current,
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
@@ -75,6 +90,7 @@ bazel_integration_test(
 test_suite(
     name = "all_integration_tests",
     tests = [
+        ":multiple_pkl_projects_test",
         ":pkl_cache_poisoning_test",
         ":pkl_deps_test",
         ":pkl_project_test",

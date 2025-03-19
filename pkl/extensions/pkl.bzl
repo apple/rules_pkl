@@ -52,20 +52,30 @@ def _toolchain_extension(module_ctx):
     pkl_cli_binaries()
 
     workspaces = []
+    seen_packages = []
+    direct_deps = []
+    direct_dev_deps = []
     for mod in module_ctx.modules:
         for proj in mod.tags.project:
             if proj.name in workspaces:
                 fail("May only declare workspace with name %s once." % proj.name)
             workspaces.append(proj.name)
 
+            if module_ctx.is_dev_dependency(proj):
+                direct_dev_deps.append(proj.name)
+            else:
+                direct_deps.append(proj.name)
+
             # Make sure all the remote files are downloaded and unpacked
             packages = parse_pkl_project_deps_json(module_ctx.read(proj.pkl_project_deps))
             for package in packages:
-                remote_pkl_package(
-                    name = package.workspace_name,
-                    url = package.url,
-                    sha256 = package.sha256,
-                )
+                if not package.workspace_name in seen_packages:
+                    remote_pkl_package(
+                        name = package.workspace_name,
+                        url = package.url,
+                        sha256 = package.sha256,
+                    )
+                    seen_packages.append(package.workspace_name)
 
             # Now set up all the targets that people will rely on in their builds.
             _pkl_project(
@@ -75,6 +85,12 @@ def _toolchain_extension(module_ctx):
                 environment = proj.environment,
                 extra_flags = proj.extra_flags,
             )
+
+    return module_ctx.extension_metadata(
+        reproducible = True,
+        root_module_direct_deps = direct_deps,
+        root_module_direct_dev_deps = direct_dev_deps,
+    )
 
 pkl = module_extension(
     implementation = _toolchain_extension,
