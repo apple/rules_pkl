@@ -141,7 +141,8 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         tags = tags,
     )
 
-    pkl_deps = [artifact("org.pkl-lang:pkl-tools", repository_name = "rules_pkl_deps")]
+#    pkl_deps = [artifact("org.pkl-lang:pkl-tools", repository_name = "rules_pkl_deps")]
+    pkl_deps = [Label("//pkl/private:pkl-tools")]
 
     # Ensure that there are no duplicate entries in the deps
     all_deps = depset(
