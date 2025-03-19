@@ -13,6 +13,7 @@
 # limitations under the License.
 
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_jvm_external//:defs.bzl", "artifact")
 
 filegroup(
     name = "all_files",
@@ -36,4 +37,17 @@ sh_binary(
     name = "run_pkl_script",
     srcs = ["run_pkl_script.sh"],
     visibility = ["//visibility:public"],
+)
+
+# Export the `pkl-tools` library from the ruleset so `bzlmod`-enabled builds
+# can link against it.
+java_library(
+    name = "pkl-tools",
+    visibility = ["//visibility:public"],
+    exports = [
+        artifact(
+            "org.pkl-lang:pkl-tools",
+            repository_name = "rules_pkl_deps",
+        ),
+    ],
 )
