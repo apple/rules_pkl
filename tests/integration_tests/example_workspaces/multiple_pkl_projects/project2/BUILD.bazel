@@ -3,6 +3,6 @@ load("@rules_pkl//pkl:defs.bzl", "pkl_eval")
 pkl_eval(
     name = "example",
     srcs = ["example.pkl"],
-    deps = ["@alsopkl//:packages"],
     visibility = ["//visibility:public"],
+    deps = ["@alsopkl//:packages"],
 )
