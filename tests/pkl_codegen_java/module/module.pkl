@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-// Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+// Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,8 @@
 // limitations under the License.
 //===----------------------------------------------------------------------===//
 
-module org.dogs
+module org.cats
 
-import "modulepath:/tests/pkl_codegen_java/module/module.pkl" as m
-
-class Dog {
+class Cat {
     name: String
 }
-
-class Litter {
-    dogs: Listing<Dog>
-}
-
-puppies: Litter
-
-kittens: Listing<m.Cat>

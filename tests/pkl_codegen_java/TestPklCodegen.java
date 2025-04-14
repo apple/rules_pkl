@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.Dogs;
 
-
 public class TestPklCodegen {
     @Test
     public void verifyReadingPklFiles() {

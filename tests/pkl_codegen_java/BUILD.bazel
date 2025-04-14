@@ -20,6 +20,9 @@ pkl_java_library(
     srcs = [
         "srcs/base.pkl",
     ],
+    module_path = [
+        "//tests/pkl_codegen_java/module",
+    ],
 )
 
 java_test(
