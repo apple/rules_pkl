@@ -144,7 +144,7 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
 
     # Ensure that there are no duplicate entries in the deps
     all_deps = depset(
-        pkl_deps + module_path,
+        pkl_deps + [native.package_relative_label(m) for m in module_path],
         transitive = depsets,
     )
 
