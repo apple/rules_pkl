@@ -22,7 +22,7 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("//pkl/private:constants.bzl", "PKL_DEPS", "VERSIONS")
 load("//pkl/private:repositories.bzl", _project_cache_path_and_dependencies = "root_caches_and_dependencies")
 
-DEFAULT_PKL_VERSION = "0.28.1"
+DEFAULT_PKL_VERSION = "0.28.2"
 
 def pkl_cli_binaries():
     version = DEFAULT_PKL_VERSION
