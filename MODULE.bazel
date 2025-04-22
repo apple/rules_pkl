@@ -54,6 +54,8 @@ maven.install(
     name = "rules_pkl_deps",
     artifacts = [
         "org.pkl-lang:pkl-tools:0.28.2",
+        "org.pkl-lang:pkl-config-java:0.28.2",
+        "org.pkl-lang:pkl-tools:0.28.2",
         "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
         "com.google.code.gson:gson:2.12.1",
         "org.junit.vintage:junit-vintage-engine:5.7.0",
@@ -67,6 +69,21 @@ use_repo(
     maven,
     "rules_pkl_deps",
     "unpinned_rules_pkl_deps",
+)
+maven.install(
+    name = "custom_pkl_java_library_maven_deps",
+    artifacts = [
+        "org.pkl-lang:pkl-config-java:0.28.2",
+    ],
+    lock_file = "//pkl/private:pkl_deps_custom_java_library_maven_deps_install.json",
+    repositories = [
+        "https://repo1.maven.org/maven2/",
+    ],
+)
+use_repo(
+    maven,
+    "custom_pkl_java_library_maven_deps",
+    "unpinned_custom_pkl_java_library_maven_deps",
 )
 
 bazel_binaries = use_extension(
