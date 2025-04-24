@@ -12,21 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_pkl//pkl:defs.bzl", "pkl_java_library")
+load(":pkl_java_library_deps_test.bzl", "pkl_java_library_deps_test")
 
-pkl_java_library(
-    name = "module",
-    srcs = [
-        "module.pkl",
-    ],
-    visibility = ["//tests/pkl_codegen_java:__subpackages__"],
-)
-
-pkl_java_library(
-    name = "module_with_custom_deps",
-    srcs = [
-        "module.pkl",
-    ],
-    pkl_java_deps = ["//tests/pkl_codegen_java:pkl-config-java-internal"],
-    visibility = ["//tests/pkl_codegen_java:__subpackages__"],
+pkl_java_library_deps_test(
+    name = "pkl_java_library_deps_analysis_test",
+    target_library = "//tests/pkl_codegen_java:pkl-config-java-internal",
+    target_under_test = "//tests/pkl_codegen_java/module:module_with_custom_deps",
 )

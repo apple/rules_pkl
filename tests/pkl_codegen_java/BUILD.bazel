@@ -25,6 +25,17 @@ pkl_java_library(
     ],
 )
 
+java_library(
+    name = "pkl-config-java-internal",
+    visibility = ["//visibility:public"],
+    exports = [
+        artifact(
+            "org.pkl-lang:pkl-config-java",
+            repository_name = "custom_pkl_java_library_maven_deps",
+        ),
+    ],
+)
+
 java_test(
     name = "litter_test",
     srcs = ["TestPklCodegen.java"],

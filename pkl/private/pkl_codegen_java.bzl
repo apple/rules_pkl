@@ -113,7 +113,7 @@ _pkl_java_src_jar = rule(
     ],
 )
 
-def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps = [], tags = [], **kwargs):
+def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps = [], pkl_java_deps = [Label("//pkl/private:pkl-config-java-internal")], tags = [], **kwargs):
     """Create a compiled JAR of Java source files generated from Pkl source files.
 
     Args:
@@ -122,6 +122,7 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         module_path: List of Java module targets. Must export provide the JavaInfo provider.
         generate_getters: Generate private final fields and public getter methods instead of public final fields. Defaults to True.
         deps: Other targets to include in the Pkl module path when building this Java library. Must be pkl_* targets.
+        pkl_java_deps: The Pkl `java_library` targets to include in the produced Java library as deps. Must be `JavaInfo` targets. Defaults to an internal `pkl-config-java` label.
         tags: Bazel tags to add to this target.
         **kwargs: Further keyword arguments. E.g. visibility.
     """
@@ -140,11 +141,9 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         tags = tags,
     )
 
-    pkl_deps = [Label("//pkl/private:pkl-tools")]
-
     # Ensure that there are no duplicate entries in the deps
     all_deps = depset(
-        pkl_deps + [native.package_relative_label(m) for m in module_path],
+        pkl_java_deps + [native.package_relative_label(m) for m in module_path],
         transitive = depsets,
     )
 

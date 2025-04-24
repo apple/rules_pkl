@@ -39,14 +39,15 @@ sh_binary(
     visibility = ["//visibility:public"],
 )
 
-# Export the `pkl-tools` library from the ruleset so `bzlmod`-enabled builds
-# can link against it.
+# Export the `pkl-config-java` library from the ruleset so it can be used in the default codegen toolchain.
+# Rules/macro implementations should not refer to this target directly (otherwise they'll take away the user's ability
+# to override it). They can instead inject their own `pkl-config-java` or `pkl-tools` on `pkl_java_library` using `pkl_deps`.
 java_library(
-    name = "pkl-tools",
+    name = "pkl-config-java-internal",
     visibility = ["//visibility:public"],
     exports = [
         artifact(
-            "org.pkl-lang:pkl-tools",
+            "org.pkl-lang:pkl-config-java",
             repository_name = "rules_pkl_deps",
         ),
     ],

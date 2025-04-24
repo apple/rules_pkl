@@ -202,7 +202,7 @@ Generate documentation website for Pkl files.
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_java_library")
 
-pkl_java_library(<a href="#pkl_java_library-name">name</a>, <a href="#pkl_java_library-srcs">srcs</a>, <a href="#pkl_java_library-module_path">module_path</a>, <a href="#pkl_java_library-generate_getters">generate_getters</a>, <a href="#pkl_java_library-deps">deps</a>, <a href="#pkl_java_library-tags">tags</a>, <a href="#pkl_java_library-kwargs">kwargs</a>)
+pkl_java_library(<a href="#pkl_java_library-name">name</a>, <a href="#pkl_java_library-srcs">srcs</a>, <a href="#pkl_java_library-module_path">module_path</a>, <a href="#pkl_java_library-generate_getters">generate_getters</a>, <a href="#pkl_java_library-deps">deps</a>, <a href="#pkl_java_library-pkl_java_deps">pkl_java_deps</a>, <a href="#pkl_java_library-tags">tags</a>, <a href="#pkl_java_library-kwargs">kwargs</a>)
 </pre>
 
 Create a compiled JAR of Java source files generated from Pkl source files.
@@ -217,6 +217,7 @@ Create a compiled JAR of Java source files generated from Pkl source files.
 | <a id="pkl_java_library-module_path"></a>module_path |  List of Java module targets. Must export provide the JavaInfo provider.   |  `[]` |
 | <a id="pkl_java_library-generate_getters"></a>generate_getters |  Generate private final fields and public getter methods instead of public final fields. Defaults to True.   |  `None` |
 | <a id="pkl_java_library-deps"></a>deps |  Other targets to include in the Pkl module path when building this Java library. Must be pkl_* targets.   |  `[]` |
+| <a id="pkl_java_library-pkl_java_deps"></a>pkl_java_deps |  The Pkl `java_library` targets to include in the produced Java library as deps. Must be `JavaInfo` targets. Defaults to an internal `pkl-config-java` label.   |  `[Label("@rules_pkl//pkl/private:pkl-config-java-internal")]` |
 | <a id="pkl_java_library-tags"></a>tags |  Bazel tags to add to this target.   |  `[]` |
 | <a id="pkl_java_library-kwargs"></a>kwargs |  Further keyword arguments. E.g. visibility.   |  none |
 
