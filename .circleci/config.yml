@@ -38,7 +38,7 @@ jobs:
     - store_test_results:
         path: /tmp/bazel-testlogs
     docker:
-    - image: gcr.io/bazel-public/bazel:7.4.1
+    - image: gcr.io/bazel-public/bazel:7.6.1
   github-release:
     steps:
     - attach_workspace:
