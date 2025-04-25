@@ -48,7 +48,7 @@ local bazelTestLogs = "/tmp/bazel-testlogs"
 jobs {
   ["test"] {
     docker {
-      new { image = "gcr.io/bazel-public/bazel:7.4.1" }
+      new { image = "gcr.io/bazel-public/bazel:7.6.1" }
     }
     steps {
       "checkout"
