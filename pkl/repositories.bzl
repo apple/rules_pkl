@@ -24,23 +24,45 @@ load("//pkl/private:repositories.bzl", _project_cache_path_and_dependencies = "r
 
 DEFAULT_PKL_VERSION = "0.28.2"
 
-def pkl_cli_binaries():
-    version = DEFAULT_PKL_VERSION
+def pkl_cli_binaries(version = DEFAULT_PKL_VERSION):
+    """
+    Sets up the `http_file` repositories for the Pkl binaries.
+
+    Args:
+      version: the Pkl version you want to use
+
+    Returns:
+      A list of the binary names.
+    """
+    binary_names = []
+
     for arch, sha256 in VERSIONS[version].items():
+        cli_name = "pkl-cli-{arch}".format(arch = arch)
+        binary_names.append(cli_name)
+
         maybe(
             http_file,
-            name = "pkl-cli-{arch}".format(arch = arch),
+            name = cli_name,
             url = "https://github.com/apple/pkl/releases/download/{version}/pkl-{arch}".format(version = version, arch = arch),
             sha256 = sha256,
             executable = True,
         )
 
-def pkl_setup():
-    pkl_cli_binaries()
+    return binary_names
+
+def pkl_setup(version = DEFAULT_PKL_VERSION):
+    """
+    Setup all repositories for Pkl.
+
+    Args:
+          version: the Pkl version you want to use
+    """
+
+    pkl_cli_binaries(version)
 
     maven_install(
         name = "rules_pkl_deps",
-        artifacts = PKL_DEPS[DEFAULT_PKL_VERSION],
+        artifacts = PKL_DEPS[version],
         repositories = [
             "https://repo1.maven.org/maven2/",
         ],

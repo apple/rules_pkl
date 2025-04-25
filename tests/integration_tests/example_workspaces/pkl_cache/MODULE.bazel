@@ -31,6 +31,10 @@ pkl.project(
 use_repo(
     pkl,
     "mypkl",
+    "pkl-cli-linux-aarch64",
+    "pkl-cli-linux-amd64",
+    "pkl-cli-macos-aarch64",
+    "pkl-cli-macos-amd64",
 )
 
 python = use_extension(

@@ -49,11 +49,11 @@ pkl_project = tag_class(
 )
 
 def _toolchain_extension(module_ctx):
-    pkl_cli_binaries()
+    cli_binaries = pkl_cli_binaries()
 
     workspaces = []
     seen_packages = []
-    direct_deps = []
+    direct_deps = cli_binaries
     direct_dev_deps = []
     for mod in module_ctx.modules:
         for proj in mod.tags.project:
