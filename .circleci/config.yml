@@ -39,27 +39,6 @@ jobs:
         path: /tmp/bazel-testlogs
     docker:
     - image: gcr.io/bazel-public/bazel:7.6.1
-  github-release:
-    steps:
-    - attach_workspace:
-        at: '.'
-    - run:
-        command: echo "export VERSION=$(bazel mod path rules_pkl | awk -F'@' '/rules_pkl/{ print substr($2, 1, length($2)-1) }')" >> $BASH_ENV
-        name: Setup environment
-    - run:
-        command: tar -cavf rules_pkl-$VERSION.tar.gz -X .tar-exclude-from-file.conf *
-        name: Build archive
-    - run:
-        command: |-
-          gh release create "${CIRCLE_TAG}" \
-            --title "${CIRCLE_TAG}" \
-            --target "${CIRCLE_SHA1}" \
-            --verify-tag \
-            --repo "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
-            rules_pkl-$VERSION.tar.gz
-        name: Publish release on GitHub
-    docker:
-    - image: maniator/gh:v2.40.1
 workflows:
   prb:
     jobs:
@@ -81,12 +60,3 @@ workflows:
       equal:
       - main
       - << pipeline.git.branch >>
-  release:
-    jobs:
-    - github-release:
-        context: pkl-github-release
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v?\d+\.\d+\.\d+$/
