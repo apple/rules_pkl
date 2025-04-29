@@ -29,4 +29,12 @@ pkl.project(
     pkl_project = "@//project2:PklProject",
     pkl_project_deps = "@//project2:PklProject.deps.json",
 )
-use_repo(pkl, "alsopkl", "mypkl")
+use_repo(
+    pkl,
+    "alsopkl",
+    "mypkl",
+    "pkl-cli-linux-aarch64",
+    "pkl-cli-linux-amd64",
+    "pkl-cli-macos-aarch64",
+    "pkl-cli-macos-amd64",
+)
