@@ -13,6 +13,7 @@
 # limitations under the License.
 
 load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//pkl:defs.bzl", "pkl_eval", "pkl_library")
 
 pkl_eval(

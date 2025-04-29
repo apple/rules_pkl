@@ -14,6 +14,7 @@
 
 load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
 load("@rules_pkl//pkl:defs.bzl", "pkl_eval")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//:poison_cache.bzl", "poisoned_pkl_cache")
 
 poisoned_pkl_cache(
