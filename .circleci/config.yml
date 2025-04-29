@@ -8,9 +8,9 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
-        - v1-bazel-cache-{{ arch }}-
-        - v1-bazel-cache-
+        - v2-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
+        - v2-bazel-cache-{{ arch }}-
+        - v2-bazel-cache-
     - run:
         command: bazel run --config=circleci buildifier
         name: Buildifier lint
@@ -30,7 +30,7 @@ jobs:
         paths:
         - /tmp/bazel_cache/disk
         - /tmp/bazel_cache/repositories
-        key: v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
+        key: v2-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}
     - run:
         command: mkdir -p /tmp/bazel-testlogs && find -L bazel-testlogs -name \*.xml -exec cp --parents {} /tmp/bazel-testlogs \;
         name: Copy test.xml files

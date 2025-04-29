@@ -28,9 +28,9 @@ main {
 }
 
 local bazelCacheKeys: Listing<String> = new {
-  #"v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}"#
-  #"v1-bazel-cache-{{ arch }}-"#
-  #"v1-bazel-cache-"#
+  #"v2-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}"#
+  #"v2-bazel-cache-{{ arch }}-"#
+  #"v2-bazel-cache-"#
 }
 local bazelCacheKeySpecific = bazelCacheKeys.first
 local bazelTestLogs = "/tmp/bazel-testlogs"
