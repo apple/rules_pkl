@@ -27,16 +27,6 @@ main {
   }
 }
 
-release {
-  jobs {
-    new {
-      ["github-release"] {
-        context = "pkl-github-release"
-      }
-    }
-  }
-}
-
 local bazelCacheKeys: Listing<String> = new {
   #"v1-bazel-cache-{{ arch }}-{{ checksum "MODULE.bazel" }}"#
   #"v1-bazel-cache-{{ arch }}-"#
@@ -89,37 +79,6 @@ jobs {
       }
       new StoreTestResults {
         path = bazelTestLogs
-      }
-    }
-  }
-  ["github-release"] {
-    docker {
-      new { image = "maniator/gh:v2.40.1" }
-    }
-    steps {
-      local archiveName = "rules_pkl-$VERSION.tar.gz"
-      new AttachWorkspaceStep { at = "." }
-      new RunStep {
-        name = "Setup environment"
-        // There SHOULD be a better way to extract the bazel module version from the bazel metadata.
-        command = """
-          echo "export VERSION=$(bazel mod path rules_pkl | awk -F'@' '/rules_pkl/{ print substr($2, 1, length($2)-1) }')" >> $BASH_ENV
-          """
-      }
-      new RunStep {
-        name = "Build archive"
-        command = "tar -cavf \(archiveName) -X .tar-exclude-from-file.conf *"
-      }
-      new RunStep {
-        name = "Publish release on GitHub"
-        command = #"""
-          gh release create "${CIRCLE_TAG}" \
-            --title "${CIRCLE_TAG}" \
-            --target "${CIRCLE_SHA1}" \
-            --verify-tag \
-            --repo "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
-            \#(archiveName)
-          """#
       }
     }
   }
