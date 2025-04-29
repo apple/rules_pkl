@@ -41,7 +41,10 @@ pkl_test(
 
 pkl_test_suite(
     name = "test",
-    srcs = glob(["*.pkl"]),
+    srcs = glob(
+        ["srcs/*Test.pkl"],
+        allow_empty = False,
+    ),
 )
 
 genrule(
