@@ -27,7 +27,7 @@ def _pkl_toolchain_impl(ctx):
     )
 
     make_variables = platform_common.TemplateVariableInfo({
-        "PKL_BIN": ctx.executable.cli.short_path if JavaInfo in ctx.attr.cli else ctx.executable.cli.path,
+        "PKL_BIN": ctx.executable.cli.short_path,
     })
     toolchain_info = platform_common.ToolchainInfo(
         cli = ctx.attr.cli,
@@ -51,7 +51,7 @@ pkl_toolchain = rule(
         ),
         "_symlink_tool": attr.label(
             cfg = "exec",
-            default = "//pkl/private/org/pkl_lang/bazel/symlinks",
+            default = "@rules_pkl//pkl/private/org/pkl_lang/bazel/symlinks",
             executable = True,
         ),
     },
@@ -68,7 +68,7 @@ pkl_codegen_java_toolchain = rule(
     _pkl_codegen_java_toolchain_impl,
     attrs = {
         "cli": attr.label(
-            default = "//pkl:pkl_codegen_java_cli",
+            default = "@rules_pkl//pkl:pkl_codegen_java_cli",
             executable = True,
             cfg = "exec",
         ),
@@ -86,14 +86,14 @@ pkl_doc_toolchain = rule(
     attrs = {
         "cli": attr.label(
             cfg = "exec",
-            default = "//pkl:pkl_doc_cli",
+            default = "@rules_pkl//pkl:pkl_doc_cli",
             executable = True,
         ),
     },
 )
 
 def _current_pkl_toolchain_impl(ctx):
-    toolchain = ctx.toolchains[str(Label("//pkl:toolchain_type"))]
+    toolchain = ctx.toolchains[str(Label("@rules_pkl//pkl:toolchain_type"))]
     all_runfiles = ctx.runfiles(files = [toolchain.cli[DefaultInfo].files_to_run.executable])
     all_runfiles = all_runfiles.merge(toolchain.cli[DefaultInfo].default_runfiles)
     return [

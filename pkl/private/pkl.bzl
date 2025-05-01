@@ -19,6 +19,10 @@ Implementation for 'pkl_eval' and 'pkl_test' rules.
 load(":providers.bzl", "PklFileInfo")
 load(":repositories.bzl", "root_caches_and_dependencies")
 
+def _get_correct_path(file_obj, is_test_target):
+    """Returns file_obj.short_path if is_test_target is true, else file_obj.path."""
+    return file_obj.short_path if is_test_target else file_obj.path
+
 def _prepare_pkl_script(ctx, is_test_target):
     pkl_toolchain = ctx.toolchains["//pkl:toolchain_type"]
     executable = pkl_toolchain.cli[DefaultInfo].files_to_run.executable
@@ -68,8 +72,11 @@ def _prepare_pkl_script(ctx, is_test_target):
         cache_root_path = cache_root_path.removeprefix(ctx.genfiles_dir.path)[1:]
 
     if len(caches):
-        path_to_symlink_target[caches[0].pkl_project.path] = "%s/PklProject" % working_dir
-        path_to_symlink_target[caches[0].pkl_project_deps.path] = "%s/PklProject.deps.json" % working_dir
+        pkl_project_path = _get_correct_path(caches[0].pkl_project, is_test_target)
+        pkl_project_deps_path = _get_correct_path(caches[0].pkl_project_deps, is_test_target)
+
+        path_to_symlink_target[pkl_project_path] = "%s/PklProject" % working_dir
+        path_to_symlink_target[pkl_project_deps_path] = "%s/PklProject.deps.json" % working_dir
 
     symlinks_json_file = ctx.actions.declare_file(ctx.label.name + "_symlinks.json")
     ctx.actions.write(output = symlinks_json_file, content = json.encode(path_to_symlink_target))
