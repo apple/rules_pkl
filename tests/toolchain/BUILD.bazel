@@ -29,7 +29,7 @@ genrule(
         "test_current_toolchain.sh",
     ],
     outs = ["out.txt"],
-    cmd = "DEFAULT_PKL_VERSION={} bash tests/toolchain/test_current_toolchain.sh $(PKL_BIN) > $@".format(DEFAULT_PKL_VERSION),
+    cmd = "DEFAULT_PKL_VERSION={} bash tests/toolchain/test_current_toolchain.sh $(execpath :current_toolchain) > $@".format(DEFAULT_PKL_VERSION),
     executable = True,
     toolchains = [
         ":current_toolchain",
