@@ -29,6 +29,18 @@ filegroup(
 
 exports_files(["defs.bzl"])
 
+alias(
+    name = "pkl",
+    actual = select({
+        "@bazel_tools//src/conditions:darwin_arm64": "@pkl-cli-macos-aarch64//file:downloaded",
+        "@bazel_tools//src/conditions:darwin_arm64e": "@pkl-cli-macos-aarch64//file:downloaded",
+        "@bazel_tools//src/conditions:darwin_x86_64": "@pkl-cli-macos-amd64//file:downloaded",
+        "@bazel_tools//src/conditions:linux_aarch64": "@pkl-cli-linux-aarch64//file:downloaded",
+        "@bazel_tools//src/conditions:linux_x86_64": "@pkl-cli-linux-amd64//file:downloaded",
+    }),
+    visibility = ["//visibility:public"],
+)
+
 toolchain_type(
     name = "toolchain_type",
     visibility = ["//visibility:public"],
