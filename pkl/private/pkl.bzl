@@ -105,6 +105,10 @@ def _prepare_pkl_script(ctx, is_test_target):
         expression_flag = ["-x", ctx.attr.expression]
         args += expression_flag
 
+    if ctx.attr.no_cache:
+        no_cache_flag = ["--no-cache"]
+        args += no_cache_flag
+
     script = ctx.executable._pkl_script
 
     dep_files = [
@@ -169,6 +173,10 @@ _PKL_EVAL_ATTRS = {
         doc = """Whether to expect to render multiple file outputs. If `outs` is specified then individual generated files will
         be exposed. Otherwise, a single directory, with the name of the target, containing all generated files will be exposed.
         (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).""",
+    ),
+    "no_cache": attr.bool(
+        doc = """Disable caching of packages""",
+        default = False,
     ),
     "outs": attr.output_list(
         doc = "Names of the output files to generate. Defaults to `<rule name>.<format>`. If the format attribute is unset, use `<rule name>.pcf`. Expects a single file if `multiple_outputs` is not set to `True`.",

@@ -51,7 +51,7 @@ pkl_doc_toolchain(<a href="#pkl_doc_toolchain-name">name</a>, <a href="#pkl_doc_
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_eval")
 
-pkl_eval(<a href="#pkl_eval-name">name</a>, <a href="#pkl_eval-deps">deps</a>, <a href="#pkl_eval-srcs">srcs</a>, <a href="#pkl_eval-data">data</a>, <a href="#pkl_eval-outs">outs</a>, <a href="#pkl_eval-entrypoints">entrypoints</a>, <a href="#pkl_eval-expression">expression</a>, <a href="#pkl_eval-format">format</a>, <a href="#pkl_eval-multiple_outputs">multiple_outputs</a>,
+pkl_eval(<a href="#pkl_eval-name">name</a>, <a href="#pkl_eval-deps">deps</a>, <a href="#pkl_eval-srcs">srcs</a>, <a href="#pkl_eval-data">data</a>, <a href="#pkl_eval-outs">outs</a>, <a href="#pkl_eval-entrypoints">entrypoints</a>, <a href="#pkl_eval-expression">expression</a>, <a href="#pkl_eval-format">format</a>, <a href="#pkl_eval-multiple_outputs">multiple_outputs</a>, <a href="#pkl_eval-no_cache">no_cache</a>,
          <a href="#pkl_eval-properties">properties</a>)
 </pre>
 
@@ -71,6 +71,7 @@ Evaluate Pkl module(s).
 | <a id="pkl_eval-expression"></a>expression |  A pkl expression to evaluate within the module. Note that the `format` attribute does not affect how this renders.   | String | optional |  `""`  |
 | <a id="pkl_eval-format"></a>format |  The format of the generated file to pass when calling `pkl`. See https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval.   | String | optional |  `""`  |
 | <a id="pkl_eval-multiple_outputs"></a>multiple_outputs |  Whether to expect to render multiple file outputs. If `outs` is specified then individual generated files will be exposed. Otherwise, a single directory, with the name of the target, containing all generated files will be exposed. (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).   | Boolean | optional |  `False`  |
+| <a id="pkl_eval-no_cache"></a>no_cache |  Disable caching of packages   | Boolean | optional |  `False`  |
 | <a id="pkl_eval-properties"></a>properties |  Dictionary of name value pairs used to pass in Pkl external properties. See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval   | <a href="https://bazel.build/rules/lib/dict">Dictionary: String -> String</a> | optional |  `{}`  |
 
 
@@ -129,7 +130,7 @@ You should have at most one `pkl_package` rule per `pkl_project` repo rule.
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_test")
 
-pkl_test(<a href="#pkl_test-name">name</a>, <a href="#pkl_test-deps">deps</a>, <a href="#pkl_test-srcs">srcs</a>, <a href="#pkl_test-data">data</a>, <a href="#pkl_test-outs">outs</a>, <a href="#pkl_test-entrypoints">entrypoints</a>, <a href="#pkl_test-expression">expression</a>, <a href="#pkl_test-format">format</a>, <a href="#pkl_test-multiple_outputs">multiple_outputs</a>,
+pkl_test(<a href="#pkl_test-name">name</a>, <a href="#pkl_test-deps">deps</a>, <a href="#pkl_test-srcs">srcs</a>, <a href="#pkl_test-data">data</a>, <a href="#pkl_test-outs">outs</a>, <a href="#pkl_test-entrypoints">entrypoints</a>, <a href="#pkl_test-expression">expression</a>, <a href="#pkl_test-format">format</a>, <a href="#pkl_test-multiple_outputs">multiple_outputs</a>, <a href="#pkl_test-no_cache">no_cache</a>,
          <a href="#pkl_test-properties">properties</a>)
 </pre>
 
@@ -149,6 +150,7 @@ Create a Pkl test that can be run with Bazel.
 | <a id="pkl_test-expression"></a>expression |  A pkl expression to evaluate within the module. Note that the `format` attribute does not affect how this renders.   | String | optional |  `""`  |
 | <a id="pkl_test-format"></a>format |  The format of the generated file to pass when calling `pkl`. See https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval.   | String | optional |  `""`  |
 | <a id="pkl_test-multiple_outputs"></a>multiple_outputs |  Whether to expect to render multiple file outputs. If `outs` is specified then individual generated files will be exposed. Otherwise, a single directory, with the name of the target, containing all generated files will be exposed. (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).   | Boolean | optional |  `False`  |
+| <a id="pkl_test-no_cache"></a>no_cache |  Disable caching of packages   | Boolean | optional |  `False`  |
 | <a id="pkl_test-properties"></a>properties |  Dictionary of name value pairs used to pass in Pkl external properties. See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval   | <a href="https://bazel.build/rules/lib/dict">Dictionary: String -> String</a> | optional |  `{}`  |
 
 
