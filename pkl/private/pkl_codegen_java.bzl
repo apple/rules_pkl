@@ -16,6 +16,7 @@
 Implementation for 'pkl_java_library' macro.
 """
 
+load("@rules_java//java:defs.bzl", "JavaInfo", "java_library")
 load("@rules_pkl//pkl/private:providers.bzl", "PklCacheInfo", "PklFileInfo")
 
 def _to_short_path(f, _expander):
@@ -147,7 +148,7 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         transitive = depsets,
     )
 
-    native.java_library(
+    java_library(
         name = name,
         srcs = [name_generated_code],
         deps = all_deps.to_list(),
