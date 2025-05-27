@@ -142,6 +142,9 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         tags = tags,
     )
 
+    # As this is a macro, make sure we're only dealing with labels.
+    pkl_java_deps = [Label(dep) for dep in pkl_java_deps]
+
     # Ensure that there are no duplicate entries in the deps
     all_deps = depset(
         pkl_java_deps + [native.package_relative_label(m) for m in module_path],
