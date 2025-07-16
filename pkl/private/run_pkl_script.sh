@@ -66,6 +66,11 @@ if [[ -n "$cache_dir" ]]; then
   cache_args=("--cache-dir" "../cache")
 fi
 
+# The ruleset currently assumes the {label}/work directory exists due to creation of the symlinks
+# However when running a `pkl_eval` frome external to the workspsace, the symlinks exist external 
+# to the {label}/work directory and it is not created, causing the command below to have issues.
+mkdir -p "${working_dir}"
+
 output=$($executable "$command" $format_args "${properties_and_expressions[@]}" $expression_args --working-dir "${working_dir}" "${cache_args[@]}" "${output_args[@]}" $entrypoints)
 
 ret=$?
