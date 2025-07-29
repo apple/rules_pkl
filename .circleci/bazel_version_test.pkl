@@ -3,7 +3,7 @@ amends "pkl:test"
 import "config.pkl"
 
 local bazelVersionPath = read("prop:bazelVersionPath")
-local bazelVersion = read("file:\(bazelVersionPath)").text.trim()
+local bazelVersion = read("../\(bazelVersionPath)").text.trim()
 
 local bazelImage: String = new Listing {
   for (_, job in config.jobs) {
