@@ -22,7 +22,12 @@ Run `bazel run //:gazelle` to keep them up-to-date.
 ## Updating maven lock files
 
 Once the `MODULE.bazel` and `//pkl:private:constants.bzl` files have been updated, you
-can update the maven lock file using `bazel run @unpinned_rules_pkl_deps//:pin`.
+can update the maven lock files using:
+
+```
+bazel run @unpinned_rules_pkl_deps//:pin
+bazel run @unpinned_custom_pkl_java_library_maven_deps//:pin
+```
 
 ## Using this as a development dependency of other rules
 
