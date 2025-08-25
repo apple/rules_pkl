@@ -11,6 +11,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for general contribution guidelines.
 * [Daniel Wagner-Hall](https://github.com/illicitonion)
 * [Gibson Fahnestock](https://github.com/gibfahn)
 * [Islon Scherer](https://github.com/stackoverflow)
+* [Jen Basch](https://github.com/HT154)
 * [Joshua Harris](https://github.com/devj2)
 * [Kushal Pisavadia](https://github.com/KushalP)
 * [Philip Hölzenspies](https://github.com/holzensp)
