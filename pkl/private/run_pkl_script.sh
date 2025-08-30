@@ -53,8 +53,19 @@ if [ "$command" == "eval" ]; then
   else
     output_args=("--output-path" "$expected_output")
   fi
+  test_args=()
 elif [[ "$command" == "test" ]]; then
-    output_args=()
+  output_args=()
+  if [[ -n "${XML_OUTPUT_FILE}" ]]; then
+    suite_name="pkl-tests"
+    if [[ -n "${TEST_TARGET}" ]]; then
+      suite_name="${TEST_TARGET//[^[:alnum:]-_]/}" # suite name is used as file name, remove all non compatible characters
+    fi
+
+    test_args=("--junit-reports" "${working_dir}" "--junit-aggregate-reports" "--junit-aggregate-suite-name" "${suite_name}")
+  else
+    test_args=()
+  fi
 else
   echo "invalid command: $command" >&2
   exit 1
@@ -66,9 +77,16 @@ if [[ -n "$cache_dir" ]]; then
   cache_args=("--cache-dir" "../cache")
 fi
 
-output=$($executable "$command" $format_args "${properties_and_expressions[@]}" $expression_args --working-dir "${working_dir}" "${cache_args[@]}" "${output_args[@]}" $entrypoints)
+output=$($executable "$command" $format_args "${properties_and_expressions[@]}" $expression_args --working-dir "${working_dir}" "${cache_args[@]}" "${test_args[@]}" "${output_args[@]}" $entrypoints)
 
 ret=$?
+
+if [[ "$command" == "test" ]]; then
+  if [ -f "${working_dir}/${suite_name}.xml" ]; then
+    mv "${working_dir}/${suite_name}.xml" "${XML_OUTPUT_FILE}"
+  fi
+fi
+
 if [[ $ret != 0 ]]; then
   if [ "$command" == eval ]; then
     echo "Failed processing PKL configuration with entrypoint(s) '$entrypoints' (PWD: $(pwd)):" >&2
