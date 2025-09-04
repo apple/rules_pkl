@@ -17,6 +17,10 @@ Constants.
 """
 
 PKL_DEPS = {
+    "0.29.1": [
+        "org.pkl-lang:pkl-tools:0.29.1",
+        "com.google.code.gson:gson:2.13.1",
+    ],
     "0.29.0": [
         "org.pkl-lang:pkl-tools:0.29.0",
         "com.google.code.gson:gson:2.13.1",
@@ -57,6 +61,12 @@ PKL_DEPS = {
 }
 
 VERSIONS = {
+    "0.29.1": {
+        "macos-aarch64": "75ca92e3eee7746e22b0f8a55bf1ee5c3ea0a78eec14586cd5618a9195707d5c",
+        "macos-amd64": "8561a2c9d0e01bf15d54905ad8bacdb1e40bb6e241f6e158d10dc9bc69547c09",
+        "linux-aarch64": "e70ab2124748c3c10ffc789ee2961a43d7e5d5cb070cdaba88cf33b7ab1fd9bc",
+        "linux-amd64": "0925a87b00f19d40c4cf8a3eadb0b2af3138f2a8c15071966d51f5c737b42804",
+    },
     "0.29.0": {
         "macos-aarch64": "7d6028c3d37c205c0e5d43018a2b04b5252a6805a649a86612f2e43074a6a4d5",
         "macos-amd64": "4109af39172d4f97dc0bcadce513754d9447f208c69b78418d1afb4a5e71ebe3",
