@@ -54,7 +54,7 @@ if [ "$command" == "eval" ]; then
     output_args=("--output-path" "$expected_output")
   fi
 elif [[ "$command" == "test" ]]; then
-    output_args=()
+    output_args=("--junit-reports=${TEST_TMPDIR}/reports" "--junit-aggregate-reports")
 else
   echo "invalid command: $command" >&2
   exit 1
@@ -69,6 +69,12 @@ fi
 output=$($executable "$command" $format_args "${properties_and_expressions[@]}" $expression_args --working-dir "${working_dir}" "${cache_args[@]}" "${output_args[@]}" $entrypoints)
 
 ret=$?
+
+if [[ "$command" == "test" ]]; then
+  # Move JUnit test report for Bazel to find.
+  mv "${TEST_TMPDIR}/reports/pkl-tests.xml" "${XML_OUTPUT_FILE}"
+fi
+
 if [[ $ret != 0 ]]; then
   if [ "$command" == eval ]; then
     echo "Failed processing PKL configuration with entrypoint(s) '$entrypoints' (PWD: $(pwd)):" >&2
