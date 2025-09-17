@@ -16,7 +16,7 @@
 Module extension for using rules_pkl with bzlmod.
 """
 
-load("//pkl:repositories.bzl", "pkl_cli_binaries")
+load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION", "pkl_cli_binaries")
 load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", _pkl_project = "pkl_project")
 load("//pkl/private:remote_pkl_package.bzl", "remote_pkl_package")
 
@@ -48,14 +48,27 @@ pkl_project = tag_class(
     },
 )
 
-def _toolchain_extension(module_ctx):
-    cli_binaries = pkl_cli_binaries()
+_install = tag_class(
+    attrs = {
+        "version": attr.string(
+            doc = "Version to install",
+            default = DEFAULT_PKL_VERSION,
+        ),
+    },
+    doc = "Override the default Pkl version to be used",
+)
 
+def _toolchain_extension(module_ctx):
     workspaces = []
     seen_packages = []
-    direct_deps = cli_binaries
+    direct_deps = []
     direct_dev_deps = []
     for mod in module_ctx.modules:
+        for install in mod.tags.install:
+            if not mod.is_root:
+                fail("Only the root module can override the Pkl version")
+            cli_binaries = pkl_cli_binaries(version = install.version)
+            direct_deps.extend(cli_binaries)
         for proj in mod.tags.project:
             if proj.name in workspaces:
                 fail("May only declare workspace with name %s once." % proj.name)
@@ -96,5 +109,6 @@ pkl = module_extension(
     implementation = _toolchain_extension,
     tag_classes = {
         "project": pkl_project,
+        "install": _install,
     },
 )
