@@ -55,12 +55,11 @@ maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "rules_pkl_deps",
     artifacts = [
-        "org.pkl-lang:pkl-tools:0.29.1",
+        "com.google.code.gson:gson:2.13.1",
+        "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
+        "org.junit.vintage:junit-vintage-engine:5.13.4",
         "org.pkl-lang:pkl-config-java:0.29.1",
         "org.pkl-lang:pkl-tools:0.29.1",
-        "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
-        "com.google.code.gson:gson:2.13.1",
-        "org.junit.vintage:junit-vintage-engine:5.13.4",
     ],
     lock_file = "//pkl/private:pkl_deps_install.json",
     repositories = [
