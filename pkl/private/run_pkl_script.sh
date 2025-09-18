@@ -59,7 +59,7 @@ elif [[ "$command" == "test" ]]; then
   if [[ -n "${XML_OUTPUT_FILE}" ]]; then
     suite_name="pkl-tests"
     if [[ -n "${TEST_TARGET}" ]]; then
-      suite_name="${TEST_TARGET//[^[:alnum:]-_]/}" # suite name is used as file name, remove all non compatible characters
+      suite_name="${TEST_TARGET//[^[:alnum:]-_]/.}" # suite name is used as file name, remove all non compatible characters
     fi
 
     test_args=("--junit-reports" "${working_dir}" "--junit-aggregate-reports" "--junit-aggregate-suite-name" "${suite_name}")
