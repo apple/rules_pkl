@@ -26,11 +26,27 @@ local_path_override(
 
 pkl = use_extension("@rules_pkl//pkl/extensions:pkl.bzl", "pkl")
 pkl.project(
-    name = "mypklproject",
-    pkl_project = "@//:PklProject",
-    pkl_project_deps = "@//:PklProject.deps.json",
+    name = "pklproject_basic",
+    pkl_project = "@//pkl_project_basic:PklProject",
+    pkl_project_deps = "@//pkl_project_basic:PklProject.deps.json",
+)
+pkl.project(
+    name = "pklproject_strip_prefix",
+    pkl_project = "@//pkl_project_strip_prefix:PklProject",
+    pkl_project_deps = "@//pkl_project_strip_prefix:PklProject.deps.json",
+)
+pkl.project(
+    name = "pklproject_version_override",
+    pkl_project = "@//pkl_project_version_override:PklProject",
+    pkl_project_deps = "@//pkl_project_version_override:PklProject.deps.json",
 )
 use_repo(
     pkl,
-    "mypklproject",
+    "pkl-cli-linux-aarch64",
+    "pkl-cli-linux-amd64",
+    "pkl-cli-macos-aarch64",
+    "pkl-cli-macos-amd64",
+    "pklproject_basic",
+    "pklproject_strip_prefix",
+    "pklproject_version_override",
 )

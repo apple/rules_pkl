@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,23 @@ from pathlib import Path
 from bazel_tools.tools.python.runfiles import runfiles
 
 
-class MyTestCase(unittest.TestCase):
-    def test_zipfile_contains_srcs_with_strip_prefix(self):
+class TestPklPackage(unittest.TestCase):
+    def test_contains_expected_artifacts(self):
+        want_artifacts = [
+            "package_basic@1.0.0",
+            "package_basic@1.0.0.sha256",
+            "package_basic@1.0.0.zip",
+            "package_basic@1.0.0.zip.sha256",
+        ]
+
+        r = runfiles.Create()
+        entry_point = Path(r.Rlocation("_main/"))
+        self.assertTrue(entry_point.exists())
+
+        got_artifacts = [f.name for f in entry_point.iterdir() if f.is_file()]
+        self.assertTrue(all(item in got_artifacts for item in want_artifacts))
+
+    def test_zipfile_contains_srcs(self):
         r = runfiles.Create()
         entry_point = Path(r.Rlocation("_main/"))
 
@@ -40,11 +55,11 @@ class MyTestCase(unittest.TestCase):
             with zipfile.ZipFile(zip_file, "r") as zipped:
                 zipped.extractall(extract_to)
 
-            want_srcs = [extract_to/"pkg1/tortoise.pkl", extract_to/"pkg2/hare-generated.pkl"]
+            want_srcs = [extract_to/"srcs/pkg1/tortoise.pkl", "srcs/pkg2/hare-generated.pkl"]
+
             for src in want_srcs:
                 file_path = extract_to / src
                 self.assertTrue(file_path.exists())
-
 
 if __name__ == '__main__':
     unittest.main()

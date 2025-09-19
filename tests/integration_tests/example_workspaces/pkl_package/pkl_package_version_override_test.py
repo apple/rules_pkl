@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ from bazel_tools.tools.python.runfiles import runfiles
 class TestPklPackage(unittest.TestCase):
     def test_contains_expected_artifacts(self):
         want_artifacts = [
-            "mypackage@1.0.0",
-            "mypackage@1.0.0.sha256",
-            "mypackage@1.0.0.zip",
-            "mypackage@1.0.0.zip.sha256",
+            "package_version_override@3.0.0",
+            "package_version_override@3.0.0.sha256",
+            "package_version_override@3.0.0.zip",
+            "package_version_override@3.0.0.zip.sha256",
         ]
 
         r = runfiles.Create()
@@ -60,10 +60,6 @@ class TestPklPackage(unittest.TestCase):
             for src in want_srcs:
                 file_path = extract_to / src
                 self.assertTrue(file_path.exists())
-
-
-
-
 
 if __name__ == '__main__':
     unittest.main()

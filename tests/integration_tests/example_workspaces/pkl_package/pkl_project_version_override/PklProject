@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-// Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+// Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ dependencies {
 }
 
 package {
-  name = "mypackage"
-  version = "1.0.0"
+  name = "package_version_override"
+  version = read?("env:PKL_PACKAGE_VERSION") ?? "1.0.0"
   baseUri = "package://example.com/\(name)"
   packageZipUrl = "https://example.com/\(name)/\(name)@\(version).zip"
 }
