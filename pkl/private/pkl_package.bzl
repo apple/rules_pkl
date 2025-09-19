@@ -28,6 +28,12 @@ def _pkl_package_impl(ctx):
     pkl_project_name = project_metadata_info.pkl_project_name
     pkl_project_version = project_metadata_info.pkl_project_version
 
+    extra_flags = list(ctx.attr.extra_flags) or []
+
+    if ctx.attr.version:
+        pkl_project_version = ctx.attr.version
+        extra_flags.append("--env-var=PKL_PACKAGE_VERSION={}".format(ctx.attr.version))
+
     artifact_prefix = "{name}@{version}".format(name = pkl_project_name, version = pkl_project_version)
 
     metadata_file = ctx.actions.declare_file("{prefix}".format(prefix = artifact_prefix))
@@ -83,7 +89,7 @@ def _pkl_package_impl(ctx):
     args = ctx.actions.args()
     args.add_all(["project", "package", pkl_project_symlink.dirname])
     args.add_all(["--output-path", "{output_dir}".format(output_dir = output_dir)])
-    args.add_all(ctx.attr.extra_flags)
+    args.add_all(extra_flags)
 
     ctx.actions.run(
         executable = executable,
@@ -119,6 +125,12 @@ pkl_package = rule(
         "srcs": attr.label_list(allow_files = [".pkl"]),
         "strip_prefix": attr.string(doc = "Strip a directory prefix from the srcs."),
         "extra_flags": attr.string_list(default = []),
+        "version": attr.string(
+            doc = "Override the version for the Pkl package. The PklPackage's " +
+                  "version field will need to match this value. To help with this, the `pkl project package` " +
+                  "command will have the `PKL_PACKAGE_VERSION` env var set to the attribute's " +
+                  "value. Use it with e.g. `version = read?(env:PKL_PACKAGE_VERSION) ?? \"0.0.0-dev\"`",
+        ),
     },
     toolchains = [
         "@rules_pkl//pkl:toolchain_type",
