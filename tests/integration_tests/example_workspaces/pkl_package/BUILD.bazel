@@ -14,39 +14,45 @@
 
 load("@rules_pkl//pkl:defs.bzl", "pkl_package")
 
-exports_files([
-    "PklProject",
-    "PklProject.deps.json",
-])
-
 # A regular project would not have multiple packages for one pkl project but having two packages for one project here
 # helps us test different cases.
 pkl_package(
-    name = "mypklpackage",
+    name = "pklpackage_basic",
     srcs = [
         "srcs/pkg1/tortoise.pkl",
         "//srcs/pkg2:hare_generated_pkl",
     ],
     extra_flags = ["--skip-publish-check"],
-    project = "@mypklproject//:project",
+    project = "@pklproject_basic//:project",
 )
 
 pkl_package(
-    name = "mypklpackage2",
+    name = "pklpackage_strip_prefix",
     srcs = [
         "srcs/pkg1/tortoise.pkl",
         "//srcs/pkg2:hare_generated_pkl",
     ],
     extra_flags = ["--skip-publish-check"],
-    project = "@mypklproject//:project",
+    project = "@pklproject_strip_prefix//:project",
     strip_prefix = "srcs",
 )
 
+pkl_package(
+    name = "pklpackage_version_override",
+    srcs = [
+        "srcs/pkg1/tortoise.pkl",
+        "//srcs/pkg2:hare_generated_pkl",
+    ],
+    extra_flags = ["--skip-publish-check"],
+    project = "@pklproject_version_override//:project",
+    version = "3.0.0",
+)
+
 py_test(
-    name = "pkl_package_test_one",
-    srcs = ["pkl_package_test_one.py"],
+    name = "pkl_package_basic_test",
+    srcs = ["pkl_package_basic_test.py"],
     data = [
-        ":mypklpackage",
+        ":pklpackage_basic",
     ],
     deps = [
         "@bazel_tools//tools/python/runfiles",
@@ -54,10 +60,21 @@ py_test(
 )
 
 py_test(
-    name = "pkl_package_test_two",
-    srcs = ["pkl_package_test_two.py"],
+    name = "pkl_package_strip_prefix_test",
+    srcs = ["pkl_package_strip_prefix_test.py"],
     data = [
-        ":mypklpackage2",
+        ":pklpackage_strip_prefix",
+    ],
+    deps = [
+        "@bazel_tools//tools/python/runfiles",
+    ],
+)
+
+py_test(
+    name = "pkl_package_version_override_test",
+    srcs = ["pkl_package_version_override_test.py"],
+    data = [
+        ":pklpackage_version_override",
     ],
     deps = [
         "@bazel_tools//tools/python/runfiles",
