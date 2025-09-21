@@ -82,6 +82,11 @@ def _prepare_pkl_script(ctx, is_test_target):
     ctx.actions.write(output = symlinks_json_file, content = json.encode(path_to_symlink_target))
     pkl_symlink_tool = pkl_toolchain.symlink_tool[DefaultInfo].files_to_run.executable
 
+    suite_name_parts = []
+    if is_test_target:
+        suite_name_parts = suite_name_parts + [part for part in ctx.label.package.split("/") if part != ""]
+        suite_name_parts.append(ctx.label.name)
+
     # The 'args' lists for 'pkl_eval' and 'pkl_test' differ because for `pkl_eval`, files are passed as file targets to enable
     # path stripping on the `ctx.Args` object when using the '--experimental_output_path=strip' flag. Currently, test rules
     # don't support using the `ctx.Args` object, which will be addressed by the following upstream PR
@@ -95,6 +100,7 @@ def _prepare_pkl_script(ctx, is_test_target):
         ctx.attr.multiple_outputs,
         working_dir,
         cache_root_path if len(caches) else "",
+        ".".join(suite_name_parts) if is_test_target else "",
     ]
 
     for k, v in ctx.attr.properties.items():

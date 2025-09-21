@@ -32,20 +32,16 @@ cd "${workspace_dir}" || exit
 "${bazel}" test //...
 ret=$?
 
-test_output=$(cat bazel-testlogs/**/test.xml)
-
-echo $test_output
-
-if [ -z "${test_output}" ]; then
-    echo "Expected test.xml output, got none"
-    exit 1
+xml_files=(bazel-testlogs/**/test.xml)
+if [[ ${#xml_files[@]} -eq 0 || ! -f "${xml_files[0]}" ]]; then
+    exit_with_msg "No test.xml files found in bazel-testlogs"
 fi
 
+test_output=$(cat "${xml_files[@]}")
 
 if [[ -n "${XML_EXPECTED_CONTENT}" ]]; then
     if [[ $test_output != *"${XML_EXPECTED_CONTENT}"* ]]; then
-        echo "Missing expected '${XML_EXPECTED_CONTENT}' in test.xml"
-        exit 1
+        exit_with_msg "Missing expected '${XML_EXPECTED_CONTENT}' in test.xml, got: '${test_output}'"
     fi
 fi
 

@@ -34,7 +34,8 @@ entrypoints=$7
 multiple_outputs=$8
 working_dir=$9
 cache_dir=${10}
-shift 10
+suite_name=${11}
+shift 11
 
 properties_and_expressions=("$@")
 
@@ -57,12 +58,6 @@ if [ "$command" == "eval" ]; then
 elif [[ "$command" == "test" ]]; then
   output_args=()
   if [[ -n "${XML_OUTPUT_FILE}" ]]; then
-    suite_name="pkl-tests"
-    if [[ -n "${TEST_TARGET}" ]]; then
-      suite_name="${TEST_TARGET//[^[:alnum:]-_]/.}" # suite name is used as file name, remove all non compatible characters
-      suite_name="${suite_name#".."}"
-    fi
-
     test_args=("--junit-reports" "${working_dir}" "--junit-aggregate-reports" "--junit-aggregate-suite-name" "${suite_name}")
   else
     test_args=()
