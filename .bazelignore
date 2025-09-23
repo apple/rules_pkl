@@ -7,6 +7,10 @@ tests/integration_tests/example_workspaces/simple/bazel-bin
 tests/integration_tests/example_workspaces/simple/bazel-out
 tests/integration_tests/example_workspaces/simple/bazel-simple
 tests/integration_tests/example_workspaces/simple/bazel-testlogs
+tests/integration_tests/example_workspaces/override_version/bazel-bin
+tests/integration_tests/example_workspaces/override_version/bazel-out
+tests/integration_tests/example_workspaces/override_version/bazel-override_version
+tests/integration_tests/example_workspaces/override_version/bazel-testlogs
 tests/integration_tests/example_workspaces/pkl_cache/bazel-bin
 tests/integration_tests/example_workspaces/pkl_cache/bazel-out
 tests/integration_tests/example_workspaces/pkl_cache/bazel-pkl_cache
