@@ -84,8 +84,8 @@ def _prepare_pkl_script(ctx, is_test_target):
 
     suite_name_parts = []
     if is_test_target:
-        suite_name_parts = suite_name_parts + [part for part in ctx.label.package.split("/") if part != ""]
-        suite_name_parts.append(ctx.label.name)
+        package_parts = [part for part in ctx.label.package.split("/") if part != ""]
+        suite_name_parts = package_parts + [ctx.label.name]
 
     # The 'args' lists for 'pkl_eval' and 'pkl_test' differ because for `pkl_eval`, files are passed as file targets to enable
     # path stripping on the `ctx.Args` object when using the '--experimental_output_path=strip' flag. Currently, test rules
