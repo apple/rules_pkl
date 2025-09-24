@@ -23,7 +23,7 @@ To use `rules_pkl`, enable `bzlmod` within your project, and then add the follow
 
 ```starlark
 # Please check the releases page on GitHub for the latest released version
-bazel_dep(name = "rules_pkl", version = "0.11.1")
+bazel_dep(name = "rules_pkl", version = "0.12.0")
 ```
 
 ## Examples
