@@ -21,9 +21,8 @@ import sys
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
-
-from pathlib import Path
 from functools import cached_property
+from pathlib import Path
 
 
 class JUnitXMLValidationTest(unittest.TestCase):
