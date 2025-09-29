@@ -19,7 +19,7 @@ amends "pkl:test"
 import "pkl:release"
 
 facts {
-  ["Using Pkl version 0.28.2"] {
-    release.current.version.toString() == "0.28.2"
-  } 
+  ["Using Pkl version 0.29.0"] {
+    release.current.version.toString() == "0.29.0"
+  }
 }

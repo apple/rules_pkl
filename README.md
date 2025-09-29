@@ -11,6 +11,10 @@ For further information about Pkl, check out the [official Pkl documentation].
 [pkl]: https://pkl-lang.org
 
 
+## Minimum Pkl version
+
+From `0.12.0` onwards, `rules_pkl` requires a Pkl version greater than or equal to `0.29.0`.
+
 ## Quick Start
 
 ### Setup
