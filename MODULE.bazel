@@ -28,7 +28,7 @@ bazel_dep(name = "rules_java", version = "8.11.0")
 bazel_dep(name = "rules_jvm_external", version = "6.7")
 bazel_dep(name = "rules_shell", version = "0.4.0")
 
-bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.44.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "rules_bazel_integration_test", version = "0.34.0", dev_dependency = True)
 bazel_dep(name = "rules_python", version = "1.4.1", dev_dependency = True)
