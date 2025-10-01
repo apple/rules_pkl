@@ -24,6 +24,8 @@ local_path_override(
     path = "../../../..",
 )
 
+bazel_dep(name = "rules_python", version = "1.4.1", dev_dependency = True)
+
 pkl = use_extension("@rules_pkl//pkl/extensions:pkl.bzl", "pkl")
 pkl.project(
     name = "pklproject_basic",
