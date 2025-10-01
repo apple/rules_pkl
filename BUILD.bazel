@@ -43,12 +43,20 @@ filegroup(
     visibility = ["//tests/integration_tests:__subpackages__"],
 )
 
+buildifier_excludes = [
+    "./.git/*",
+    "./.ijwb/*",
+]
+
 buildifier(
     name = "buildifier",
-    exclude_patterns = [
-        "./.git/*",
-        "./.ijwb/*",
-    ],
+    exclude_patterns = buildifier_excludes,
     lint_mode = "warn",
     mode = "check",
+)
+
+buildifier(
+    name = "buildifier-fix",
+    exclude_patterns = buildifier_excludes,
+    mode = "fix",
 )
