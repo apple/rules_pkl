@@ -116,6 +116,7 @@ java_binary(
         "-XX:MaxRAMPercentage=80.0",
     ],
     main_class = "org.pkl.cli.Main",
+    visibility = ["//visibility:public"],
     runtime_deps = [
         artifact(
             "org.pkl-lang:pkl-tools",
