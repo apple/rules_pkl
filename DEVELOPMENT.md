@@ -48,5 +48,4 @@ This means that any usage of `@rules_pkl` on your system will point to this fold
 
 ## Releasing
 
-1. Determine the next release version, following semver (could automate in the future from changelog)
-2. Use the GitHub UI to tag the repo with the next release version and create a release
+See [the wiki](https://github.com/apple/rules_pkl/wiki/Release-Process) for the release process.
