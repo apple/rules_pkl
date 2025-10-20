@@ -30,3 +30,11 @@ pkl_java_library(
     pkl_java_deps = ["//tests/pkl_codegen_java:pkl-config-java-internal"],
     visibility = ["//tests/pkl_codegen_java:__subpackages__"],
 )
+
+pkl_java_library(
+    name = "animals",
+    srcs = [
+        "animals.pkl",
+    ],
+    visibility = ["//tests/pkl_codegen_java:__subpackages__"],
+)
