@@ -62,6 +62,10 @@ java_test(
 java_test(
     name = "polymorphism_test",
     srcs = ["PolymorphismTest.java"],
+    resource_strip_prefix = "tests/pkl_codegen_java",
+    resources = [
+        "srcs/shelter.pkl",
+    ],
     test_class = "PolymorphismTest",
     deps = [
         "//tests/pkl_codegen_java/module:animals",
