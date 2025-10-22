@@ -135,7 +135,14 @@ def _pkl_java_resource_jar_impl(ctx):
             cd "$TMPDIR"
             if [ -d "resources" ]; then
                 cd resources
-                zip -qr "$EXECROOT/$2" . || true
+                if [ -n "$(ls -A)" ]; then
+                    zip -qr "$EXECROOT/$2" .
+                else
+                    # Create empty JAR if resources directory is empty
+                    touch empty.txt
+                    zip -q "$EXECROOT/$2" empty.txt
+                    rm empty.txt
+                fi
             else
                 # Create empty JAR if no resources directory exists
                 touch empty.txt
