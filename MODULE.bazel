@@ -114,33 +114,10 @@ use_repo(
     "build_bazel_bazel_8_2_1",
 )
 
-http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-hawkeye_coordinates = [
-    {
-        "name": "hawkeye-aarch64-apple-darwin",
-        "url": "https://github.com/korandoru/hawkeye/releases/download/v6.0.2/hawkeye-aarch64-apple-darwin.tar.xz",
-        "sha256": "9f300ad84201e500c4eb09ed710239797d2a6a17de5b7c08e1d3af1704ca6bb7",
-    },
-    {
-        "name": "hawkeye-x86_64-apple-darwin",
-        "url": "https://github.com/korandoru/hawkeye/releases/download/v6.0.2/hawkeye-x86_64-apple-darwin.tar.xz",
-        "sha256": "6f8850adb9204b6218f4912fb987106a71fcd8d742ce20227697ddccc44cec38",
-    },
-    {
-        "name": "hawkeye-x86_64-unknown-linux-gnu",
-        "url": "https://github.com/korandoru/hawkeye/releases/download/v6.0.2/hawkeye-x86_64-unknown-linux-gnu.tar.xz",
-        "sha256": "d5b9d3cdb4293ac84fa27e5021c77b6c062c61071760ab05fcacfbec1ac14850",
-    },
-]
-
-[
-    http_archive(
-        name = coords["name"],
-        build_file = "//scripts:hawkeye.BUILD",
-        sha256 = coords["sha256"],
-        strip_prefix = coords["name"],
-        url = coords["url"],
-    )
-    for coords in hawkeye_coordinates
-]
+hawkeye = use_extension("//tools/lint/hawkeye:extensions.bzl", "hawkeye", dev_dependency = True)
+use_repo(
+    hawkeye,
+    "hawkeye-aarch64-apple-darwin",
+    "hawkeye-x86_64-apple-darwin",
+    "hawkeye-x86_64-unknown-linux-gnu",
+)
