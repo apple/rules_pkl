@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-// Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+// Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +14,24 @@
 // limitations under the License.
 //===----------------------------------------------------------------------===//
 
-name = "Hare"
+module org.animals
 
-classification {
-  kingdom = "Animalia"
-  phylum = "Chordata"
+/// Base abstract class for animals
+abstract class Animal {
+    name: String
 }
 
-characteristics {
-  lifespan = "1-2 years (in the wild)"
-  diet = "Herbivore"
-  behaviour = "Crepuscular and Nocturnal"
-  locomotion = "Fast and agile, capable of running up to 50 mph"
+/// A dog is an animal
+class Dog extends Animal {
+    breed: String
+}
+
+/// A cat is an animal
+class Cat extends Animal {
+    color: String
+}
+
+/// A shelter with polymorphic animals
+class Shelter {
+    animals: Listing<Animal>
 }
