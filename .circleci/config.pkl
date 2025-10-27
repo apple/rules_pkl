@@ -51,7 +51,7 @@ jobs {
       }
       new RunStep {
         name = "Check licenses"
-        command = "bazel run --config=circleci //scripts:hawkeye -- check --fail-if-unknown"
+        command = "bazel run --config=circleci //tools/lint/hawkeye -- check --fail-if-unknown"
       }
       new RunStep {
         name = "Gazelle"

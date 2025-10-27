@@ -46,6 +46,7 @@ filegroup(
 buildifier_excludes = [
     "./.git/*",
     "./.ijwb/*",
+    "./.bazelbsp/*",
 ]
 
 buildifier(
