@@ -85,7 +85,7 @@ class JUnitXMLValidationTest(unittest.TestCase):
             missing_attrs, f"testsuites missing attributes: {missing_attrs}"
         )
 
-        self.assertEqual(root.attrib["name"], "tests.junit_xml.sample_xml_generator")
+        self.assertEqual(root.attrib["name"], "tests.junit_xml.sample_xml_generator.name")
 
     def test_testsuite_structure(self):
         testsuites = self.xml_root.findall("testsuite")
@@ -127,7 +127,7 @@ class JUnitXMLValidationTest(unittest.TestCase):
         self.assertIn("<?xml version", content, "XML declaration not found")
 
     def test_suite_name_matches_target(self):
-        expected_name = "tests.junit_xml.sample_xml_generator"
+        expected_name = "tests.junit_xml.sample_xml_generator.name"
         self.assertEqual(
             self.xml_root.attrib["name"],
             expected_name,

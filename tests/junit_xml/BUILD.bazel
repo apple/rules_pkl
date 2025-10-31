@@ -17,7 +17,7 @@ load("@rules_python//python:defs.bzl", "py_test")
 
 # Sample pkl test for XML generation
 pkl_test(
-    name = "sample_xml_generator",
+    name = "sample_xml_generator/name",
     srcs = ["sample_xml_test.pkl"],
 )
 
@@ -25,8 +25,8 @@ pkl_test(
 py_test(
     name = "junit_xml_validation_test",
     srcs = ["junit_xml_validation_test.py"],
-    data = [":sample_xml_generator"],
+    data = [":sample_xml_generator/name"],
     env = {
-        "SAMPLE_XML_GENERATOR_PATH": "$(location :sample_xml_generator)",
+        "SAMPLE_XML_GENERATOR_PATH": "$(location :sample_xml_generator/name)",
     },
 )
