@@ -16,7 +16,8 @@
 Implementation for 'pkl_java_library' macro.
 """
 
-load("@rules_java//java:defs.bzl", "JavaInfo", "java_library")
+load("@rules_java//java:defs.bzl", "JavaInfo", "java_import", "java_library")
+load("@rules_java//java:java_single_jar.bzl", "java_single_jar")
 load("@rules_pkl//pkl/private:providers.bzl", "PklCacheInfo", "PklFileInfo")
 
 def _to_short_path(f, _expander):
@@ -114,6 +115,76 @@ _pkl_java_src_jar = rule(
     ],
 )
 
+def _pkl_java_resource_jar_impl(ctx):
+    srcjar = ctx.file.srcjar
+    resource_jar = ctx.outputs.out
+
+    # Use zipper to extract and repackage, stripping the resources/ prefix
+    ctx.actions.run_shell(
+        inputs = [srcjar],
+        outputs = [resource_jar],
+        tools = [ctx.executable._zipper],
+        command = """
+            set -e
+            EXECROOT="$PWD"
+            ZIPPER="$EXECROOT/$1"
+            SRCJAR="$EXECROOT/$2"
+            OUTJAR="$EXECROOT/$3"
+
+            TMPDIR=$(mktemp -d)
+            trap "rm -rf $TMPDIR" EXIT
+
+            # Extract srcjar using zipper
+            cd "$TMPDIR"
+            "$ZIPPER" x "$SRCJAR"
+
+            # Create resource JAR with resources/ prefix stripped
+            if [ -d "resources" ]; then
+                cd resources
+                # Find all files, excluding directories, and remove ./ prefix
+                FILES=$(find . -type f | sed 's|^\\./||')
+                if [ -n "$FILES" ]; then
+                    "$ZIPPER" c "$OUTJAR" $FILES
+                else
+                    # Create empty JAR if resources directory is empty
+                    cd "$TMPDIR"
+                    touch empty.txt
+                    "$ZIPPER" c "$OUTJAR" empty.txt
+                fi
+            else
+                # Create empty JAR if no resources directory exists
+                touch empty.txt
+                "$ZIPPER" c "$OUTJAR" empty.txt
+            fi
+        """,
+        arguments = [ctx.executable._zipper.path, srcjar.path, resource_jar.path],
+        progress_message = "Extracting resources from %s" % ctx.label,
+    )
+
+    return [DefaultInfo(files = depset([resource_jar]))]
+
+_pkl_java_resource_jar = rule(
+    implementation = _pkl_java_resource_jar_impl,
+    doc = "Extracts resources from a Pkl-generated srcjar",
+    attrs = {
+        "srcjar": attr.label(
+            allow_single_file = [".srcjar"],
+            mandatory = True,
+            doc = "The srcjar containing resources/ directory",
+        ),
+        "out": attr.output(
+            mandatory = True,
+            doc = "Output resource JAR",
+        ),
+        "_zipper": attr.label(
+            allow_single_file = True,
+            cfg = "exec",
+            default = "@bazel_tools//tools/zip:zipper",
+            executable = True,
+        ),
+    },
+)
+
 def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps = [], pkl_java_deps = [Label("//pkl/private:pkl-config-java-internal")], tags = [], **kwargs):
     """Create a compiled JAR of Java source files generated from Pkl source files.
 
@@ -132,13 +203,24 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         fail("`deps` were provided, but there were no `PklFileInfo` or `PklCacheInfo` providers present within:", deps)
 
     name_generated_code = name + "_pkl"
+    name_resources = name + "_resources"
+    name_java_compiled = name + "_compiled"
 
+    # Step 1: Generate Java sources and resources into srcjar
     _pkl_java_src_jar(
         name = name_generated_code,
         srcs = srcs,
         generate_getters = generate_getters,
         module_path = module_path,
         out = "{name}_codegen.srcjar".format(name = name_generated_code),
+        tags = tags,
+    )
+
+    # Step 2: Extract resources from srcjar
+    _pkl_java_resource_jar(
+        name = name_resources,
+        srcjar = name_generated_code,
+        out = "{name}_resources.jar".format(name = name),
         tags = tags,
     )
 
@@ -151,11 +233,32 @@ def pkl_java_library(name, srcs, module_path = [], generate_getters = None, deps
         transitive = depsets,
     )
 
+    # Step 3: Compile Java sources
     java_library(
-        name = name,
+        name = name_java_compiled,
         srcs = [name_generated_code],
-        deps = all_deps.to_list(),
         resources = srcs,
+        deps = all_deps.to_list(),
         tags = tags + [] if "no-lint" in tags else ["no-lint"],
+        **kwargs
+    )
+
+    # Step 4: Merge compiled JAR and resource JAR
+    name_merged = name + "_merged"
+    java_single_jar(
+        name = name_merged,
+        deps = [
+            name_java_compiled,
+            name_resources,
+        ],
+        tags = tags,
+    )
+
+    # Step 5: Wrap in java_import to provide JavaInfo
+    java_import(
+        name = name,
+        jars = [name_merged],
+        deps = all_deps.to_list(),
+        tags = tags,
         **kwargs
     )
