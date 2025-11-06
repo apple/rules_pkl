@@ -1,4 +1,4 @@
-headerPath = "scripts/license-header.txt"
+headerPath = "tools/lint/hawkeye/license-header.txt"
 
 includes = [
     "*.BUILD",

@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-// Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+// Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +14,23 @@
 // limitations under the License.
 //===----------------------------------------------------------------------===//
 
-name = "Hare"
+module test
 
-classification {
-  kingdom = "Animalia"
-  phylum = "Chordata"
-}
+import "modulepath:/tests/pkl_codegen_java/module/animals.pkl"
 
-characteristics {
-  lifespan = "1-2 years (in the wild)"
-  diet = "Herbivore"
-  behaviour = "Crepuscular and Nocturnal"
-  locomotion = "Fast and agile, capable of running up to 50 mph"
+shelter = new animals.Shelter {
+  animals {
+    new animals.Dog {
+      name = "Buddy"
+      breed = "Golden Retriever"
+    }
+    new animals.Cat {
+      name = "Whiskers"
+      color = "Orange"
+    }
+    new animals.Dog {
+      name = "Max"
+      breed = "German Shepherd"
+    }
+  }
 }

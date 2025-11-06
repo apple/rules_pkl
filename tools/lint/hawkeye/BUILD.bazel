@@ -16,13 +16,13 @@
 You can check license files with:
 
 ```
-bazel run //scripts:hawkeye -- check --fail-if-unknown
+bazel run //tools/lint/hawkeye -- check --fail-if-unknown
 ```
 
 You can update header comments with:
 
 ```
-bazel run //scripts:hawkeye -- format --fail-if-unknown
+bazel run //tools/lint/hawkeye -- format --fail-if-unknown
 ```
 """
 
