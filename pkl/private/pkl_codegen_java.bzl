@@ -119,38 +119,45 @@ def _pkl_java_resource_jar_impl(ctx):
     srcjar = ctx.file.srcjar
     resource_jar = ctx.outputs.out
 
+    # Use zipper to extract and repackage, stripping the resources/ prefix
     ctx.actions.run_shell(
         inputs = [srcjar],
         outputs = [resource_jar],
+        tools = [ctx.executable._zipper],
         command = """
             set -e
             EXECROOT="$PWD"
+            ZIPPER="$EXECROOT/$1"
+            SRCJAR="$EXECROOT/$2"
+            OUTJAR="$EXECROOT/$3"
+
             TMPDIR=$(mktemp -d)
             trap "rm -rf $TMPDIR" EXIT
 
-            # Extract srcjar
-            unzip -q "$EXECROOT/$1" -d "$TMPDIR" || true
+            # Extract srcjar using zipper
+            cd "$TMPDIR"
+            "$ZIPPER" x "$SRCJAR"
 
             # Create resource JAR with resources/ prefix stripped
-            cd "$TMPDIR"
             if [ -d "resources" ]; then
                 cd resources
-                if [ -n "$(ls -A)" ]; then
-                    zip -qr "$EXECROOT/$2" .
+                # Find all files, excluding directories, and remove ./ prefix
+                FILES=$(find . -type f | sed 's|^\\./||')
+                if [ -n "$FILES" ]; then
+                    "$ZIPPER" c "$OUTJAR" $FILES
                 else
                     # Create empty JAR if resources directory is empty
+                    cd "$TMPDIR"
                     touch empty.txt
-                    zip -q "$EXECROOT/$2" empty.txt
-                    rm empty.txt
+                    "$ZIPPER" c "$OUTJAR" empty.txt
                 fi
             else
                 # Create empty JAR if no resources directory exists
                 touch empty.txt
-                zip -q "$EXECROOT/$2" empty.txt
-                rm empty.txt
+                "$ZIPPER" c "$OUTJAR" empty.txt
             fi
         """,
-        arguments = [srcjar.path, resource_jar.path],
+        arguments = [ctx.executable._zipper.path, srcjar.path, resource_jar.path],
         progress_message = "Extracting resources from %s" % ctx.label,
     )
 
@@ -168,6 +175,12 @@ _pkl_java_resource_jar = rule(
         "out": attr.output(
             mandatory = True,
             doc = "Output resource JAR",
+        ),
+        "_zipper": attr.label(
+            allow_single_file = True,
+            cfg = "exec",
+            default = "@bazel_tools//tools/zip:zipper",
+            executable = True,
         ),
     },
 )
