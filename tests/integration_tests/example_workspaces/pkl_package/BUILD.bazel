@@ -44,9 +44,11 @@ pkl_package(
         "srcs/pkg1/tortoise.pkl",
         "//srcs/pkg2:hare_generated_pkl",
     ],
-    extra_flags = ["--skip-publish-check"],
+    extra_flags = [
+        "--skip-publish-check",
+        "--env-var=PKL_PACKAGE_VERSION=3.0.0",
+    ],
     project = "@pklproject_version_override//:project",
-    version = "3.0.0",
 )
 
 py_test(

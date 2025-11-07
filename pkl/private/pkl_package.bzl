@@ -25,30 +25,11 @@ def _pkl_package_impl(ctx):
     project_metadata_info = ctx.attr.project[PklMetadataInfo]
     pkl_project_file = project_metadata_info.pkl_project_file
     pkl_project_deps = project_metadata_info.pkl_project_deps
-    pkl_project_name = project_metadata_info.pkl_project_name
-    pkl_project_version = project_metadata_info.pkl_project_version
 
     extra_flags = list(ctx.attr.extra_flags) or []
 
-    if ctx.attr.version:
-        pkl_project_version = ctx.attr.version
-        extra_flags.append("--env-var=PKL_PACKAGE_VERSION={}".format(ctx.attr.version))
-
-    artifact_prefix = "{name}@{version}".format(name = pkl_project_name, version = pkl_project_version)
-
-    metadata_file = ctx.actions.declare_file("{prefix}".format(prefix = artifact_prefix))
-    metadata_file_checksum = ctx.actions.declare_file("{prefix}.sha256".format(prefix = artifact_prefix))
-    package_archive = ctx.actions.declare_file("{prefix}.zip".format(prefix = artifact_prefix))
-    package_archive_checksum = ctx.actions.declare_file("{prefix}.zip.sha256".format(prefix = artifact_prefix))
-
-    outputs = [metadata_file, metadata_file_checksum, package_archive, package_archive_checksum]
-
-    parts = [ctx.var["BINDIR"]]
-    if ctx.label.package:
-        parts.append(ctx.label.package)
-    output_dir = "/".join(parts)
-
-    working_dir = "%s/work" % ctx.label.name
+    output_dir = ctx.actions.declare_directory(ctx.label.name)
+    working_dir = "%s.workdir" % ctx.label.name
 
     src_symlinks = []
 
@@ -88,24 +69,70 @@ def _pkl_package_impl(ctx):
 
     args = ctx.actions.args()
     args.add_all(["project", "package", pkl_project_symlink.dirname])
-    args.add_all(["--output-path", "{output_dir}".format(output_dir = output_dir)])
+    args.add_all(["--output-path", "{output_dir}".format(output_dir = output_dir.path)])
     args.add_all(extra_flags)
 
     ctx.actions.run(
         executable = executable,
-        outputs = outputs,
+        outputs = [output_dir],
         inputs = [pkl_project_file, pkl_project_deps] + src_symlinks,
         arguments = [args],
     )
 
+    # Extract some metadata.
+    name_file = ctx.actions.declare_file(ctx.label.name + ".name")
+    version_file = ctx.actions.declare_file(ctx.label.name + ".version")
+    base_uri_file = ctx.actions.declare_file(ctx.label.name + ".base_uri")
+    package_zip_url_file = ctx.actions.declare_file(ctx.label.name + ".package_zip_url")
+
+    metadata_eval_args = ctx.actions.args()
+    metadata_eval_args.add(executable)
+    metadata_eval_args.add(pkl_project_symlink)
+    metadata_eval_args.add(name_file)
+    metadata_eval_args.add(version_file)
+    metadata_eval_args.add(base_uri_file)
+    metadata_eval_args.add(package_zip_url_file)
+    metadata_eval_args.add_all(extra_flags)
+
+    ctx.actions.run_shell(
+        command = """set -eu -o pipefail
+        pkl=$1  # Path to the pkl cli
+        pkl_project=$2  # Path to the input PklProject file to eval
+        name_file=$3  # Output file to write the name to
+        version_file=$4  # Output file to write the version to
+        base_uri_file=$5  # Output file to write the base_uri to
+        package_zip_url_file=$6  # Output file to write the package_zip_url to
+        shift 6
+        extra_args=("$@")  # Extra pkl arguments
+
+        pkl_expr='"\\(package.name)\\n\\(package.version)\\n\\(package.baseUri)\\n\\(package.packageZipUrl)\\n"'
+
+        {
+            read name
+            read version
+            read base_uri
+            read package_zip_url
+        } < <("$pkl" eval "$pkl_project" "${extra_args[@]:+${extra_args[@]}}" -x "$pkl_expr")
+
+        printf "%s\n" "$name" > "$name_file"
+        printf "%s\n" "$version" > "$version_file"
+        printf "%s\n" "$base_uri" > "$base_uri_file"
+        printf "%s\n" "$package_zip_url" > "$package_zip_url_file"
+        """,
+        arguments = [metadata_eval_args],
+        inputs = [pkl_project_symlink],
+        outputs = [name_file, version_file, base_uri_file, package_zip_url_file],
+        tools = [executable],
+    )
+
     return [
-        DefaultInfo(files = depset(outputs)),
+        DefaultInfo(files = depset([output_dir])),
         PklPackageInfo(
-            metadata_file = metadata_file,
-            metadata_file_checksum = metadata_file_checksum,
-            package_archive = package_archive,
-            package_archive_checksum = package_archive_checksum,
-            project_metadata_info = project_metadata_info,
+            pkl_package_dir = output_dir,
+            name_file = name_file,
+            version_file = version_file,
+            base_uri_file = base_uri_file,
+            package_zip_url_file = package_zip_url_file,
         ),
     ]
 
@@ -125,12 +152,6 @@ pkl_package = rule(
         "srcs": attr.label_list(allow_files = [".pkl"]),
         "strip_prefix": attr.string(doc = "Strip a directory prefix from the srcs."),
         "extra_flags": attr.string_list(default = []),
-        "version": attr.string(
-            doc = "Override the version for the Pkl package. The PklPackage's " +
-                  "version field will need to match this value. To help with this, the `pkl project package` " +
-                  "command will have the `PKL_PACKAGE_VERSION` env var set to the attribute's " +
-                  "value. Use it with e.g. `version = read?(env:PKL_PACKAGE_VERSION) ?? \"0.0.0-dev\"`",
-        ),
     },
     toolchains = [
         "@rules_pkl//pkl:toolchain_type",
