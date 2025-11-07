@@ -1,0 +1,15 @@
+load(":pkl_package_test.bzl", "pkl_package_test_suite")
+
+package(default_visibility = ["//visibility:public"])
+
+pkl_package_test_suite(
+    name = "pkl_package_test",
+)
+
+filegroup(
+    name = "pkl_project_files",
+    srcs = [
+        "PklProject",
+        "PklProject.deps.json",
+    ],
+)
