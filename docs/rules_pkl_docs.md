@@ -105,7 +105,7 @@ Collect Pkl sources together so they can be used by other `rules_pkl` rules.
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_package")
 
-pkl_package(<a href="#pkl_package-name">name</a>, <a href="#pkl_package-srcs">srcs</a>, <a href="#pkl_package-extra_flags">extra_flags</a>, <a href="#pkl_package-project">project</a>, <a href="#pkl_package-strip_prefix">strip_prefix</a>, <a href="#pkl_package-version">version</a>)
+pkl_package(<a href="#pkl_package-name">name</a>, <a href="#pkl_package-srcs">srcs</a>, <a href="#pkl_package-extra_flags">extra_flags</a>, <a href="#pkl_package-project">project</a>, <a href="#pkl_package-strip_prefix">strip_prefix</a>)
 </pre>
 
 Prepares a Pkl project to be published as a package as per the `pkl project package` command, using Bazel.
@@ -121,7 +121,6 @@ You should have at most one `pkl_package` rule per `pkl_project` repo rule.
 | <a id="pkl_package-extra_flags"></a>extra_flags |  -   | List of strings | optional |  `[]`  |
 | <a id="pkl_package-project"></a>project |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | required |  |
 | <a id="pkl_package-strip_prefix"></a>strip_prefix |  Strip a directory prefix from the srcs.   | String | optional |  `""`  |
-| <a id="pkl_package-version"></a>version |  Override the version for the Pkl package. The PklPackage's version field will need to match this value. To help with this, the `pkl project package` command will have the `PKL_PACKAGE_VERSION` env var set to the attribute's value. Use it with e.g. `version = read?(env:PKL_PACKAGE_VERSION) ?? "0.0.0-dev"`   | String | optional |  `""`  |
 
 
 <a id="pkl_test"></a>

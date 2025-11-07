@@ -31,15 +31,18 @@ class TestPklPackage(unittest.TestCase):
         ]
 
         r = runfiles.Create()
-        entry_point = Path(r.Rlocation("_main/"))
+        entry_point = Path(r.Rlocation("_main/pklpackage_basic"))
         self.assertTrue(entry_point.exists())
 
         got_artifacts = [f.name for f in entry_point.iterdir() if f.is_file()]
+        for item in want_artifacts:
+            if item not in got_artifacts:
+                print("Not in!" + item)
         self.assertTrue(all(item in got_artifacts for item in want_artifacts))
 
     def test_zipfile_contains_srcs(self):
         r = runfiles.Create()
-        entry_point = Path(r.Rlocation("_main/"))
+        entry_point = Path(r.Rlocation("_main/pklpackage_basic"))
 
         zip_file = None
         for item in entry_point.iterdir():
