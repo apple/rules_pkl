@@ -23,6 +23,7 @@ def _pkl_package_impl(ctx):
     executable = pkl_toolchain.cli[DefaultInfo].files_to_run.executable
 
     project_metadata_info = ctx.attr.project[PklMetadataInfo]
+    pkl_project_base_uri = project_metadata_info.base_uri
     pkl_project_file = project_metadata_info.pkl_project_file
     pkl_project_deps = project_metadata_info.pkl_project_deps
     pkl_project_name = project_metadata_info.pkl_project_name
@@ -33,6 +34,16 @@ def _pkl_package_impl(ctx):
     if ctx.attr.version:
         pkl_project_version = ctx.attr.version
         extra_flags.append("--env-var=PKL_PACKAGE_VERSION={}".format(ctx.attr.version))
+
+        # The provider we pass along also needs to have the updated version.
+        # TODO: This API is quite awkward; change it to (only) evaluate name/version/base_uri in pkl_package instead.
+        project_metadata_info = PklMetadataInfo(
+            base_uri = pkl_project_base_uri,
+            pkl_project_file = pkl_project_file,
+            pkl_project_deps = pkl_project_deps,
+            pkl_project_name = pkl_project_name,
+            pkl_project_version = pkl_project_version,
+        )
 
     artifact_prefix = "{name}@{version}".format(name = pkl_project_name, version = pkl_project_version)
 
