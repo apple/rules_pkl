@@ -10,10 +10,6 @@ For further information about Pkl, check out the [official Pkl documentation].
 [official Pkl documentation]: https://pkl-lang.org/main/current/index.html
 [pkl]: https://pkl-lang.org
 
-## Minimum Pkl version
-
-From `0.12.0` onwards, `rules_pkl` requires a Pkl version greater than or equal to `0.29.0`.
-
 ## Quick Start
 
 ### Setup
@@ -35,8 +31,12 @@ For further information on the rules provided, check out the [`rules_pkl` docume
 
 [`rules_pkl` documentation]: https://github.com/apple/rules_pkl/blob/main/docs/rules_pkl_docs.md
 
-## Minimum required JVM version
+## Minimum required versions
 
-From `0.26.0` onwards, Pkl [requires at least JDK17](https://pkl-lang.org/main/current/release-notes/0.26.html#minimum-java-version-bump).
+### Minimum Pkl version
 
-This has been reflected in the `.bazelrc`.
+From `0.12.0` onwards, `rules_pkl` requires a Pkl version greater than or equal to `0.29.0`.
+
+### Minimum JVM version
+
+`rules_pkl` [requires at least JDK17](https://pkl-lang.org/main/current/release-notes/0.26.html#minimum-java-version-bump).
