@@ -39,6 +39,4 @@ From `0.12.0` onwards, `rules_pkl` requires a Pkl version greater than or equal 
 
 ### Minimum JVM version
 
-From `0.26.0` onwards, Pkl [requires at least JDK17](https://pkl-lang.org/main/current/release-notes/0.26.html#minimum-java-version-bump).
-
-This has been reflected in the `.bazelrc`.
+`rules_pkl` [requires at least JDK17](https://pkl-lang.org/main/current/release-notes/0.26.html#minimum-java-version-bump).
