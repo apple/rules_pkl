@@ -105,23 +105,13 @@ package(default_visibility = ["//visibility:public"])
 """
 
     if has_package:
-        base_uri = pkl_project_metadata["package"]["baseUri"]
-        pkl_project_name = pkl_project_metadata["package"]["name"]
-        pkl_project_version = pkl_project_metadata["package"]["version"]
         build_bazel_content += """
 pkl_project_rule(
     name = "project",
-    base_uri = "{base_uri}",
     pkl_project_file = "PklProject",
     pkl_project_deps = "PklProject.deps.json",
-    pkl_project_name = "{pkl_project_name}",
-    pkl_project_version = "{pkl_project_version}",
 )
-""".format(
-            base_uri = base_uri,
-            pkl_project_name = pkl_project_name,
-            pkl_project_version = pkl_project_version,
-        )
+"""
 
     build_bazel_content += """
 pkl_cache(

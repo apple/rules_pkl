@@ -1,0 +1,9 @@
+amends "pkl:Project"
+
+package {
+  name = "my-package"
+  version = "1.2.3"
+  baseUri = "package://example.com/\(name)"
+  packageZipUrl = "https://example.com/\(name)/\(name)@\(version).zip"
+  description = "My awesome package"
+}
