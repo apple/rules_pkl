@@ -1,0 +1,103 @@
+//===----------------------------------------------------------------------===//
+// Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//===----------------------------------------------------------------------===//
+
+amends "package://pkg.pkl-lang.org/pkl-project-commons/temp.stefma.gha@0.0.0#/Workflow.pkl"
+
+import "package://pkg.pkl-lang.org/pkl-project-commons/temp.stefma.gha@0.0.0#/Action.pkl"
+import "package://pkg.pkl-lang.org/pkl-project-commons/temp.stefma.gha@0.0.0#/Workflow.pkl"
+
+name = "CI"
+
+on {
+  push {
+    branches {
+      "main"
+    }
+  }
+  pull_request {
+    branches {
+      "main"
+    }
+  }
+}
+
+jobs {
+  ["test"] {
+    `runs-on` = "${{ matrix.os }}"
+    strategy {
+      matrix {
+        ["os"] {
+          // TODO: Get this to work with `[macos, self-hosted]`.
+          "ubuntu-latest"
+        }
+      }
+    }
+    steps {
+      Action.checkout
+      new Workflow.Step {
+        uses = "bazel-contrib/setup-bazel@0.15.0"
+        with {
+          ["bazelisk-cache"] = true
+          ["disk-cache"] = "${{ matrix.os }}-cache"
+          ["repository-cache"] = true
+        }
+      }
+      (Action.cache) {
+        name = "Setup Bazel cache"
+        key = "v1-bazel-cache-${{ runner.arch }}-${{ hashFiles('MODULE.bazel') }}"
+        path = "~/.cache/bazel"
+        restoreKeys =
+          """
+          v1-bazel-cache-${{ matrix.os }}-${{ hashFiles('MODULE.bazel') }}
+          v1-bazel-cache-${{ matrix.os }}-
+          v1-bazel-cache-
+          """
+      }
+      new Workflow.Step {
+        name = "Buildifier lint"
+        run = "bazel run --config=ci buildifier"
+      }
+      new Workflow.Step {
+        name = "Check licenses"
+        run = "bazel run --config=ci //tools/lint/hawkeye -- check --fail-if-unknown"
+      }
+      new Workflow.Step {
+        name = "Gazelle"
+        run =
+          """
+          bazel run --config=ci //:gazelle
+          git diff --exit-code
+          """
+      }
+      new Workflow.Step {
+        name = "Bazel version consistency"
+        env {
+          ["WORKING_DIRECTORY"] = "${{ github.workspace }}"
+        }
+        run = "bazel run --config=ci //tests/version:version_test -- --verbose"
+      }
+      new Workflow.Step {
+        name = "Bazel test"
+        run = "bazel test --config=ci  //..."
+      }
+      (Action.cacheSave) {
+        name = "Save Bazel cache"
+        key = "v1-bazel-cache-${{ matrix.os }}-${{ hashFiles('MODULE.bazel') }}"
+        path = "~/.cache/bazel"
+      }
+    }
+  }
+}
