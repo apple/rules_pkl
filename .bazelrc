@@ -21,5 +21,5 @@ query --deleted_packages=.ijwb/aspect,examples/pets,examples/pkl_project,example
 build:ci --curses=no --color=yes --show_timestamps
 test:ci --curses=no --color=yes --show_timestamps
 
-# Use a consitent disk and repository cache.
+# Use a consistent disk and repository cache.
 build:ci --disk_cache=~/.cache/bazel/disk --repository_cache=~/.cache/bazel/repositories

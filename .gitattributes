@@ -1,5 +1,6 @@
 # The normal release process for a ruleset is to run `git archive` to generate the tarball or zip file.
 # We strip out anything that isn't strictly necessary at runtime by users.
+/.github export-ignore
 /.git* export-ignore
 /.pre-commit-config.yaml export-ignore
 /.tar-exclude-from-file.conf export-ignore
