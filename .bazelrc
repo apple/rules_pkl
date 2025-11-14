@@ -15,12 +15,11 @@ test --test_output=all
 build --deleted_packages=.ijwb/aspect,examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/multiple_pkl_projects,tests/integration_tests/example_workspaces/multiple_pkl_projects/project1,tests/integration_tests/example_workspaces/multiple_pkl_projects/project2,tests/integration_tests/example_workspaces/override_version,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/pkl_project_basic,tests/integration_tests/example_workspaces/pkl_package/pkl_project_strip_prefix,tests/integration_tests/example_workspaces/pkl_package/pkl_project_version_override,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
 query --deleted_packages=.ijwb/aspect,examples/pets,examples/pkl_project,examples/pkl_project/pkl,examples/simple,tests/integration_tests/example_workspaces/multiple_pkl_projects,tests/integration_tests/example_workspaces/multiple_pkl_projects/project1,tests/integration_tests/example_workspaces/multiple_pkl_projects/project2,tests/integration_tests/example_workspaces/override_version,tests/integration_tests/example_workspaces/pkl_cache,tests/integration_tests/example_workspaces/pkl_package,tests/integration_tests/example_workspaces/pkl_package/pkl_project_basic,tests/integration_tests/example_workspaces/pkl_package/pkl_project_strip_prefix,tests/integration_tests/example_workspaces/pkl_package/pkl_project_version_override,tests/integration_tests/example_workspaces/pkl_package/srcs/pkg2,tests/integration_tests/example_workspaces/pkl_project,tests/integration_tests/example_workspaces/simple
 
-
-#####
-# Circle CI specific configuration
-#####
-build:circleci --curses=no --color=yes --show_timestamps
-test:circleci --curses=no --color=yes --show_timestamps
+###
+# GitHub Actions specific configuration
+###
+build:ci --curses=no --color=yes --show_timestamps
+test:ci --curses=no --color=yes --show_timestamps
 
 # Use a consitent disk and repository cache.
-build:circleci --disk_cache=/tmp/bazel_cache/disk --repository_cache=/tmp/bazel_cache/repositories
+build:ci --disk_cache=~/.cache/bazel/disk --repository_cache=~/.cache/bazel/repositories

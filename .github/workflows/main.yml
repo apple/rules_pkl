@@ -1,0 +1,39 @@
+# Do not modify!
+# This file was generated from a template using https://github.com/StefMa/pkl-gha
+
+name: Build (main)
+'on':
+  push:
+    branches:
+    - main
+    tags-ignore:
+    - '**'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: bazel-contrib/setup-bazel@0.15.0
+      with:
+        bazelisk-cache: true
+        disk-cache: ${{ matrix.os }}-cache
+        repository-cache: true
+    - name: Buildifier lint
+      run: bazel run --config=ci buildifier
+    - name: Check licenses
+      run: bazel run --config=ci //tools/lint/hawkeye -- check --fail-if-unknown
+    - name: Check gazelle
+      run: |-
+        bazel run --config=ci //:gazelle
+        git diff --exit-code
+    - name: Bazel version consistency
+      env:
+        WORKING_DIRECTORY: ${{ github.workspace }}
+      run: bazel run --config=ci //tests/version:version_test -- --verbose
+    - name: Bazel test
+      run: bazel test --config=ci //...
