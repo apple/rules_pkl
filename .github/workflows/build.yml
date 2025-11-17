@@ -16,6 +16,8 @@ permissions:
   contents: read
 jobs:
   test:
+    permissions:
+      checks: write
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
@@ -36,6 +38,12 @@ jobs:
       run: bazel run --config=ci //tests/version:version_test -- --verbose
     - name: Bazel test
       run: bazel test --config=ci //...
+    - name: Publish test results
+      if: '!cancelled()'
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        comment_mode: 'off'
+        files: bazel-testlogs/**/*.xml
   check-hawkeye:
     name: hawkeye-check
     runs-on: ubuntu-latest

@@ -21,6 +21,15 @@ import "@gha/actions/Common.pkl"
 import "@gha/Context.pkl"
 import "@gha/Workflow.pkl"
 
+testReports {
+  junit {
+    "bazel-testlogs/**/*.xml"
+  }
+  excludeJobs {
+    "check-hawkeye"
+  }
+}
+
 local test: Workflow = new {
   jobs {
     ["test"] {

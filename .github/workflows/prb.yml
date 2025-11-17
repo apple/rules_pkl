@@ -31,6 +31,13 @@ jobs:
       run: bazel run --config=ci //tests/version:version_test -- --verbose
     - name: Bazel test
       run: bazel test --config=ci //...
+    - name: Upload Test Result XML
+      if: '!cancelled()'
+      uses: actions/upload-artifact@v5
+      with:
+        name: test-results-xml-test
+        path: bazel-testlogs/**/*.xml
+        if-no-files-found: ignore
   check-hawkeye:
     name: hawkeye-check
     runs-on: ubuntu-latest
