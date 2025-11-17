@@ -21,8 +21,6 @@ jobs:
         repository-cache: true
     - name: Buildifier lint
       run: bazel run --config=ci buildifier
-    - name: Check licenses
-      run: bazel run --config=ci //tools/lint/hawkeye -- check --fail-if-unknown
     - name: Check gazelle
       run: |-
         bazel run --config=ci //:gazelle
@@ -33,6 +31,16 @@ jobs:
       run: bazel run --config=ci //tests/version:version_test -- --verbose
     - name: Bazel test
       run: bazel test --config=ci //...
+  check-hawkeye:
+    name: hawkeye-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+    - run: hawkeye check --config licenserc.toml --fail-if-unknown
+    container:
+      image: ghcr.io/korandoru/hawkeye@sha256:c3ab994c0d81f3d116aabf9afc534e18648e3e90d7525d741c1e99dd8166ec85
   upload-event-file:
     runs-on: ubuntu-latest
     steps:

@@ -1,5 +1,6 @@
 amends "@pkl.impl.ghactions/PklCI.pkl"
 
+import "@pkl.impl.ghactions/jobs/HawkeyeCheck.pkl"
 import "@gha/actions/Common.pkl"
 import "@gha/Context.pkl"
 import "@gha/Workflow.pkl"
@@ -23,10 +24,6 @@ local test: Workflow = new {
           run = "bazel run --config=ci buildifier"
         }
         new {
-          name = "Check licenses"
-          run = "bazel run --config=ci //tools/lint/hawkeye -- check --fail-if-unknown"
-        }
-        new {
           name = "Check gazelle"
           run =
             """
@@ -47,6 +44,7 @@ local test: Workflow = new {
         }
       }
     }
+    ["check-hawkeye"] = new HawkeyeCheck {}.job
   }
 }
 
