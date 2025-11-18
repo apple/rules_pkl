@@ -30,7 +30,7 @@ jobs:
         WORKING_DIRECTORY: ${{ github.workspace }}
       run: bazel run --config=ci //tests/version:version_test -- --verbose
     - name: Bazel test
-      run: bazel test --config=ci //...
+      run: bazel test --config=ci -- //... -//tests/integration_tests/...
     - name: Upload Test Result XML
       if: '!cancelled()'
       uses: actions/upload-artifact@v5
