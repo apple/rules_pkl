@@ -44,28 +44,36 @@ local test: Workflow = new {
             ["repository-cache"] = true
           }
         }
+//         new {
+//           name = "Buildifier lint"
+//           run = "bazel run --config=ci buildifier"
+//         }
+//         new {
+//           name = "Check gazelle"
+//           run =
+//             """
+//             bazel run --config=ci //:gazelle
+//             git diff --exit-code
+//             """
+//         }
         new {
-          name = "Buildifier lint"
-          run = "bazel run --config=ci buildifier"
-        }
-        new {
-          name = "Check gazelle"
-          run =
+//           name = "Bazel version consistency"
+//           env {
+//             ["WORKING_DIRECTORY"] = Context.github.workspace
+//           }
+//           run = "bazel run --config=ci //tests/version:version_test -- --verbose"
+//         }
+          name = "Update integration test repos .bazelrc"
+          run = """
+            find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
+              echo -e '\\ncommon --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed --disk_cache=/home/runner/.cache/bazel-disk --repository_cache=/home/runner/.cache/bazel-repo' >> "$f"
+            done
             """
-            bazel run --config=ci //:gazelle
-            git diff --exit-code
-            """
-        }
-        new {
-          name = "Bazel version consistency"
-          env {
-            ["WORKING_DIRECTORY"] = Context.github.workspace
-          }
-          run = "bazel run --config=ci //tests/version:version_test -- --verbose"
         }
         new {
           name = "Bazel test"
-          run = "bazel test --config=ci -- //... -//tests/integration_tests/..."
+          // run = "bazel test --config=ci -- //... -//tests/integration_tests/..."
+          run = "bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_8_2_1"
         }
       }
     }

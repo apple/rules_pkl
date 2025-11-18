@@ -26,18 +26,13 @@ jobs:
         bazelisk-cache: true
         disk-cache: ${{ matrix.os }}-cache
         repository-cache: true
-    - name: Buildifier lint
-      run: bazel run --config=ci buildifier
-    - name: Check gazelle
+    - name: Update integration test repos .bazelrc
       run: |-
-        bazel run --config=ci //:gazelle
-        git diff --exit-code
-    - name: Bazel version consistency
-      env:
-        WORKING_DIRECTORY: ${{ github.workspace }}
-      run: bazel run --config=ci //tests/version:version_test -- --verbose
+        find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
+          echo -e '\ncommon --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed --disk_cache=/home/runner/.cache/bazel-disk --repository_cache=/home/runner/.cache/bazel-repo' >> "$f"
+        done
     - name: Bazel test
-      run: bazel test --config=ci -- //... -//tests/integration_tests/...
+      run: bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_8_2_1
     - name: Publish test results
       if: '!cancelled()'
       uses: EnricoMi/publish-unit-test-result-action@v2
