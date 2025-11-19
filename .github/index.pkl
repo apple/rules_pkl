@@ -36,14 +36,14 @@ local test: Workflow = new {
       `runs-on` = "ubuntu-latest"
       steps {
         new Common.Checkout {}
-//         new {
-//           uses = "bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8"
-//           with {
-//             ["bazelisk-cache"] = true
-//             ["disk-cache"] = "${{ matrix.os }}-cache"
-//             ["repository-cache"] = true
-//           }
-//         }
+        new {
+          uses = "bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8"
+          with {
+            // ["bazelisk-cache"] = true
+            // ["disk-cache"] = "${{ matrix.os }}-cache"
+            // ["repository-cache"] = true
+          }
+        }
 //         new {
 //           name = "Buildifier lint"
 //           run = "bazel run --config=ci buildifier"

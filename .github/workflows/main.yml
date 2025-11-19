@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
+    - uses: bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8
+      with: {}
     - name: Update integration test repos .bazelrc
       run: |-
         find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
