@@ -22,7 +22,7 @@ load(
 
 default_test_runner(
     name = "simple_test_runner",
-    bazel_cmds = ["--client_debug --output_user_root=/home/runner/.cache/bazel-integ-test-output-root info --announce_rc --curses=no --color=yes --show_timestamps"]
+    bazel_cmds = ["--client_debug info --announce_rc --curses=no --color=yes --show_timestamps"]
 )
 
 bazel_integration_tests(
