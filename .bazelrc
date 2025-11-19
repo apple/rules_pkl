@@ -27,3 +27,5 @@ test:ci --curses=no --color=yes --show_timestamps
 build --incompatible_strict_action_env
 
 startup --output_base=/home/runner/.bazel
+
+build --@cgrindel_bazel_starlib//bzlmod:enabled

@@ -16,9 +16,10 @@ load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load(
     "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_tests",
-    "default_test_runner",
+    # "default_test_runner",
     "integration_test_utils",
 )
+load("//tests/integration_tests:debug_test_runner.bzl", "default_test_runner")
 
 default_test_runner(
     name = "simple_test_runner",
