@@ -25,3 +25,5 @@ test:ci --curses=no --color=yes --show_timestamps
 # build:ci --disk_cache=~/.cache/bazel/disk --repository_cache=~/.cache/bazel/repositories
 
 build --incompatible_strict_action_env
+
+startup --output_base=/home/runner/.bazel
