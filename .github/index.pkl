@@ -73,7 +73,7 @@ local test: Workflow = new {
         new {
           name = "Bazel test"
           // run = "bazel test --config=ci -- //... -//tests/integration_tests/..."
-          run = "bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_8_2_1"
+          run = "bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_7_6_1"
         }
       }
     }
