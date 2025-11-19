@@ -36,14 +36,14 @@ local test: Workflow = new {
       `runs-on` = "ubuntu-latest"
       steps {
         new Common.Checkout {}
-        new {
-          uses = "bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8"
-          with {
-            ["bazelisk-cache"] = true
-            ["disk-cache"] = "${{ matrix.os }}-cache"
-            ["repository-cache"] = true
-          }
-        }
+//         new {
+//           uses = "bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8"
+//           with {
+//             ["bazelisk-cache"] = true
+//             ["disk-cache"] = "${{ matrix.os }}-cache"
+//             ["repository-cache"] = true
+//           }
+//         }
 //         new {
 //           name = "Buildifier lint"
 //           run = "bazel run --config=ci buildifier"
@@ -66,14 +66,14 @@ local test: Workflow = new {
           name = "Update integration test repos .bazelrc"
           run = """
             find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
-              echo -e '\\ncommon --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed --disk_cache=/home/runner/.cache/bazel-disk --repository_cache=/home/runner/.cache/bazel-repo' >> "$f"
+              echo -e '\\ncommon --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed' >> "$f"
             done
             """
         }
         new {
           name = "Bazel test"
           // run = "bazel test --config=ci -- //... -//tests/integration_tests/..."
-          run = "bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_7_6_1"
+          run = "bazel info && bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_7_6_1"
         }
       }
     }
