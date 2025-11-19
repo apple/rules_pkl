@@ -22,4 +22,6 @@ build:ci --curses=no --color=yes --show_timestamps
 test:ci --curses=no --color=yes --show_timestamps
 
 # Use a consistent disk and repository cache.
-build:ci --disk_cache=~/.cache/bazel/disk --repository_cache=~/.cache/bazel/repositories
+# build:ci --disk_cache=~/.cache/bazel/disk --repository_cache=~/.cache/bazel/repositories
+
+build --incompatible_strict_action_env
