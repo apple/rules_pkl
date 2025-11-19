@@ -23,7 +23,8 @@ jobs:
         done
         echo "*** /home/runner/.bazelrc"
         cat /home/runner/.bazelrc
-        echo "***"
+        echo "*** rm'ing it..."
+        rm /home/runner/.bazelrc
     - name: Bazel test
       run: bazel --output_base=/home/runner/.bazel info && bazel --output_base=/home/runner/.bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_7_6_1
     - name: Upload Test Result XML

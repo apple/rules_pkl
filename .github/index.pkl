@@ -70,7 +70,8 @@ local test: Workflow = new {
             done
             echo "*** /home/runner/.bazelrc"
             cat /home/runner/.bazelrc
-            echo "***"
+            echo "*** rm'ing it..."
+            rm /home/runner/.bazelrc
             """
         }
         new {
