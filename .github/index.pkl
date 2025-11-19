@@ -68,6 +68,9 @@ local test: Workflow = new {
             find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
               echo -e '\\ncommon --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed' >> "$f"
             done
+            echo "*** /home/runner/.bazelrc"
+            cat /home/runner/.bazelrc
+            echo "***"
             """
         }
         new {

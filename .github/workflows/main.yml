@@ -27,6 +27,9 @@ jobs:
         find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
           echo -e '\ncommon --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed' >> "$f"
         done
+        echo "*** /home/runner/.bazelrc"
+        cat /home/runner/.bazelrc
+        echo "***"
     - name: Bazel test
       run: bazel --output_base=/home/runner/.bazel info && bazel --output_base=/home/runner/.bazel test -s --announce_rc --test_output=streamed --test_timeout=180 --config=ci //tests/integration_tests:multiple_pkl_projects_test_bazel_7_6_1
     - name: Publish test results
