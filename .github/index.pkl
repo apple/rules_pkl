@@ -64,8 +64,29 @@ local test: Workflow = new {
           run = "bazel run --config=ci //tests/version:version_test -- --verbose"
         }
         new {
+          name = "Update integration test repos .bazelrc (debug information and caching)"
+          run = """
+            # Assign a separate output base to the integration tests: it needs to be explicitly set, and set as a
+            # different from the root workspace output base (which is set in the home bazelrc) to avoid a deadlock.
+            # It also needs to be the same directory for all the integration tests, otherwise we run out of space on
+            # the default GHA runners.
+            # We use the `bazel_integration` configuration so it takes precedence over the generic home rc declaration.
+            find tests/integration_tests/example_workspaces -name '.bazelrc' | while read -r f; do
+              printf '\\nstartup --output_base=/home/runner/.bazel-integration\\n' >> "$f"
+              printf 'common --announce_rc --curses=no --color=yes --show_timestamps --test_output=streamed\\n' >> "$f"
+            done
+
+            # Extract the `startup --output_base=...` line from the home .bazelrc to an explicit .bazelrc, otherwise its
+            # precedence is too high and integration tests pick up the value.
+            #
+            output_base_line=$(grep '^startup --output_base' /home/runner/.bazelrc | tail -1)
+            sed -i '/^startup --output_base/d' /home/runner/.bazelrc
+            printf '%s\\n' "$output_base_line" > /home/runner/.bazelrc.cmdline
+            """
+        }
+        new {
           name = "Bazel test"
-          run = "bazel test --config=ci -- //... -//tests/integration_tests/..."
+          run = "bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //... -//tests/integration_tests/..."
         }
       }
     }
