@@ -86,7 +86,7 @@ local test: Workflow = new {
         }
         new {
           name = "Bazel test"
-          run = "bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //... -//tests/integration_tests/..."
+          run = "bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //..."
         }
       }
     }
