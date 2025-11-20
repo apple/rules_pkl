@@ -54,7 +54,7 @@ jobs:
         sed -i '/^startup --output_base/d' /home/runner/.bazelrc
         printf '%s\n' "$output_base_line" > /home/runner/.bazelrc.cmdline
     - name: Bazel test
-      run: bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //... -//tests/integration_tests/...
+      run: bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //...
     - name: Publish test results
       if: '!cancelled()'
       uses: EnricoMi/publish-unit-test-result-action@v2
