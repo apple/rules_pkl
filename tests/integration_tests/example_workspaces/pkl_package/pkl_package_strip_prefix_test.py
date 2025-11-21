@@ -24,7 +24,7 @@ from bazel_tools.tools.python.runfiles import runfiles
 class MyTestCase(unittest.TestCase):
     def test_zipfile_contains_srcs_with_strip_prefix(self):
         r = runfiles.Create()
-        entry_point = Path(r.Rlocation("_main/"))
+        entry_point = Path(r.Rlocation("_main/pklpackage_strip_prefix"))
 
         zip_file = None
         for item in entry_point.iterdir():

@@ -21,20 +21,14 @@ load("@rules_pkl//pkl/private:providers.bzl", "PklMetadataInfo")
 def _pkl_project_rule_impl(ctx):
     return [
         PklMetadataInfo(
-            base_uri = ctx.attr.base_uri,
             pkl_project_file = ctx.file.pkl_project_file,
             pkl_project_deps = ctx.file.pkl_project_deps,
-            pkl_project_name = ctx.attr.pkl_project_name,
-            pkl_project_version = ctx.attr.pkl_project_version,
         ),
     ]
 
 pkl_project_rule = rule(
     _pkl_project_rule_impl,
     attrs = {
-        "base_uri": attr.string(
-            mandatory = True,
-        ),
         "pkl_project_file": attr.label(
             allow_single_file = True,
             default = "PklProject",
@@ -42,12 +36,6 @@ pkl_project_rule = rule(
         "pkl_project_deps": attr.label(
             allow_single_file = True,
             default = "PklProject.deps.json",
-        ),
-        "pkl_project_name": attr.string(
-            mandatory = True,
-        ),
-        "pkl_project_version": attr.string(
-            mandatory = True,
         ),
     },
 )

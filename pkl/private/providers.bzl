@@ -37,11 +37,11 @@ PklCacheInfo = provider(
 PklPackageInfo = provider(
     doc = "The artifacts generated as a result of executing the pkl project package command",
     fields = {
-        "metadata_file": "the package metadata file",
-        "metadata_file_checksum": "the dependency metadata files's SHA-256 checksum",
-        "package_archive": "the package archive",
-        "package_archive_checksum": "the package archive's SHA-256 checksum",
-        "project_metadata_info": "the PklMetadataInfo provider",
+        "pkl_package_dir": "directory containing the packaged pkl project",
+        "name_file": "file containing the name of the Pkl package",
+        "version_file": "file containing the version of the Pkl package",
+        "base_uri_file": "file containing the baseUri of the Pkl package",
+        "package_zip_url_file": "file containing the packageZipUrl of the Pkl package",
     },
 )
 

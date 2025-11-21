@@ -31,7 +31,7 @@ class TestPklPackage(unittest.TestCase):
         ]
 
         r = runfiles.Create()
-        entry_point = Path(r.Rlocation("_main/"))
+        entry_point = Path(r.Rlocation("_main/pklpackage_version_override"))
         self.assertTrue(entry_point.exists())
 
         got_artifacts = [f.name for f in entry_point.iterdir() if f.is_file()]
@@ -39,7 +39,7 @@ class TestPklPackage(unittest.TestCase):
 
     def test_zipfile_contains_srcs(self):
         r = runfiles.Create()
-        entry_point = Path(r.Rlocation("_main/"))
+        entry_point = Path(r.Rlocation("_main/pklpackage_version_override"))
 
         zip_file = None
         for item in entry_point.iterdir():
