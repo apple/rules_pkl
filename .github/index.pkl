@@ -45,25 +45,6 @@ local test: Workflow = new {
           }
         }
         new {
-          name = "Buildifier lint"
-          run = "bazel run --config=ci buildifier"
-        }
-        new {
-          name = "Check gazelle"
-          run =
-            """
-            bazel run --config=ci //:gazelle
-            git diff --exit-code
-            """
-        }
-        new {
-          name = "Bazel version consistency"
-          env {
-            ["WORKING_DIRECTORY"] = Context.github.workspace
-          }
-          run = "bazel run --config=ci //tests/version:version_test -- --verbose"
-        }
-        new {
           name = "Update integration test repos .bazelrc (debug information and caching)"
           run = """
             # Assign a separate output base to the integration tests: it needs to be explicitly set, and set as a
@@ -83,6 +64,25 @@ local test: Workflow = new {
             sed -i '/^startup --output_base/d' /home/runner/.bazelrc
             printf '%s\\n' "$output_base_line" > /home/runner/.bazelrc.cmdline
             """
+        }
+        new {
+          name = "Buildifier lint"
+          run = "bazel --bazelrc=/home/runner/.bazelrc.cmdline run --config=ci buildifier"
+        }
+        new {
+          name = "Check gazelle"
+          run =
+            """
+            bazel --bazelrc=/home/runner/.bazelrc.cmdline run --config=ci //:gazelle
+            git diff --exit-code
+            """
+        }
+        new {
+          name = "Bazel version consistency"
+          env {
+            ["WORKING_DIRECTORY"] = Context.github.workspace
+          }
+          run = "bazel --bazelrc=/home/runner/.bazelrc.cmdline run --config=ci //tests/version:version_test -- --verbose"
         }
         new {
           name = "Bazel test"
