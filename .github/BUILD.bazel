@@ -20,7 +20,6 @@ pkl_eval(
     name = "index",
     srcs = ["index.pkl"],
     multiple_outputs = True,
-    no_cache = True,
     deps = ["@pklproject_github_actions//:packages"],
 )
 
@@ -29,12 +28,10 @@ pkl_eval(
 copy_to_directory(
     name = "workflows_flattened",
     srcs = [":index"],
-    out = "workflows",
     include_srcs_patterns = ["**/*.yml"],
     replace_prefixes = {
-        "workflows": "",
+        "index/workflows": "",
     },
-    root_paths = ["index"],
 )
 
 write_source_files(
