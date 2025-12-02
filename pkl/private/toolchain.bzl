@@ -86,8 +86,8 @@ pkl_doc_toolchain = rule(
     attrs = {
         "cli": attr.label(
             cfg = "exec",
-            default = "@rules_pkl//pkl:pkl_doc_cli",
             executable = True,
+            mandatory = True,
         ),
     },
 )

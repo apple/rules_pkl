@@ -41,6 +41,10 @@ use_repo(
     "pkl-cli-linux-amd64",
     "pkl-cli-macos-aarch64",
     "pkl-cli-macos-amd64",
+    "pkl-doc-cli-linux-aarch64",
+    "pkl-doc-cli-linux-amd64",
+    "pkl-doc-cli-macos-aarch64",
+    "pkl-doc-cli-macos-amd64",
 )
 
 register_toolchains(
@@ -49,6 +53,10 @@ register_toolchains(
     "@rules_pkl//pkl:pkl_toolchain_linux_amd64",
     "@rules_pkl//pkl:pkl_toolchain_macos_aarch64",
     "@rules_pkl//pkl:pkl_toolchain_macos_amd64",
+    "@rules_pkl//pkl:pkl_doc_toolchain_linux_aarch64",
+    "@rules_pkl//pkl:pkl_doc_toolchain_linux_amd64",
+    "@rules_pkl//pkl:pkl_doc_toolchain_macos_aarch64",
+    "@rules_pkl//pkl:pkl_doc_toolchain_macos_amd64",
 )
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
@@ -56,10 +64,9 @@ maven.install(
     name = "rules_pkl_deps",
     artifacts = [
         "com.google.code.gson:gson:2.13.1",
-        "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
         "org.junit.vintage:junit-vintage-engine:5.13.4",
-        "org.pkl-lang:pkl-config-java:0.29.1",
-        "org.pkl-lang:pkl-tools:0.29.1",
+        "org.pkl-lang:pkl-config-java:0.30.0",
+        "org.pkl-lang:pkl-tools:0.30.0",
     ],
     lock_file = "//pkl/private:pkl_deps_install.json",
     repositories = [
@@ -75,7 +82,7 @@ use_repo(
 maven.install(
     name = "custom_pkl_java_library_maven_deps",
     artifacts = [
-        "org.pkl-lang:pkl-config-java:0.29.1",
+        "org.pkl-lang:pkl-config-java:0.30.0",
     ],
     lock_file = "//pkl/private:pkl_deps_custom_java_library_maven_deps_install.json",
     repositories = [

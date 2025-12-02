@@ -19,10 +19,10 @@ Repository rules for defining dependencies.
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@rules_jvm_external//:defs.bzl", "maven_install")
-load("//pkl/private:constants.bzl", "PKL_DEPS", "VERSIONS")
+load("//pkl/private:constants.bzl", "DOC_VERSIONS", "PKL_DEPS", "VERSIONS")
 load("//pkl/private:repositories.bzl", _project_cache_path_and_dependencies = "root_caches_and_dependencies")
 
-DEFAULT_PKL_VERSION = "0.29.1"
+DEFAULT_PKL_VERSION = "0.30.0"
 
 def pkl_cli_binaries(version = DEFAULT_PKL_VERSION):
     """
@@ -44,6 +44,32 @@ def pkl_cli_binaries(version = DEFAULT_PKL_VERSION):
             http_file,
             name = cli_name,
             url = "https://github.com/apple/pkl/releases/download/{version}/pkl-{arch}".format(version = version, arch = arch),
+            sha256 = sha256,
+            executable = True,
+        )
+
+    return binary_names
+
+def pkl_doc_cli_binaries(version = DEFAULT_PKL_VERSION):
+    """
+    Sets up the `http_file` repositories for the Pkl doc binaries.
+
+    Args:
+      version: the Pkl version you want to use
+
+    Returns:
+      A list of the binary names.
+    """
+    binary_names = []
+
+    for arch, sha256 in DOC_VERSIONS[version].items():
+        cli_name = "pkl-doc-cli-{arch}".format(arch = arch)
+        binary_names.append(cli_name)
+
+        maybe(
+            http_file,
+            name = cli_name,
+            url = "https://github.com/apple/pkl/releases/download/{version}/pkldoc-{arch}".format(version = version, arch = arch),
             sha256 = sha256,
             executable = True,
         )

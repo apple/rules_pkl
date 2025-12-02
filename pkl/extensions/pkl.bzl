@@ -16,7 +16,7 @@
 Module extension for using rules_pkl with bzlmod.
 """
 
-load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION", "pkl_cli_binaries")
+load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION", "pkl_cli_binaries", "pkl_doc_cli_binaries")
 load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", _pkl_project = "pkl_project")
 load("//pkl/private:remote_pkl_package.bzl", "remote_pkl_package")
 
@@ -101,6 +101,8 @@ def _toolchain_extension(module_ctx):
 
     cli_binaries = pkl_cli_binaries(version = pkl_version)
     direct_deps.extend(cli_binaries)
+    doc_cli_binaries = pkl_doc_cli_binaries(version = pkl_version)
+    direct_deps.extend(doc_cli_binaries)
     return module_ctx.extension_metadata(
         reproducible = True,
         root_module_direct_deps = direct_deps,
