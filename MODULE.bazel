@@ -90,7 +90,8 @@ use_repo(
     "unpinned_rules_pkl_deps",
 )
 
-maven.install(
+maven_dev = use_extension("@rules_jvm_external//:extensions.bzl", "maven", dev_dependency = True)
+maven_dev.install(
     name = "custom_pkl_java_library_maven_deps",
     artifacts = [
         "org.pkl-lang:pkl-config-java:0.30.0",
@@ -101,7 +102,7 @@ maven.install(
     ],
 )
 use_repo(
-    maven,
+    maven_dev,
     "custom_pkl_java_library_maven_deps",
     "unpinned_custom_pkl_java_library_maven_deps",
 )
