@@ -47,6 +47,17 @@ use_repo(
     "pkl-doc-cli-macos-amd64",
 )
 
+pkl_dev = use_extension("//pkl/extensions:pkl.bzl", "pkl", dev_dependency = True)
+pkl_dev.project(
+    name = "pklproject_github_actions",
+    pkl_project = "@rules_pkl//.github:PklProject",
+    pkl_project_deps = "@rules_pkl//.github:PklProject.deps.json",
+)
+use_repo(
+    pkl_dev,
+    "pklproject_github_actions",
+)
+
 register_toolchains(
     "@rules_pkl//pkl:pkl_toolchain_codegen_java",
     "@rules_pkl//pkl:pkl_toolchain_linux_aarch64",
