@@ -26,9 +26,12 @@ def _pkl_doc_impl(ctx):
     if outfile == None:
         outfile = ctx.actions.declare_file(ctx.label.name + "_docs.zip")
 
+    pkl_doc_toolchain = ctx.toolchains["//pkl:doc_toolchain_type"]
+    pkl_doc_cli = pkl_doc_toolchain.pkl_doc_cli
+
     outdir_path = outfile.path + ".tmpdir"
     command = "{executable} -o {output}".format(
-        executable = ctx.executable._pkl_doc_cli.path,
+        executable = pkl_doc_cli.path,
         output = outdir_path,
     )
     if modules:
@@ -48,7 +51,10 @@ def _pkl_doc_impl(ctx):
         command = command,
         inputs = ctx.files.deps + ctx.files.srcs,
         outputs = [outfile],
-        tools = [ctx.executable._pkl_doc_cli, ctx.executable._zip],
+        tools = [
+            pkl_doc_cli,
+            ctx.executable._zip,
+        ],
         progress_message = "Generating Pkl docs",
     )
 
@@ -70,11 +76,6 @@ _pkl_doc = rule(
         "out": attr.output(
             doc = "The generated output zip file containing pkl documentation.",
         ),
-        "_pkl_doc_cli": attr.label(
-            cfg = "exec",
-            default = "//pkl:pkl_doc_cli",
-            executable = True,
-        ),
         "_zip": attr.label(
             allow_single_file = True,
             cfg = "exec",
@@ -82,6 +83,9 @@ _pkl_doc = rule(
             executable = True,
         ),
     },
+    toolchains = [
+        "@rules_pkl//pkl:doc_toolchain_type",
+    ],
 )
 
 def pkl_doc(name, srcs, **kwargs):

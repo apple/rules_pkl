@@ -41,7 +41,7 @@ pkl_doc_toolchain(<a href="#pkl_doc_toolchain-name">name</a>, <a href="#pkl_doc_
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="pkl_doc_toolchain-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
-| <a id="pkl_doc_toolchain-cli"></a>cli |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | optional |  `"@rules_pkl//pkl:pkl_doc_cli"`  |
+| <a id="pkl_doc_toolchain-cli"></a>cli |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | required |  |
 
 
 <a id="pkl_eval"></a>

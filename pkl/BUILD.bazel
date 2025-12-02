@@ -15,7 +15,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_java//java:defs.bzl", "java_binary")
 load("@rules_jvm_external//:defs.bzl", "artifact")
-load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION")
 load(":defs.bzl", "pkl_codegen_java_toolchain", "pkl_doc_toolchain", "pkl_toolchain")
 
 filegroup(
@@ -39,6 +38,17 @@ alias(
         "@bazel_tools//src/conditions:linux_x86_64": "@pkl-cli-linux-amd64//file:downloaded",
     }),
     visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "pkl_doc_cli",
+    actual = select({
+        "@bazel_tools//src/conditions:darwin_arm64": "@pkl-doc-cli-macos-aarch64//file:downloaded",
+        "@bazel_tools//src/conditions:darwin_arm64e": "@pkl-doc-cli-macos-aarch64//file:downloaded",
+        "@bazel_tools//src/conditions:darwin_x86_64": "@pkl-doc-cli-macos-amd64//file:downloaded",
+        "@bazel_tools//src/conditions:linux_aarch64": "@pkl-doc-cli-linux-aarch64//file:downloaded",
+        "@bazel_tools//src/conditions:linux_x86_64": "@pkl-doc-cli-linux-amd64//file:downloaded",
+    }),
 )
 
 toolchain_type(
@@ -156,13 +166,66 @@ toolchain_type(
 )
 
 pkl_doc_toolchain(
-    name = "pkl-doc-toolchain",
+    name = "pkl_doc_macos_aarch64",
+    cli = "@pkl-doc-cli-macos-aarch64//file",
     visibility = ["//visibility:public"],
 )
 
 toolchain(
-    name = "doc-toolchain",
-    toolchain = ":pkl-doc-toolchain",
+    name = "pkl_doc_toolchain_macos_aarch64",
+    exec_compatible_with = [
+        "@platforms//os:macos",
+        "@platforms//cpu:aarch64",
+    ],
+    toolchain = ":pkl_doc_macos_aarch64",
+    toolchain_type = ":doc_toolchain_type",
+)
+
+pkl_doc_toolchain(
+    name = "pkl_doc_macos_amd64",
+    cli = "@pkl-doc-cli-macos-amd64//file",
+    visibility = ["//visibility:public"],
+)
+
+toolchain(
+    name = "pkl_doc_toolchain_macos_amd64",
+    exec_compatible_with = [
+        "@platforms//os:macos",
+        "@platforms//cpu:x86_64",
+    ],
+    toolchain = ":pkl_doc_macos_amd64",
+    toolchain_type = ":doc_toolchain_type",
+)
+
+pkl_doc_toolchain(
+    name = "pkl_doc_linux_aarch64",
+    cli = "@pkl-doc-cli-linux-aarch64//file",
+    visibility = ["//visibility:public"],
+)
+
+toolchain(
+    name = "pkl_doc_toolchain_linux_aarch64",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+    toolchain = ":pkl_doc_linux_aarch64",
+    toolchain_type = ":doc_toolchain_type",
+)
+
+pkl_doc_toolchain(
+    name = "pkl_doc_linux_amd64",
+    cli = "@pkl-doc-cli-linux-amd64//file",
+    visibility = ["//visibility:public"],
+)
+
+toolchain(
+    name = "pkl_doc_toolchain_linux_amd64",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    toolchain = ":pkl_doc_linux_amd64",
     toolchain_type = ":doc_toolchain_type",
 )
 
@@ -187,24 +250,6 @@ java_binary(
     runtime_deps = [
         artifact(
             "org.pkl-lang:pkl-tools",
-            repository_name = "rules_pkl_deps",
-        ),
-    ],
-)
-
-java_binary(
-    name = "pkl_doc_cli",
-    main_class = "org.pkl.doc.Main",
-    visibility = [
-        "//visibility:public",
-    ],
-    runtime_deps = [
-        artifact(
-            "org.pkl-lang:pkl-tools:{}".format(DEFAULT_PKL_VERSION),
-            repository_name = "rules_pkl_deps",
-        ),
-        artifact(
-            "org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
             repository_name = "rules_pkl_deps",
         ),
     ],
