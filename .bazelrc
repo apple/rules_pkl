@@ -2,6 +2,9 @@ common --enable_bzlmod
 
 build --incompatible_default_to_explicit_init_py
 
+# TODO: Remove this once our minimum version is Bazel 8, ref: https://github.com/bazelbuild/bazel/issues/23127
+build --incompatible_use_plus_in_repo_names
+
 build --java_language_version=17
 build --java_runtime_version=17
 build --tool_java_language_version=17
