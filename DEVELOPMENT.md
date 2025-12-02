@@ -29,6 +29,16 @@ bazel run @unpinned_rules_pkl_deps//:pin
 bazel run @unpinned_custom_pkl_java_library_maven_deps//:pin
 ```
 
+# Updating GitHub Actions configuration
+
+You can manually refresh the contents of `.github/workflows` by
+running `bazel run //.github:workflows_write`.
+
+Changing `.github/index.pkl` without updating `.github/workflows` will fail the
+build anyway, and ask you to run the previous command.
+
+Alternatively, execute Pkl directly with `pkl eval --project-dir .github/ -m .github/ .github/index.pkl`.
+
 ## Using this as a development dependency of other rules
 
 You'll commonly find that you develop in another WORKSPACE, such as
