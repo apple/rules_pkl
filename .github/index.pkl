@@ -16,10 +16,10 @@
 
 amends "@pkl.impl.ghactions/PklCI.pkl"
 
+import "@com.github.actions/catalog.pkl"
+import "@com.github.actions/context.pkl"
+import "@com.github.actions/Workflow.pkl"
 import "@pkl.impl.ghactions/jobs/HawkeyeCheck.pkl"
-import "@gha/actions/Common.pkl"
-import "@gha/Context.pkl"
-import "@gha/Workflow.pkl"
 
 testReports {
   junit {
@@ -35,7 +35,7 @@ local test: Workflow = new {
     ["test"] {
       `runs-on` = "ubuntu-latest"
       steps {
-        new Common.Checkout {}
+        (catalog.`actions/checkout@v6`) {}
         new {
           uses = "bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8"
           with {
@@ -59,13 +59,14 @@ local test: Workflow = new {
         new {
           name = "Bazel version consistency"
           env {
-            ["WORKING_DIRECTORY"] = Context.github.workspace
+            ["WORKING_DIRECTORY"] = context.github.workspace
           }
           run = "bazel run --config=ci //tests/version:version_test -- --verbose"
         }
         new {
           name = "Update integration test repos .bazelrc (debug information and caching)"
-          run = """
+          run =
+            """
             # Assign a separate output base to the integration tests: it needs to be explicitly set, and set as a
             # different from the root workspace output base (which is set in the home bazelrc) to avoid a deadlock.
             # It also needs to be the same directory for all the integration tests, otherwise we run out of space on
