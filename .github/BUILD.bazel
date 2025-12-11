@@ -28,15 +28,23 @@ pkl_eval(
 copy_to_directory(
     name = "workflows_flattened",
     srcs = [":index"],
-    include_srcs_patterns = ["**/*.yml"],
+    include_srcs_patterns = ["**/workflows/*.yml"],
     replace_prefixes = {
         "index/workflows": "",
     },
+)
+
+genrule(
+    name = "dependabot_extracted",
+    srcs = [":index"],
+    outs = ["dependabot_generated.yml"],
+    cmd = "find $(location :index) -name 'dependabot.yml' -exec cp {} $@ \\;",
 )
 
 write_source_files(
     name = "workflows_write",
     files = {
         "workflows": ":workflows_flattened",
+        "dependabot.yml": ":dependabot_extracted",
     },
 )
