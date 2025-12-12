@@ -11,32 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
-load("//pkl:defs.bzl", "pkl_eval")
-
-pkl_eval(
-    name = "index",
-    srcs = ["index.pkl"],
-    multiple_outputs = True,
-    deps = ["@pklproject_github_actions//:packages"],
-)
-
-# This is necessary to "rehome" the multiple outputs produced by `index.pkl`, because `write_source_files`
-# does not allow using the current directory (`.`) as an output location.
-copy_to_directory(
-    name = "workflows_flattened",
-    srcs = [":index"],
-    include_srcs_patterns = ["**/*.yml"],
-    replace_prefixes = {
-        "index/workflows": "",
-    },
-)
-
-write_source_files(
-    name = "workflows_write",
-    files = {
-        "workflows": ":workflows_flattened",
-    },
-)

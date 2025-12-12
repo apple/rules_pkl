@@ -18,3 +18,7 @@ bazel-*
 /examples/*/bazel-*
 /tests/*/bazel-*
 MODULE.bazel.lock
+
+# Pkl LSP
+.pkl-lsp/
+
