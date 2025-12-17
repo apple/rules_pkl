@@ -17,8 +17,8 @@ Constants.
 """
 
 PKL_DEPS = {
-    "0.30.0": [
-        "org.pkl-lang:pkl-tools:0.30.0",
+    "0.30.2": [
+        "org.pkl-lang:pkl-tools:0.30.2",
         "com.google.code.gson:gson:2.13.1",
     ],
     "0.29.1": [
@@ -32,11 +32,11 @@ PKL_DEPS = {
 }
 
 VERSIONS = {
-    "0.30.0": {
-        "macos-aarch64": "923a636f2c858029d9bf93f35aeae58ebd9783fbe0209f4787c4eed950142212",
-        "macos-amd64": "215c5c2b02bf4bfb5f7421d4bd81ce1f8781cc9aba93b09f86156c99553de143",
-        "linux-aarch64": "a876085548bba146854d0e96df16df828a8b39d75b57674eb3ad73edd9e52d96",
-        "linux-amd64": "182a50a2c84bb002010ea45c8982c1e63b54e7e6a40e939bb5eb70beaad38cd7",
+    "0.30.2": {
+        "macos-aarch64": "f1db44c0f6f859aee88c9d7d272f2371ae40ac95ec9957ae78eff51665158e04",
+        "macos-amd64": "5f62ae7a7a34c15b3a83af17bda8e6b98516953f383a492340d4aa090caaa6d9",
+        "linux-aarch64": "8da3ae65104eb7058e35dc4a9fe46bd8ece2b6faf4b65d0b1054cadb2ede0246",
+        "linux-amd64": "474e5137d60a9e2320fde19a526f42c36d8e9d3b245139d59a9b8dff85283c76",
     },
     "0.29.1": {
         "macos-aarch64": "75ca92e3eee7746e22b0f8a55bf1ee5c3ea0a78eec14586cd5618a9195707d5c",
@@ -53,11 +53,11 @@ VERSIONS = {
 }
 
 DOC_VERSIONS = {
-    "0.30.0": {
-        "macos-aarch64": "5f26925307dae98556721b14698f101408ccacdd8f700c03dc9253bd655dc1fa",
-        "macos-amd64": "a75471420a5e544b560881153c8965deab403ca164b517cc250fef596af899cd",
-        "linux-aarch64": "4941d6f5b0183d123a012fefea07f4c891ddc182c78ed053ca7b06990bc973f6",
-        "linux-amd64": "6a99659f1be79b032f1db2d9a1fc2cf88335dbb226982aa42f514200ee26ef38",
+    "0.30.2": {
+        "macos-aarch64": "8388064065f1d791b9c607b3e04ac4c5f84e49e1a303a093a443e0e3b004383b",
+        "macos-amd64": "fada6188659099c9f3916a8af0c728b50a5e32230022436e9d009bb43a1cd583",
+        "linux-aarch64": "22ffdcc59de351702a9fe2b6bf4c9553bc9bcd29b70db28bed1e2f0938b457aa",
+        "linux-amd64": "1bfe3024944fe9ee0baa4962cb5d19851f78da84311cca96fe4cf60716fde9eb",
     },
     "0.29.1": {
         "macos-aarch64": "d89b68173b30856a859c87a00156b9712c45c5fa9e8a3c103697dae62592dddf",
