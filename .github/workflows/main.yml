@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       with:
         persist-credentials: false
-    - uses: bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8
+    - uses: bazel-contrib/setup-bazel@43d7d5ceab59a307da44fc7585faa2a2fff4f88d
       with:
         bazelisk-cache: true
         disk-cache: ${{ matrix.os }}-cache
