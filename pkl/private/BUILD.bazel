@@ -52,5 +52,17 @@ java_library(
             "org.pkl-lang:pkl-config-java",
             repository_name = "rules_pkl_deps",
         ),
+        artifact(
+            "org.pkl-lang:pkl-core",
+            repository_name = "rules_pkl_deps",
+        ),
+        artifact(
+            "org.pkl-lang:pkl-parser",
+            repository_name = "rules_pkl_deps",
+        ),
+        artifact(
+            "org.pkl-lang:pkl-tools",
+            repository_name = "rules_pkl_deps",
+        ),
     ],
 )

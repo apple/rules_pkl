@@ -23,14 +23,17 @@ shelter = new animals.Shelter {
     new animals.Dog {
       name = "Buddy"
       breed = "Golden Retriever"
+      age = 720.d
     }
     new animals.Cat {
       name = "Whiskers"
       color = "Orange"
+      age = 140.d
     }
     new animals.Dog {
       name = "Max"
       breed = "German Shepherd"
+      age = 30.d
     }
   }
 }

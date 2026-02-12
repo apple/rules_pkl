@@ -19,6 +19,7 @@ module org.animals
 /// Base abstract class for animals
 abstract class Animal {
     name: String
+    age: Duration
 }
 
 /// A dog is an animal
