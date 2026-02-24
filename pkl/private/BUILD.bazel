@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,6 +50,18 @@ java_library(
     exports = [
         artifact(
             "org.pkl-lang:pkl-config-java",
+            repository_name = "rules_pkl_deps",
+        ),
+        artifact(
+            "org.pkl-lang:pkl-core",
+            repository_name = "rules_pkl_deps",
+        ),
+        artifact(
+            "org.pkl-lang:pkl-parser",
+            repository_name = "rules_pkl_deps",
+        ),
+        artifact(
+            "org.pkl-lang:pkl-tools",
             repository_name = "rules_pkl_deps",
         ),
     ],

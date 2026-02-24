@@ -1,5 +1,5 @@
 /*
- * Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
+ * Copyright © 2025-2026 Apple Inc. and the Pkl project authors. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ public class PolymorphismTest {
       Animals.Dog dog2 = (Animals.Dog) animals.get(2);
       assertEquals("Max", dog2.getName());
       assertEquals("German Shepherd", dog2.getBreed());
+      assertEquals("Dog {\n  name = Max\n  age = 30.d\n  breed = German Shepherd\n}", dog2.toString());
     }
   }
 }
