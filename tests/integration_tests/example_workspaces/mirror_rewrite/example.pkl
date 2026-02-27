@@ -18,7 +18,7 @@ amends "@io.k8s/api/core/v1/ConfigMap.pkl"
 
 metadata {
   labels {
-    ["app"] = "mosaic-prom-adapter"
+    ["app"] = "prom-adapter"
   }
-  name = "mosaic-prom-adapter"
+  name = "prom-adapter"
 }
