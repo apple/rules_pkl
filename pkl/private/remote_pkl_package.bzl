@@ -19,7 +19,7 @@ Repository rule for downloading remote Pkl packages.
 load(":pkl_package_names.bzl", "get_terminal_package_name")
 load(":pkl_project.bzl", "eval_pkl_project")
 
-def _rewrite_url(url, mirrors):
+def rewrite_url(url, mirrors):
     """Returns [mirror_url, original_url] if a mirror prefix matches, else [original_url].
 
     Args:
@@ -53,12 +53,12 @@ def _remote_pkl_package_impl(rctx):
         mirrors = http_settings.get("rewrites") or {}
 
     # Grab the JSON from the original location (mirror first, canonical as fallback)
-    rctx.download(_rewrite_url(url, mirrors), sha256 = rctx.attr.sha256, output = metadata_file)
+    rctx.download(rewrite_url(url, mirrors), sha256 = rctx.attr.sha256, output = metadata_file)
 
     metadata = json.decode(rctx.read(metadata_file))
 
     # Download the package ZIP (mirror first, canonical as fallback)
-    rctx.download(_rewrite_url(metadata["packageZipUrl"], mirrors), sha256 = metadata["packageZipChecksums"]["sha256"], output = package_archive)
+    rctx.download(rewrite_url(metadata["packageZipUrl"], mirrors), sha256 = metadata["packageZipChecksums"]["sha256"], output = package_archive)
 
     rctx.file(
         "BUILD.bazel",

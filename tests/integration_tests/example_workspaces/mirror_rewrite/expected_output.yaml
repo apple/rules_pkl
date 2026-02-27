@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: mosaic-prom-adapter
+  name: mosaic-prom-adapter
