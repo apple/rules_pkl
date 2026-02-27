@@ -1,5 +1,5 @@
 //===----------------------------------------------------------------------===//
-// Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
+// Copyright © 2026 Apple Inc. and the Pkl project authors. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,20 @@
 // limitations under the License.
 //===----------------------------------------------------------------------===//
 
-amends "@io.k8s/api/core/v1/ConfigMap.pkl"
+amends "pkl:Project"
 
-metadata {
-  labels {
-    ["app"] = "prom-adapter"
+evaluatorSettings {
+  http {
+    rewrites {
+      // Mirror pkg.pkl-lang.org back to itself so we can test the rewrite
+      // code path without requiring a real mirror server.
+      ["https://pkg.pkl-lang.org/"] = "https://pkg.pkl-lang.org/"
+    }
   }
-  name = "prom-adapter"
+}
+
+dependencies {
+  ["io.k8s"] {
+    uri = "package://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"
+  }
 }

@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,12 +81,14 @@ def _toolchain_extension(module_ctx):
 
             # Make sure all the remote files are downloaded and unpacked
             packages = parse_pkl_project_deps_json(module_ctx.read(proj.pkl_project_deps))
+
             for package in packages:
                 if not package.workspace_name in seen_packages:
                     remote_pkl_package(
                         name = package.workspace_name,
                         url = package.url,
                         sha256 = package.sha256,
+                        pkl_project = proj.pkl_project,
                     )
                     seen_packages.append(package.workspace_name)
 

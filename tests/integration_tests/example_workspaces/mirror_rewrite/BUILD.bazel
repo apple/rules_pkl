@@ -1,4 +1,4 @@
-# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load(":remote_pkl_package_test.bzl", "rewrite_url_test_suite")
-load(":repositories_test.bzl", "project_cache_path_and_dependencies_test_suite")
+load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
+load("@rules_pkl//pkl:defs.bzl", "pkl_eval")
 
-package(default_visibility = ["//visibility:private"])
-
-project_cache_path_and_dependencies_test_suite(
-    name = "project_cache_path_and_dependencies_tests",
+pkl_eval(
+    name = "pkl_eval_with_mirror",
+    srcs = [
+        "example.pkl",
+    ],
+    entrypoints = [
+        "example.pkl",
+    ],
+    format = "yaml",
+    deps = [
+        "@mypkl//:packages",
+    ],
 )
 
-rewrite_url_test_suite(
-    name = "rewrite_url_tests",
+diff_test(
+    name = "pkl_eval_with_mirror_diff_test",
+    file1 = "expected_output.yaml",
+    file2 = ":pkl_eval_with_mirror",
 )

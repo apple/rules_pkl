@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,6 +45,32 @@ def parse_pkl_project_deps_json(pkl_deps_json_string_path):
 
     return seen_remote_pkl_packages.values()
 
+def eval_pkl_project(ctx, pkl_project_path, extra_args = []):
+    """Evaluates a PklProject file as JSON and returns the decoded object.
+
+    Args:
+        ctx: A repository context or module context.
+        pkl_project_path: Path to the PklProject file to evaluate.
+        extra_args: Additional arguments to pass to `pkl eval`.
+    Returns:
+        The JSON object output of `pkl eval <pkl_project_path> -f json`.
+    """
+    if ctx.os.name == "linux" and ctx.os.arch == "amd64":
+        pkl_executable = ctx.path(Label("@pkl-cli-linux-amd64//file:downloaded"))
+    elif ctx.os.name == "linux" and ctx.os.arch == "aarch64":
+        pkl_executable = ctx.path(Label("@pkl-cli-linux-aarch64//file:downloaded"))
+    elif ctx.os.name == "mac os x" and ctx.os.arch == "x86_64":
+        pkl_executable = ctx.path(Label("@pkl-cli-macos-amd64//file:downloaded"))
+    elif ctx.os.name == "mac os x" and ctx.os.arch == "aarch64":
+        pkl_executable = ctx.path(Label("@pkl-cli-macos-aarch64//file:downloaded"))
+    else:
+        fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = ctx.os.name, arch = ctx.os.arch))
+
+    result = ctx.execute([pkl_executable, "eval", str(pkl_project_path), "--format", "json"] + extra_args)
+    if result.return_code != 0:
+        fail("Error evaluating PklProject: {}".format(result.stderr))
+    return json.decode(result.stdout)
+
 def convert_dict_to_options(option_name, items_dict):
     """Converts the dictioinary to a list with each "key=value" pair preceded by the option name (e.g. --my-option).
 
@@ -72,26 +98,8 @@ def _pkl_project_impl(rctx):
     rctx.symlink(rctx.attr.pkl_project, "PklProject")
     rctx.symlink(rctx.path(rctx.attr.pkl_project_deps), "PklProject.deps.json")
 
-    if rctx.os.name == "linux" and rctx.os.arch == "amd64":
-        pkl_executable = rctx.path(Label("@pkl-cli-linux-amd64//file:downloaded"))
-    elif rctx.os.name == "linux" and rctx.os.arch == "aarch64":
-        pkl_executable = rctx.path(Label("@pkl-cli-linux-aarch64//file:downloaded"))
-    elif rctx.os.name == "mac os x" and rctx.os.arch == "x86_64":
-        pkl_executable = rctx.path(Label("@pkl-cli-macos-amd64//file:downloaded"))
-    elif rctx.os.name == "mac os x" and rctx.os.arch == "aarch64":
-        pkl_executable = rctx.path(Label("@pkl-cli-macos-aarch64//file:downloaded"))
-    else:
-        fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = rctx.os.name, arch = rctx.os.arch))
-
     env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
-    rendered_result = rctx.execute(
-        ["{}".format(pkl_executable), "eval", "PklProject", "-f", "json"] + env_vars + rctx.attr.extra_flags,
-    )
-    if rendered_result.return_code != 0:
-        fail("Error evaluating and rendering PklProject file as json: {}".format(rendered_result.stderr))
-    metadata = rendered_result.stdout
-
-    pkl_project_metadata = json.decode(metadata)
+    pkl_project_metadata = eval_pkl_project(rctx, "PklProject", extra_args = env_vars + rctx.attr.extra_flags)
     has_package = "package" in pkl_project_metadata
 
     build_bazel_content = ""
