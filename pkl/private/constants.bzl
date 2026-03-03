@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@ Constants.
 """
 
 PKL_DEPS = {
+    "0.31.0": [
+        "org.pkl-lang:pkl-tools:0.31.0",
+        "com.google.code.gson:gson:2.13.1",
+    ],
     "0.30.2": [
         "org.pkl-lang:pkl-tools:0.30.2",
         "com.google.code.gson:gson:2.13.1",
@@ -32,6 +36,12 @@ PKL_DEPS = {
 }
 
 VERSIONS = {
+    "0.31.0": {
+        "macos-aarch64": "349402ae32c35382c034b0c0af744ffb0d53a213888c44deec94a7810e144889",
+        "macos-amd64": "9f1cc8e3ac2327bc483b90d0c220da20eb785c3ba3fe92e021f47d3d56768282",
+        "linux-aarch64": "471460cdd11e1cb9ac0a5401fdb05277ae3adb3a4573cc0a9c63ee087c1f93c8",
+        "linux-amd64": "5a5c2a889b68ca92ff4258f9d277f92412b98dfef5057daef7564202a20870b6",
+    },
     "0.30.2": {
         "macos-aarch64": "f1db44c0f6f859aee88c9d7d272f2371ae40ac95ec9957ae78eff51665158e04",
         "macos-amd64": "5f62ae7a7a34c15b3a83af17bda8e6b98516953f383a492340d4aa090caaa6d9",
@@ -53,6 +63,12 @@ VERSIONS = {
 }
 
 DOC_VERSIONS = {
+    "0.31.0": {
+        "macos-aarch64": "bdc1cd4b56297b67f5187a9eeb67974bc2cc36d369f641f076bb44a17e84c219",
+        "macos-amd64": "ba56ebbf9b79478fbf7fb17c7e22a98aba33e6c70d6def4c8b722d1507051293",
+        "linux-aarch64": "983fbd634dd263e496a0292ea2cbd550714752b8ef53291547d340154a211d91",
+        "linux-amd64": "4dbb6ade801e8bb237ce6af9edddca37c800186bdff6dda8c7e6dea5d499eb92",
+    },
     "0.30.2": {
         "macos-aarch64": "8388064065f1d791b9c607b3e04ac4c5f84e49e1a303a093a443e0e3b004383b",
         "macos-amd64": "fada6188659099c9f3916a8af0c728b50a5e32230022436e9d009bb43a1cd583",
