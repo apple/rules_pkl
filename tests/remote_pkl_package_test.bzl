@@ -21,7 +21,7 @@ load("//pkl/private:remote_pkl_package.bzl", "rewrite_url")
 
 def _no_mirrors_test(ctx):
     env = unittest.begin(ctx)
-    asserts.equals(env, ["https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"], rewrite_url("https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", {}))
+    asserts.equals(env, "https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", rewrite_url("https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", {}))
     return unittest.end(env)
 
 no_mirrors_test = unittest.make(_no_mirrors_test)
@@ -30,7 +30,7 @@ def _mirror_matches_test(ctx):
     env = unittest.begin(ctx)
     mirrors = {"https://pkg.pkl-lang.org/": "https://my-mirror.example.com/"}
     result = rewrite_url("https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", mirrors)
-    asserts.equals(env, ["https://my-mirror.example.com/pkl-k8s/k8s@1.0.1", "https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"], result)
+    asserts.equals(env, "https://my-mirror.example.com/pkl-k8s/k8s@1.0.1", result)
     return unittest.end(env)
 
 mirror_matches_test = unittest.make(_mirror_matches_test)
@@ -39,7 +39,7 @@ def _mirror_does_not_match_test(ctx):
     env = unittest.begin(ctx)
     mirrors = {"https://other.example.com/": "https://my-mirror.example.com/"}
     result = rewrite_url("https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", mirrors)
-    asserts.equals(env, ["https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"], result)
+    asserts.equals(env, "https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", result)
     return unittest.end(env)
 
 mirror_does_not_match_test = unittest.make(_mirror_does_not_match_test)
@@ -51,7 +51,7 @@ def _first_matching_mirror_is_used_test(ctx):
         "https://pkg.pkl-lang.org/": "https://mirror-b.example.com/",
     }
     result = rewrite_url("https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1", mirrors)
-    asserts.equals(env, ["https://mirror-b.example.com/pkl-k8s/k8s@1.0.1", "https://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"], result)
+    asserts.equals(env, "https://mirror-b.example.com/pkl-k8s/k8s@1.0.1", result)
     return unittest.end(env)
 
 first_matching_mirror_is_used_test = unittest.make(_first_matching_mirror_is_used_test)

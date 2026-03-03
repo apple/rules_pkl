@@ -45,7 +45,7 @@ def parse_pkl_project_deps_json(pkl_deps_json_string_path):
 
     return seen_remote_pkl_packages.values()
 
-def eval_pkl_project(ctx, pkl_project_path, extra_args = []):
+def _eval_pkl_project(ctx, pkl_project_path, extra_args = []):
     """Evaluates a PklProject file as JSON and returns the decoded object.
 
     Args:
@@ -99,7 +99,7 @@ def _pkl_project_impl(rctx):
     rctx.symlink(rctx.path(rctx.attr.pkl_project_deps), "PklProject.deps.json")
 
     env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
-    pkl_project_metadata = eval_pkl_project(rctx, "PklProject", extra_args = env_vars + rctx.attr.extra_flags)
+    pkl_project_metadata = _eval_pkl_project(rctx, "PklProject", extra_args = env_vars + rctx.attr.extra_flags)
     has_package = "package" in pkl_project_metadata
 
     build_bazel_content = ""
@@ -136,6 +136,24 @@ pkl_cache(
     )
 
     rctx.file("BUILD.bazel", content = build_bazel_content, executable = False)
+
+def _pkl_project_mirrors_impl(rctx):
+    project = _eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project))
+    mirrors = project.get("evaluatorSettings", {}).get("http", {}).get("rewrites", {})
+    rctx.file("mirrors.json", content = json.encode(mirrors))
+    rctx.file("BUILD.bazel", content = 'exports_files(["mirrors.json"])\n')
+
+pkl_project_mirrors = repository_rule(
+    _pkl_project_mirrors_impl,
+    doc = "Evaluates a PklProject file once to extract HTTP mirror rewrites.",
+    attrs = {
+        "pkl_project": attr.label(
+            doc = "The PklProject file to evaluate for mirror configuration.",
+            allow_single_file = True,
+            mandatory = True,
+        ),
+    },
+)
 
 pkl_project = repository_rule(
     _pkl_project_impl,

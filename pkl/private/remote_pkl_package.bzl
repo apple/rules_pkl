@@ -17,21 +17,20 @@ Repository rule for downloading remote Pkl packages.
 """
 
 load(":pkl_package_names.bzl", "get_terminal_package_name")
-load(":pkl_project.bzl", "eval_pkl_project")
 
 def rewrite_url(url, mirrors):
-    """Returns [mirror_url, original_url] if a mirror prefix matches, else [original_url].
+    """Returns the rewritten URL if a mirror prefix matches, else the original URL.
 
     Args:
         url: The original URL to potentially rewrite.
         mirrors: A dict mapping original URL prefixes to mirror URL prefixes.
     Returns:
-        A list with the mirror URL first (if matched) and the original URL as fallback.
+        The rewritten URL if any of the mirrors matched. Otherwise the original URL.
     """
     for original, mirror in mirrors.items():
         if url.startswith(original):
-            return [mirror + url[len(original):], url]
-    return [url]
+            return mirror + url[len(original):]
+    return url
 
 def _remote_pkl_package_impl(rctx):
     if not rctx.attr.url.startswith("projectpackage://"):
@@ -46,19 +45,16 @@ def _remote_pkl_package_impl(rctx):
     package_archive = "package-2/%s/%s.zip" % (url_without_scheme, file_name)
 
     mirrors = {}
-    if rctx.attr.pkl_project:
-        pkl_project_metadata = eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project))
-        evaluator_settings = pkl_project_metadata.get("evaluatorSettings") or {}
-        http_settings = evaluator_settings.get("http") or {}
-        mirrors = http_settings.get("rewrites") or {}
+    if rctx.attr.mirrors:
+        mirrors = json.decode(rctx.read(rctx.path(rctx.attr.mirrors)))
 
     # Grab the JSON from the original location (mirror first, canonical as fallback)
-    rctx.download(rewrite_url(url, mirrors), sha256 = rctx.attr.sha256, output = metadata_file)
+    rctx.download([rewrite_url(url, mirrors)], sha256 = rctx.attr.sha256, output = metadata_file)
 
     metadata = json.decode(rctx.read(metadata_file))
 
     # Download the package ZIP (mirror first, canonical as fallback)
-    rctx.download(rewrite_url(metadata["packageZipUrl"], mirrors), sha256 = metadata["packageZipChecksums"]["sha256"], output = package_archive)
+    rctx.download([rewrite_url(metadata["packageZipUrl"], mirrors)], sha256 = metadata["packageZipChecksums"]["sha256"], output = package_archive)
 
     rctx.file(
         "BUILD.bazel",
@@ -87,10 +83,9 @@ remote_pkl_package = repository_rule(
             doc = "SHA256 hash of the package's metadata file.",
             mandatory = True,
         ),
-        "pkl_project": attr.label(
-            doc = """The PklProject file to evaluate for mirror configuration.
-                When set, evaluatorSettings.http.rewrites from the PklProject is used
-                to rewrite download URLs.""",
+        "mirrors": attr.label(
+            doc = """A JSON file containing a dict of URL prefix rewrites.
+                Typically provided by the pkl_project_mirrors repository rule.""",
             allow_single_file = True,
         ),
     },
