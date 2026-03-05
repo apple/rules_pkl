@@ -17,7 +17,7 @@ Module extension for using rules_pkl with bzlmod.
 """
 
 load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION", "pkl_cli_binaries", "pkl_doc_cli_binaries")
-load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", "pkl_project_mirrors", _pkl_project = "pkl_project")
+load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", "pkl_project_http_rewrites", _pkl_project = "pkl_project")
 load("//pkl/private:remote_pkl_package.bzl", "remote_pkl_package")
 
 pkl_project = tag_class(
@@ -82,9 +82,9 @@ def _toolchain_extension(module_ctx):
             # Make sure all the remote files are downloaded and unpacked
             packages = parse_pkl_project_deps_json(module_ctx.read(proj.pkl_project_deps))
 
-            mirrors_repo_name = proj.name + "_mirrors"
-            pkl_project_mirrors(
-                name = mirrors_repo_name,
+            rewrites_repo_name = proj.name + "_http_rewrites"
+            pkl_project_http_rewrites(
+                name = rewrites_repo_name,
                 pkl_project = proj.pkl_project,
             )
 
@@ -94,7 +94,7 @@ def _toolchain_extension(module_ctx):
                         name = package.workspace_name,
                         url = package.url,
                         sha256 = package.sha256,
-                        mirrors = "@" + mirrors_repo_name + "//:mirrors.json",
+                        rules = "@" + rewrites_repo_name + "//:rules.json",
                     )
                     seen_packages.append(package.workspace_name)
 

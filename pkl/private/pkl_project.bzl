@@ -137,8 +137,8 @@ pkl_cache(
 
     rctx.file("BUILD.bazel", content = build_bazel_content, executable = False)
 
-def _pkl_project_mirrors_impl(rctx):
-    mirrors = _eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project), extra_args = [
+def _pkl_project_http_rewrites_impl(rctx):
+    rules = _eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project), extra_args = [
         "--expression",
         # Render the rewrite rules as list, to make sure the order is preserved.
         """
@@ -152,15 +152,15 @@ def _pkl_project_mirrors_impl(rctx):
           )
         """,
     ])
-    rctx.file("mirrors.json", content = json.encode(mirrors))
-    rctx.file("BUILD.bazel", content = 'exports_files(["mirrors.json"])\n')
+    rctx.file("rules.json", content = json.encode(rules))
+    rctx.file("BUILD.bazel", content = 'exports_files(["rules.json"])\n')
 
-pkl_project_mirrors = repository_rule(
-    _pkl_project_mirrors_impl,
-    doc = "Evaluates a PklProject file once to extract HTTP mirror rewrites.",
+pkl_project_http_rewrites = repository_rule(
+    _pkl_project_http_rewrites_impl,
+    doc = "Evaluates a PklProject file once to extract HTTP rewrite rules.",
     attrs = {
         "pkl_project": attr.label(
-            doc = "The PklProject file to evaluate for mirror configuration.",
+            doc = "The PklProject file to evaluate for HTTP rewrite rules.",
             allow_single_file = True,
             mandatory = True,
         ),
