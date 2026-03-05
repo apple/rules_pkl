@@ -138,8 +138,20 @@ pkl_cache(
     rctx.file("BUILD.bazel", content = build_bazel_content, executable = False)
 
 def _pkl_project_mirrors_impl(rctx):
-    project = _eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project))
-    mirrors = project.get("evaluatorSettings", {}).get("http", {}).get("rewrites", {})
+    mirrors = _eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project), extra_args = [
+        "--expression",
+        # Render the rewrite rules as list, to make sure the order is preserved.
+        """
+        new JsonRenderer {}
+          .renderValue(
+            (evaluatorSettings?.http?.rewrites?.toMap() ?? Map())
+              .entries
+              .map(
+                (_rule) -> Map(_rule.key, _rule.value)
+              )
+          )
+        """,
+    ])
     rctx.file("mirrors.json", content = json.encode(mirrors))
     rctx.file("BUILD.bazel", content = 'exports_files(["mirrors.json"])\n')
 

@@ -23,11 +23,12 @@ def rewrite_url(url, mirrors):
 
     Args:
         url: The original URL to potentially rewrite.
-        mirrors: A dict mapping original URL prefixes to mirror URL prefixes.
+        mirrors: A list mapping original URL prefixes to mirror URL prefixes.
     Returns:
         The rewritten URL if any of the mirrors matched. Otherwise the original URL.
     """
-    for original, mirror in mirrors.items():
+    for rewrite in mirrors:
+        original, mirror = rewrite.items()[0]
         if url.startswith(original):
             return mirror + url[len(original):]
     return url

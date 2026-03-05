@@ -21,7 +21,10 @@ evaluatorSettings {
     rewrites {
       // Mirror pkg.pkl-lang.org back to itself so we can test the rewrite
       // code path without requiring a real mirror server.
-      ["https://pkg.pkl-lang.org/"] = "https://pkg.pkl-lang.org/"
+      ["https://pkg.pkl-lang.org/pkl-k8s/"] = "https://pkg.pkl-lang.org/pkl-k8s/"
+      // Order matters: first match wins.
+      // If order is not followed, it will fail because this mirror points nowhere.
+      ["https://pkg.pkl-lang.org/"] = "https://example.com/"
     }
   }
 }
