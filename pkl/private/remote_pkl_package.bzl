@@ -45,7 +45,7 @@ def _remote_pkl_package_impl(rctx):
     metadata_file = "package-2/%s/%s.json" % (url_without_scheme, file_name)
     package_archive = "package-2/%s/%s.zip" % (url_without_scheme, file_name)
 
-    rules = {}
+    rules = []
     if rctx.attr.rules:
         rules = json.decode(rctx.read(rctx.path(rctx.attr.rules)))
 
