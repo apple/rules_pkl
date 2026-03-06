@@ -5,3 +5,14 @@ dependencies {
     uri = "package://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1"
   }
 }
+
+evaluatorSettings {
+  http {
+    rewrites {
+      // Example of an HTTP rewrite rule.
+      // This will be picked up by Bazel and applied when downloading dependencies.
+      // See: https://pkl-lang.org/blog/using-packages-in-air-gapped-environments.html#mirror-server
+      ["https://example.com/"] = "https://my.mirror/example.com/"
+    }
+  }
+}

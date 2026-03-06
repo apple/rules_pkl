@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,21 @@ Repository rule for downloading remote Pkl packages.
 
 load(":pkl_package_names.bzl", "get_terminal_package_name")
 
+def rewrite_url(url, rules):
+    """Returns the rewritten URL if a mirror prefix matches, else the original URL.
+
+    Args:
+        url: The original URL to potentially rewrite.
+        rules: A list mapping original URL prefixes to mirror URL prefixes.
+    Returns:
+        The rewritten URL if any of the rules matched. Otherwise the original URL.
+    """
+    for rule in rules:
+        original, mirror = rule.items()[0]
+        if url.startswith(original):
+            return mirror + url[len(original):]
+    return url
+
 def _remote_pkl_package_impl(rctx):
     if not rctx.attr.url.startswith("projectpackage://"):
         fail("URL does not look like a Pkl project:", rctx.attr.url)
@@ -30,11 +45,17 @@ def _remote_pkl_package_impl(rctx):
     metadata_file = "package-2/%s/%s.json" % (url_without_scheme, file_name)
     package_archive = "package-2/%s/%s.zip" % (url_without_scheme, file_name)
 
-    # Grab the JSON from the original location
-    rctx.download(url, sha256 = rctx.attr.sha256, output = metadata_file)
+    rules = []
+    if rctx.attr.rules:
+        rules = json.decode(rctx.read(rctx.path(rctx.attr.rules)))
+
+    # Grab the JSON from the original location, apply any rewrite rules.
+    rctx.download([rewrite_url(url, rules)], sha256 = rctx.attr.sha256, output = metadata_file)
 
     metadata = json.decode(rctx.read(metadata_file))
-    rctx.download(metadata["packageZipUrl"], sha256 = metadata["packageZipChecksums"]["sha256"], output = package_archive)
+
+    # Download the package ZIP, apply any rewrite rules.
+    rctx.download([rewrite_url(metadata["packageZipUrl"], rules)], sha256 = metadata["packageZipChecksums"]["sha256"], output = package_archive)
 
     rctx.file(
         "BUILD.bazel",
@@ -62,6 +83,11 @@ remote_pkl_package = repository_rule(
         "sha256": attr.string(
             doc = "SHA256 hash of the package's metadata file.",
             mandatory = True,
+        ),
+        "rules": attr.label(
+            doc = """A JSON file containing a list of URL prefix rewrite rules.
+                Typically provided by the pkl_project_http_rewrites repository rule.""",
+            allow_single_file = True,
         ),
     },
 )
