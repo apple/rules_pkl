@@ -22,3 +22,5 @@ MODULE.bazel.lock
 # Pkl LSP
 .pkl-lsp/
 
+# VSCode
+.vscode/
