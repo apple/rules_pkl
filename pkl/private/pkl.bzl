@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -68,8 +68,10 @@ def _prepare_pkl_script(ctx, is_test_target):
 
     cache_root_path, caches, cache_deps = root_caches_and_dependencies(ctx.attr.srcs + ctx.attr.deps)
 
-    if is_test_target and cache_root_path != None:
-        cache_root_path = cache_root_path.removeprefix(ctx.genfiles_dir.path)[1:]
+    if is_test_target and len(caches):
+        # For test targets the script runs against the runfiles tree, so the
+        # cache directory must be addressed by its runfiles-relative path.
+        cache_root_path = caches[0].root.short_path
 
     if len(caches):
         pkl_project_path = _get_correct_path(caches[0].pkl_project, is_test_target)
@@ -221,8 +223,8 @@ def _pkl_eval_impl(ctx):
         if len(ctx.attr.outs) > 0:
             for output in ctx.outputs.outs:
                 outputs.append(output)
-            output_location = "{genfiles}/{package}".format(
-                genfiles = ctx.genfiles_dir.path,
+            output_location = "{bin}/{package}".format(
+                bin = ctx.bin_dir.path,
                 package = ctx.label.package,
             )
         else:

@@ -128,13 +128,13 @@ bazel_binaries = use_extension(
     dev_dependency = True,
 )
 bazel_binaries.download(version = "7.6.1")
-bazel_binaries.download(version = "8.2.1")
+bazel_binaries.download(version = "8.7.0")
 use_repo(
     bazel_binaries,
     "bazel_binaries",
     "bazel_binaries_bazelisk",
     "build_bazel_bazel_7_6_1",
-    "build_bazel_bazel_8_2_1",
+    "build_bazel_bazel_8_7_0",
 )
 
 hawkeye = use_extension("//tools/lint/hawkeye:extensions.bzl", "hawkeye", dev_dependency = True)

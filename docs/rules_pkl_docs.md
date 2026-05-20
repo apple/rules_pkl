@@ -182,7 +182,7 @@ pkl_toolchain(<a href="#pkl_toolchain-name">name</a>, <a href="#pkl_toolchain-cl
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_doc")
 
-pkl_doc(<a href="#pkl_doc-name">name</a>, <a href="#pkl_doc-srcs">srcs</a>, <a href="#pkl_doc-kwargs">kwargs</a>)
+pkl_doc(<a href="#pkl_doc-name">name</a>, <a href="#pkl_doc-srcs">srcs</a>, <a href="#pkl_doc-kwargs">**kwargs</a>)
 </pre>
 
 Generate documentation website for Pkl files.
@@ -204,7 +204,7 @@ Generate documentation website for Pkl files.
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_java_library")
 
-pkl_java_library(<a href="#pkl_java_library-name">name</a>, <a href="#pkl_java_library-srcs">srcs</a>, <a href="#pkl_java_library-module_path">module_path</a>, <a href="#pkl_java_library-generate_getters">generate_getters</a>, <a href="#pkl_java_library-deps">deps</a>, <a href="#pkl_java_library-pkl_java_deps">pkl_java_deps</a>, <a href="#pkl_java_library-tags">tags</a>, <a href="#pkl_java_library-kwargs">kwargs</a>)
+pkl_java_library(<a href="#pkl_java_library-name">name</a>, <a href="#pkl_java_library-srcs">srcs</a>, <a href="#pkl_java_library-module_path">module_path</a>, <a href="#pkl_java_library-generate_getters">generate_getters</a>, <a href="#pkl_java_library-deps">deps</a>, <a href="#pkl_java_library-pkl_java_deps">pkl_java_deps</a>, <a href="#pkl_java_library-tags">tags</a>, <a href="#pkl_java_library-kwargs">**kwargs</a>)
 </pre>
 
 Create a compiled JAR of Java source files generated from Pkl source files.
@@ -231,7 +231,7 @@ Create a compiled JAR of Java source files generated from Pkl source files.
 <pre>
 load("@rules_pkl//pkl:defs.bzl", "pkl_test_suite")
 
-pkl_test_suite(<a href="#pkl_test_suite-name">name</a>, <a href="#pkl_test_suite-srcs">srcs</a>, <a href="#pkl_test_suite-deps">deps</a>, <a href="#pkl_test_suite-tags">tags</a>, <a href="#pkl_test_suite-visibility">visibility</a>, <a href="#pkl_test_suite-size">size</a>, <a href="#pkl_test_suite-test_suffix">test_suffix</a>, <a href="#pkl_test_suite-kwargs">kwargs</a>)
+pkl_test_suite(<a href="#pkl_test_suite-name">name</a>, <a href="#pkl_test_suite-srcs">srcs</a>, <a href="#pkl_test_suite-deps">deps</a>, <a href="#pkl_test_suite-tags">tags</a>, <a href="#pkl_test_suite-visibility">visibility</a>, <a href="#pkl_test_suite-size">size</a>, <a href="#pkl_test_suite-test_suffix">test_suffix</a>, <a href="#pkl_test_suite-kwargs">**kwargs</a>)
 </pre>
 
 Create a suite of Pkl tests from the provided files.
