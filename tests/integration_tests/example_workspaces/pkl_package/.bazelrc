@@ -1,0 +1,6 @@
+common --enable_bzlmod
+
+# Required to load rules_java 9.x under Bazel 7 (default in Bazel 8+).
+common --experimental_rule_extension_api
+
+test --test_output=errors

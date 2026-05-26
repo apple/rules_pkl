@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ cat >"${INPUT_JSON}" <<EOF
     "compatibility_level": "1",
     "deps": [],
     "matrix_platforms": ["debian11", "ubuntu2204", "macos", "macos_arm64"],
-    "matrix_bazel_versions": ["8.x", "7.x"],
+    "matrix_bazel_versions": ["9.x", "8.x", "7.x"],
     "module_dot_bazel": "${RULES_PKL_DIR}/MODULE.bazel",
     "name": "rules_pkl",
     "patches": [],
