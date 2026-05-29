@@ -31,8 +31,16 @@ bzl_library(
     srcs = glob(["*.bzl"]),
     visibility = ["//pkl:__subpackages__"],
     deps = [
+        ":java_single_jar_bzl",
         "@rules_jvm_external//:implementation",
     ],
+)
+
+# Proxy bzl_library for @rules_java//java/common/rules:java_single_jar.bzl, which
+# lacks a public bzl_library target in rules_java, causing stardoc to fail.
+bzl_library(
+    name = "java_single_jar_bzl",
+    srcs = ["@rules_java//java/common/rules:java_single_jar.bzl"],
 )
 
 sh_binary(
