@@ -89,17 +89,35 @@ def convert_dict_to_options(option_name, items_dict):
         list.append("{key}={value}".format(key = key, value = value))
     return list
 
+def _watch_symlink_target(rctx, label):
+    """Validates that a label points to an existing file and watches it for changes.
+
+    Args:
+        rctx: The repository context.
+        label: The label to validate.
+    Returns:
+        The resolved path.
+    """
+    path = rctx.path(label)
+    if not path.exists:
+        fail("Cannot symlink '{}': file does not exist.".format(label))
+    rctx.watch(path)
+    return path
+
 def _pkl_project_impl(rctx):
-    packages = parse_pkl_project_deps_json(rctx.read(rctx.attr.pkl_project_deps))
+    pkl_project_path = _watch_symlink_target(rctx, rctx.attr.pkl_project)
+    pkl_project_deps_path = _watch_symlink_target(rctx, rctx.attr.pkl_project_deps)
+
+    packages = parse_pkl_project_deps_json(rctx.read(pkl_project_deps_path))
     targets_for_all = []
     for package in packages:
         targets_for_all.append("@%s//:item" % package.workspace_name)
 
-    rctx.symlink(rctx.attr.pkl_project, "PklProject")
-    rctx.symlink(rctx.path(rctx.attr.pkl_project_deps), "PklProject.deps.json")
+    rctx.symlink(pkl_project_path, "PklProject")
+    rctx.symlink(pkl_project_deps_path, "PklProject.deps.json")
 
     env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
-    pkl_project_metadata = _eval_pkl_project(rctx, "PklProject", extra_args = env_vars + rctx.attr.extra_flags)
+    pkl_project_metadata = _eval_pkl_project(rctx, pkl_project_path, extra_args = env_vars + rctx.attr.extra_flags)
     has_package = "package" in pkl_project_metadata
 
     build_bazel_content = ""
@@ -138,7 +156,8 @@ pkl_cache(
     rctx.file("BUILD.bazel", content = build_bazel_content, executable = False)
 
 def _pkl_project_http_rewrites_impl(rctx):
-    rules = _eval_pkl_project(rctx, rctx.path(rctx.attr.pkl_project), extra_args = [
+    pkl_project_path = _watch_symlink_target(rctx, rctx.attr.pkl_project)
+    rules = _eval_pkl_project(rctx, pkl_project_path, extra_args = [
         "--expression",
         # Render the rewrite rules as list, to make sure the order is preserved.
         """
