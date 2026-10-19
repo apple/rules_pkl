@@ -80,6 +80,11 @@ def _prepare_pkl_script(ctx, is_test_target):
         path_to_symlink_target[pkl_project_path] = "%s/PklProject" % working_dir
         path_to_symlink_target[pkl_project_deps_path] = "%s/PklProject.deps.json" % working_dir
 
+        # Stage the PklProject of each local project dependency where the root PklProject expects it.
+        for local_project in (getattr(caches[0], "local_projects", None) or []):
+            local_project_path = _get_correct_path(local_project.file, is_test_target)
+            path_to_symlink_target[local_project_path] = "%s/%s/PklProject" % (working_dir, local_project.path)
+
     symlinks_json_file = ctx.actions.declare_file(ctx.label.name + "_symlinks.json")
     ctx.actions.write(output = symlinks_json_file, content = json.encode(path_to_symlink_target))
     pkl_symlink_tool = pkl_toolchain.symlink_tool[DefaultInfo].files_to_run.executable

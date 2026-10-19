@@ -33,6 +33,11 @@ def parse_pkl_project_deps_json(pkl_deps_json_string_path):
 
     seen_remote_pkl_packages = {}
     for data in lock_file_contents["resolvedDependencies"].values():
+        if data.get("type") == "local":
+            # Local project dependencies are workspace sources, so there is nothing to download.
+            # See `parse_pkl_project_local_deps` for how they are staged.
+            continue
+
         if data.get("type") != "remote":
             fail("Unsupported type", data)
 
@@ -45,13 +50,41 @@ def parse_pkl_project_deps_json(pkl_deps_json_string_path):
 
     return seen_remote_pkl_packages.values()
 
-def _eval_pkl_project(ctx, pkl_project_path, extra_args = []):
+def parse_pkl_project_local_deps(pkl_deps_json_string):
+    """Extracts the paths of local project dependencies from the contents of a PklProject.deps.json.
+
+    Args:
+        pkl_deps_json_string: contents of a PklProject.deps.json file.
+    Returns:
+        A sorted, de-duplicated list of paths (relative to the directory containing the root PklProject)
+        of the local projects the root project depends on.
+    """
+    lock_file_contents = json.decode(pkl_deps_json_string)
+
+    if lock_file_contents["schemaVersion"] != 1:
+        fail("Unknown schema version in lock file:", lock_file_contents["schemaVersion"])
+
+    paths = {}
+    for data in lock_file_contents["resolvedDependencies"].values():
+        if data.get("type") != "local":
+            continue
+
+        path = data["path"].rstrip("/")
+        if not path or path.startswith("/") or ".." in path.split("/"):
+            fail("Unsupported local project dependency path (must be relative, non-empty and not contain '..'):", data)
+        paths[path] = True
+
+    return sorted(paths.keys())
+
+def _eval_pkl_project(ctx, pkl_project_path, extra_args = [], project_dir = None):
     """Evaluates a PklProject file as JSON and returns the decoded object.
 
     Args:
         ctx: A repository context or module context.
         pkl_project_path: Path to the PklProject file to evaluate.
         extra_args: Additional arguments to pass to `pkl eval`.
+        project_dir: If set, passed as `--project-dir` so that Pkl loads the project from this directory
+            instead of searching up from the working directory (which could find a symlinked copy).
     Returns:
         The JSON object output of `pkl eval <pkl_project_path> -f json`.
     """
@@ -66,7 +99,8 @@ def _eval_pkl_project(ctx, pkl_project_path, extra_args = []):
     else:
         fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = ctx.os.name, arch = ctx.os.arch))
 
-    result = ctx.execute([pkl_executable, "eval", str(pkl_project_path), "--format", "json"] + extra_args)
+    project_dir_args = ["--project-dir", str(project_dir)] if project_dir else []
+    result = ctx.execute([pkl_executable, "eval", str(pkl_project_path), "--format", "json"] + project_dir_args + extra_args)
     if result.return_code != 0:
         fail("Error evaluating PklProject: {}".format(result.stderr))
     return json.decode(result.stdout)
@@ -116,8 +150,39 @@ def _pkl_project_impl(rctx):
     rctx.symlink(pkl_project_path, "PklProject")
     rctx.symlink(pkl_project_deps_path, "PklProject.deps.json")
 
+    # Local project dependencies are staged next to the root PklProject at build time, which only lines up
+    # when the root PklProject lives in the root package of the main repository.
+    local_paths = parse_pkl_project_local_deps(rctx.read(pkl_project_deps_path))
+    local_projects = {}
+    if local_paths:
+        label = rctx.attr.pkl_project
+        if label.workspace_name != "" or label.package != "":
+            fail("Local project dependencies require the root PklProject to be //:PklProject (got {})".format(label))
+
+        for path in local_paths:
+            local_project_path = pkl_project_path.dirname
+            for segment in path.split("/"):
+                local_project_path = local_project_path.get_child(segment)
+            local_project_path = local_project_path.get_child("PklProject")
+            if not local_project_path.exists:
+                fail("Local project dependency '{}' has no PklProject at {}".format(path, local_project_path))
+
+            # Watch the local PklProject so that changes re-evaluate this repository.
+            rctx.watch(local_project_path)
+            staged = "local/{}/PklProject".format(path)
+            rctx.symlink(local_project_path, staged)
+            local_projects[staged] = path
+
     env_vars = convert_dict_to_options("--env-var", rctx.attr.environment)
-    pkl_project_metadata = _eval_pkl_project(rctx, pkl_project_path, extra_args = env_vars + rctx.attr.extra_flags)
+
+    # Point Pkl at the real project directory. Otherwise Pkl finds the symlinked PklProject in this
+    # repository's directory, and relative imports of local projects resolve inside the external repository.
+    pkl_project_metadata = _eval_pkl_project(
+        rctx,
+        pkl_project_path,
+        extra_args = env_vars + rctx.attr.extra_flags,
+        project_dir = pkl_project_path.dirname,
+    )
     has_package = "package" in pkl_project_metadata
 
     build_bazel_content = ""
@@ -145,12 +210,14 @@ pkl_cache(
     pkl_project = "PklProject",
     pkl_project_deps = "PklProject.deps.json",
     items = {targets_for_all},
+    local_projects = {local_projects},
 )
 
 """.format(
         pkl_project_file = "PklProject",
         pkl_project_deps = "PklProject.deps.json",
         targets_for_all = repr(targets_for_all),
+        local_projects = repr(local_projects),
     )
 
     rctx.file("BUILD.bazel", content = build_bazel_content, executable = False)
@@ -192,6 +259,10 @@ pkl_project = repository_rule(
     Parses the PklProject.deps.json and parses the PklProject file to extract the information from the package
     object. This is then used to populate the attributes of the pkl_project rule and pkl_cache rule in the BUILD file
     generated by this repository rule.
+
+    Local project dependencies (type `local` in PklProject.deps.json) are not downloaded. Their PklProject files are
+    watched and exposed to the generated pkl_cache so they get staged next to the root PklProject when running Pkl.
+    This requires the root PklProject to be `//:PklProject` of the main repository.
     """,
     attrs = {
         "pkl_project": attr.label(
