@@ -78,6 +78,11 @@ def _prepare_pkl_script(ctx, is_test_target):
         symlinks_args.add(caches[0].pkl_project_deps.short_path if is_test_target else caches[0].pkl_project_deps)
         symlinks_args.add("PklProject.deps.json")
 
+        # Stage the PklProject of each local project dependency where the root PklProject expects it.
+        for local_project in caches[0].local_projects:
+            symlinks_args.add(local_project.file.short_path if is_test_target else local_project.file)
+            symlinks_args.add("%s/PklProject" % local_project.path)
+
     symlinks_file = None
     if is_test_target:
         # Test targets don't use path mapping, so the file can be written directly.

@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ def _pkl_project_single_caches_test(ctx):
     env = analysistest.begin(ctx)
     fake_test_provider = analysistest.target_under_test(env)[FakeSingleCacheTestInfo]
     actual = (fake_test_provider.root_path, fake_test_provider.caches[0].label, fake_test_provider.cache_inputs)
-    expected = ("/root/path", "cache1", [struct(path = "/root/path"), "project1", _FAKE_DEPSET])
+    expected = ("/root/path", "cache1", [struct(path = "/root/path"), "project1", _FAKE_DEPSET, "local_project1"])
     asserts.equals(env, expected, actual)
     return analysistest.end(env)
 
@@ -116,6 +116,7 @@ def _pkl_project_single_cache_fake_rule(_ctx):
                         root = struct(path = "/root/path"),
                         pkl_project = "project1",
                         pkl_project_deps = _FAKE_DEPSET,
+                        local_projects = (struct(file = "local_project1", path = "local/path"),),
                     ),
                 ]),
             ),

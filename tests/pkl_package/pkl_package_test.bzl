@@ -1,4 +1,4 @@
-# Copyright © 2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2025-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,16 @@ def _pkl_package_test_impl(ctx):
     return analysistest.end(env)
 
 pkl_package_test = analysistest.make(_pkl_package_test_impl)
+
+def _pkl_package_with_local_dependencies_test_impl(ctx):
+    env = analysistest.begin(ctx)
+    asserts.expect_failure(env, "pkl_package does not support projects with local dependencies")
+    return analysistest.end(env)
+
+pkl_package_with_local_dependencies_test = analysistest.make(
+    _pkl_package_with_local_dependencies_test_impl,
+    expect_failure = True,
+)
 
 def _pkl_package_contents_test_impl(ctx):
     package_info = ctx.attr.pkl_package_under_test[PklPackageInfo]
@@ -127,6 +137,7 @@ unittest.make(
     attrs = {"target_under_test": attr.label()},
 )
 
+# buildifier: disable=function-docstring-args
 def pkl_package_test_suite(name):
     pkl_project_rule(
         name = "project",
@@ -148,4 +159,20 @@ def pkl_package_test_suite(name):
         expected_version = "1.2.3",
         expected_base_uri = "package://example.com/my-package",
         expected_package_zip_url = "https://example.com/my-package/my-package@1.2.3.zip",
+    )
+
+    pkl_project_rule(
+        name = "project_with_local_dependencies",
+        pkl_project_file = "//tests/pkl_package:PklProject",
+        pkl_project_deps = "//tests/pkl_package:PklProject.deps.json",
+        has_local_dependencies = True,
+    )
+    pkl_package(
+        name = "package_with_local_dependencies",
+        project = ":project_with_local_dependencies",
+        tags = ["manual"],
+    )
+    pkl_package_with_local_dependencies_test(
+        name = "pkl_package_with_local_dependencies_test",
+        target_under_test = ":package_with_local_dependencies",
     )

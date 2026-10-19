@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ def _poisoned_pkl_cache(ctx):
                 pkl_project = poisoned_pklproject_file,
                 pkl_project_deps = poisoned_pklproject_deps,
                 root = poisoned_root_dir,
+                local_projects = (),
             ),
         ]),
         dep_files = depset(),

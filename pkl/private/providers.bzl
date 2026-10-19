@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ PklCacheInfo = provider(
         "label": "The `Label` of the rule that produced this cache info",
         "pkl_project": "A `File` representing the PklProject that this cache was created from. Used for mapping shortnames to cache entries.",
         "pkl_project_deps": "A `File` representing the PklProject.deps.json that this cache was created from.",
+        "local_projects": "A tuple of structs with fields `file` (the `PklProject` `File` of a local project dependency) and `path` (its directory, relative to the root PklProject). Each file is staged at `<path>/PklProject`.",
     },
 )
 
@@ -51,6 +52,7 @@ PklMetadataInfo = provider(
         "base_uri": "the value of the base uri field in the PklProject file",
         "pkl_project_file": "The PklProject file",
         "pkl_project_deps": "The PklProject.deps.json file",
+        "has_local_dependencies": "Whether the PklProject has local project dependencies",
         "pkl_project_name": "the name of the project in the PklProject file",
         "pkl_project_version": "the version of the project in the PklProject file",
     },
