@@ -20,4 +20,5 @@ pkl_library(
     name = "platform",
     srcs = ["Component.pkl"],
     visibility = ["//visibility:public"],
+    deps = ["//common/pkl:common"],
 )

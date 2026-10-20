@@ -12,6 +12,11 @@
       "checksums": {
         "sha256": "75c6d66d94c335417a3c502e107aaeadf7a60b4e1d34b2c979afe11193205a1a"
       }
+    },
+    "package://example.com/common@1": {
+      "type": "local",
+      "uri": "projectpackage://example.com/common@1.0.0",
+      "path": "common/pkl"
     }
   }
 }

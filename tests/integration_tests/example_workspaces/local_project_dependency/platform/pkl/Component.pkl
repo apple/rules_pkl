@@ -14,8 +14,14 @@
 // limitations under the License.
 //===----------------------------------------------------------------------===//
 
+import "@common/Labels.pkl"
 import "@k8s/api/core/v1/ConfigMap.pkl"
 
 configMap: ConfigMap = new {
-  metadata { name = "from-platform" }
+  metadata {
+    name = "from-platform"
+    labels {
+      ["team"] = Labels.team
+    }
+  }
 }

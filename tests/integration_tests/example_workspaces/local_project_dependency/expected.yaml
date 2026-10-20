@@ -2,4 +2,6 @@ configMap:
   apiVersion: v1
   kind: ConfigMap
   metadata:
+    labels:
+      team: platform
     name: from-platform

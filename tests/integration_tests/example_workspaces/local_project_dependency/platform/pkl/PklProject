@@ -25,4 +25,5 @@ package {
 
 dependencies {
   ["k8s"] { uri = "package://pkg.pkl-lang.org/pkl-k8s/k8s@1.0.1" }
+  ["common"] = import("../../common/pkl/PklProject")
 }
