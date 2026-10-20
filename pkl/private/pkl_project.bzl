@@ -18,37 +18,44 @@ Repository rule for parsing the PklProject.deps.json and the PklProject file.
 
 load(":pkl_package_names.bzl", "transform_package_url_to_workspace_name")
 
+def _parse_deps_json(pkl_deps_json_string):
+    """Returns `(remote_packages, local_paths)` from the contents of a PklProject.deps.json."""
+    lock_file_contents = json.decode(pkl_deps_json_string)
+    if lock_file_contents["schemaVersion"] != 1:
+        fail("Unknown schema version in lock file:", lock_file_contents["schemaVersion"])
+
+    remote_packages = {}
+    local_paths = {}
+    for data in lock_file_contents["resolvedDependencies"].values():
+        dependency_type = data.get("type")
+        if dependency_type == "local":
+            path = data["path"].rstrip("/")
+            if not path or path.startswith("/") or ".." in path.split("/"):
+                fail("Unsupported local project dependency path (must be relative, non-empty and not contain '..'):", data)
+            local_paths[path] = True
+        elif dependency_type == "remote":
+            if data["uri"] not in remote_packages:
+                remote_packages[data["uri"]] = struct(
+                    workspace_name = transform_package_url_to_workspace_name(data["uri"]),
+                    url = data["uri"],
+                    sha256 = data["checksums"]["sha256"],
+                )
+        else:
+            fail("Unsupported type", data)
+
+    return remote_packages.values(), sorted(local_paths.keys())
+
 def parse_pkl_project_deps_json(pkl_deps_json_string_path):
     """Parses the contents of a JSON file containing Pkl Project dependencies.
+
+    Local project dependencies are skipped, as there is nothing to download.
 
     Args:
         pkl_deps_json_string_path: path to JSON file containing Pkl Project dependencies.
     Returns:
-        A list of structs containing Pkl dependency data.
+        A list of structs containing Pkl dependency data for remote packages.
     """
-    lock_file_contents = json.decode(pkl_deps_json_string_path)
-
-    if lock_file_contents["schemaVersion"] != 1:
-        fail("Unknown schema version in lock file:", lock_file_contents["schemaVersion"])
-
-    seen_remote_pkl_packages = {}
-    for data in lock_file_contents["resolvedDependencies"].values():
-        if data.get("type") == "local":
-            # Local project dependencies are workspace sources, so there is nothing to download.
-            # See `parse_pkl_project_local_deps` for how they are staged.
-            continue
-
-        if data.get("type") != "remote":
-            fail("Unsupported type", data)
-
-        if data["uri"] not in seen_remote_pkl_packages:
-            seen_remote_pkl_packages[data["uri"]] = struct(
-                workspace_name = transform_package_url_to_workspace_name(data["uri"]),
-                url = data["uri"],
-                sha256 = data["checksums"]["sha256"],
-            )
-
-    return seen_remote_pkl_packages.values()
+    return _parse_deps_json(pkl_deps_json_string_path)[0]
 
 def parse_pkl_project_local_deps(pkl_deps_json_string):
     """Extracts the paths of local project dependencies from the contents of a PklProject.deps.json.
@@ -59,22 +66,7 @@ def parse_pkl_project_local_deps(pkl_deps_json_string):
         A sorted, de-duplicated list of paths (relative to the directory containing the root PklProject)
         of the local projects the root project depends on.
     """
-    lock_file_contents = json.decode(pkl_deps_json_string)
-
-    if lock_file_contents["schemaVersion"] != 1:
-        fail("Unknown schema version in lock file:", lock_file_contents["schemaVersion"])
-
-    paths = {}
-    for data in lock_file_contents["resolvedDependencies"].values():
-        if data.get("type") != "local":
-            continue
-
-        path = data["path"].rstrip("/")
-        if not path or path.startswith("/") or ".." in path.split("/"):
-            fail("Unsupported local project dependency path (must be relative, non-empty and not contain '..'):", data)
-        paths[path] = True
-
-    return sorted(paths.keys())
+    return _parse_deps_json(pkl_deps_json_string)[1]
 
 def _eval_pkl_project(ctx, pkl_project_path, extra_args = [], project_dir = None):
     """Evaluates a PklProject file as JSON and returns the decoded object.
@@ -142,7 +134,7 @@ def _pkl_project_impl(rctx):
     pkl_project_path = _watch_symlink_target(rctx, rctx.attr.pkl_project)
     pkl_project_deps_path = _watch_symlink_target(rctx, rctx.attr.pkl_project_deps)
 
-    packages = parse_pkl_project_deps_json(rctx.read(pkl_project_deps_path))
+    packages, local_paths = _parse_deps_json(rctx.read(pkl_project_deps_path))
     targets_for_all = []
     for package in packages:
         targets_for_all.append("@%s//:item" % package.workspace_name)
@@ -152,7 +144,6 @@ def _pkl_project_impl(rctx):
 
     # Local project dependencies are staged next to the root PklProject at build time, which only lines up
     # when the root PklProject lives in the root package of the main repository.
-    local_paths = parse_pkl_project_local_deps(rctx.read(pkl_project_deps_path))
     local_projects = {}
     if local_paths:
         label = rctx.attr.pkl_project
