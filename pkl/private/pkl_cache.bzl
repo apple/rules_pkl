@@ -94,10 +94,17 @@ shift; shift;
         arguments = [args],
     )
 
+    local_projects = []
+    for label, path in ctx.attr.local_projects.items():
+        files = label.files.to_list()
+        if len(files) != 1:
+            fail("Expected exactly one file for local project '{}', got: {}".format(path, files))
+        local_projects.append(struct(file = files[0], path = path))
+
     return [
         DefaultInfo(
             files = depset([output_dir, script]),
-            runfiles = ctx.runfiles([output_dir]),
+            runfiles = ctx.runfiles([output_dir] + [lp.file for lp in local_projects]),
         ),
         PklFileInfo(
             dep_files = depset(),
@@ -106,6 +113,8 @@ shift; shift;
                     root = output_dir,
                     pkl_project = ctx.file.pkl_project,
                     pkl_project_deps = ctx.file.pkl_project_deps,
+                    # Must be a tuple: `PklCacheInfo` is stored in a depset, which requires immutable elements.
+                    local_projects = tuple(local_projects),
                     label = ctx.label,
                 ),
             ]),
@@ -123,6 +132,11 @@ pkl_cache = rule(
         ),
         "pkl_project_deps": attr.label(
             allow_single_file = True,
+        ),
+        "local_projects": attr.label_keyed_string_dict(
+            allow_files = True,
+            default = {},
+            doc = "Map of `PklProject` files of local project dependencies to their directory, relative to the root PklProject.",
         ),
     },
 )

@@ -40,5 +40,6 @@ def root_caches_and_dependencies(deps):
 
     cache_root_path = caches[0].root.path
     cache_dependencies = [caches[0].root, caches[0].pkl_project, caches[0].pkl_project_deps]
+    cache_dependencies.extend([lp.file for lp in (getattr(caches[0], "local_projects", None) or [])])
 
     return cache_root_path, caches, cache_dependencies

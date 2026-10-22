@@ -31,6 +31,7 @@ PklCacheInfo = provider(
         "label": "The `Label` of the rule that produced this cache info",
         "pkl_project": "A `File` representing the PklProject that this cache was created from. Used for mapping shortnames to cache entries.",
         "pkl_project_deps": "A `File` representing the PklProject.deps.json that this cache was created from.",
+        "local_projects": "A list of structs with fields `file` (the `PklProject` `File` of a local project dependency) and `path` (its directory, relative to the root PklProject). Each file is staged at `<path>/PklProject` next to the root PklProject.",
     },
 )
 
