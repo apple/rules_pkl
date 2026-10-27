@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+ * Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,53 +16,44 @@
 
 package org.pkl_lang.bazel.symlinks;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
+import java.util.List;
 
 class Symlinks {
-    private static final Type MAP_TYPE = new TypeToken<Map<String, String>>() { }.getType();
-
     private Symlinks() {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 1) {
-            throw new RuntimeException("Expected the first argument to be a path to a symlinks JSON file.");
+        if (args.length < 2) {
+            throw new RuntimeException("Expected arguments: a path to a symlinks file and a working directory.");
         }
 
-        var jsonFile = args[0];
+        var symlinksFile = Paths.get(args[0]);
+        var workingDir = Paths.get(args[1]);
 
-        if (!Files.exists(Paths.get(args[0]))) {
-            throw new RuntimeException("No symlinks JSON file exists at " + jsonFile);
+        if (!Files.exists(symlinksFile)) {
+            throw new RuntimeException("No symlinks file exists at " + symlinksFile);
         }
 
-        try (
-            FileReader file = new FileReader(jsonFile, StandardCharsets.UTF_8);
-            BufferedReader buf = new BufferedReader(file);
-        ) {
-            var gson = new Gson();
-            Map<String, String> symlinks = gson.fromJson(buf, MAP_TYPE);
+        // The file consists of pairs of lines: the file to copy, followed by where to copy it to (relative to the working directory).
+        List<String> lines = Files.readAllLines(symlinksFile, StandardCharsets.UTF_8);
+        if (lines.size() % 2 != 0) {
+            throw new RuntimeException("Expected the symlinks file to contain pairs of lines: " + symlinksFile);
+        }
 
-            for (Map.Entry<String, String> entry : symlinks.entrySet()) {
-                var target = Paths.get(entry.getKey()).toAbsolutePath().normalize();
-                var link = Paths.get(entry.getValue()).toAbsolutePath().normalize();
+        for (int i = 0; i < lines.size(); i += 2) {
+            var target = Paths.get(lines.get(i)).toAbsolutePath().normalize();
+            var link = workingDir.resolve(lines.get(i + 1)).toAbsolutePath().normalize();
 
-                if (Files.exists(link)) {
-                    continue;
-                }
-
-                Files.createDirectories(link.getParent());
-                Files.copy(target, link);
+            if (Files.exists(link)) {
+                continue;
             }
+
+            Files.createDirectories(link.getParent());
+            Files.copy(target, link);
         }
     }
 }

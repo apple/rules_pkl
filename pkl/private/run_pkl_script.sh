@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ shift 11
 
 properties_and_expressions=("$@")
 
-"$symlinks_executable" "$symlinks_json_file_path"
+"$symlinks_executable" "$symlinks_json_file_path" "$working_dir"
 
 ret=$?
 if [[ $ret != 0 ]]; then
@@ -49,6 +49,7 @@ fi
 
 if [ "$command" == "eval" ]; then
   if [ "$multiple_outputs" == "true" ]; then
+    rm -rf "${working_dir}/_generated_files"
     mkdir _generated_files
     output_args=( "--multiple-file-output-path" "_generated_files")
   else
@@ -98,7 +99,8 @@ fi
 if [[ "$command" == eval ]]; then
   if [ "$multiple_outputs" == true ]; then
     if [ -d "${working_dir}/_generated_files" ]; then
-      mv "${working_dir}/_generated_files"/* "$expected_output"
+      mkdir -p "$expected_output"
+      cp -R "${working_dir}/_generated_files"/. "$expected_output"/
     fi
   else
     mv "${working_dir}/${expected_output}" "$expected_output"
