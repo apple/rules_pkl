@@ -30,3 +30,11 @@ test:ci --curses=no --color=yes --show_timestamps
 
 # Use a consistent disk and repository cache.
 build:ci --disk_cache=~/.cache/bazel/disk --repository_cache=~/.cache/bazel/repositories
+
+###
+# Path mapping
+###
+
+# Enables output path mapping, which strips the configuration from output paths. Use `--config=path_mapping` to test that
+# rules are path-mapping safe. See https://github.com/bazelbuild/bazel/discussions/22658
+build:path_mapping --experimental_output_paths=strip

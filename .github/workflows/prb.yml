@@ -49,6 +49,8 @@ jobs:
         printf '%s\n' "$output_base_line" > /home/runner/.bazelrc.cmdline
     - name: Bazel test
       run: bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //...
+    - name: Bazel test (path mapping)
+      run: bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci --config=path_mapping -- //... -//tests/integration_tests/...
     - name: Upload Test Result XML
       if: '!cancelled()'
       uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5

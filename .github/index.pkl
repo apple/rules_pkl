@@ -89,6 +89,12 @@ local test: Workflow = new {
           name = "Bazel test"
           run = "bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci -- //..."
         }
+        new {
+          name = "Bazel test (path mapping)"
+          // The integration tests run their own Bazel server, which doesn't inherit `--config=path_mapping`.
+          run =
+            "bazel --bazelrc=/home/runner/.bazelrc.cmdline test --config=ci --config=path_mapping -- //... -//tests/integration_tests/..."
+        }
       }
     }
     ["check-hawkeye"] = new HawkeyeCheck {}.job

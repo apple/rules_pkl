@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_binary")
-load("@rules_jvm_external//:defs.bzl", "artifact")
 
 filegroup(
     name = "all_files",
@@ -33,10 +32,4 @@ java_binary(
     ],
     main_class = "org.pkl_lang.bazel.symlinks.Symlinks",
     visibility = ["//visibility:public"],
-    deps = [
-        artifact(
-            "com.google.code.gson:gson",
-            repository_name = "rules_pkl_deps",
-        ),
-    ],
 )
