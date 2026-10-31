@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ def _pkl_project_rule_impl(ctx):
         PklMetadataInfo(
             pkl_project_file = ctx.file.pkl_project_file,
             pkl_project_deps = ctx.file.pkl_project_deps,
+            has_local_dependencies = ctx.attr.has_local_dependencies,
         ),
     ]
 
@@ -36,6 +37,9 @@ pkl_project_rule = rule(
         "pkl_project_deps": attr.label(
             allow_single_file = True,
             default = "PklProject.deps.json",
+        ),
+        "has_local_dependencies": attr.bool(
+            default = False,
         ),
     },
 )

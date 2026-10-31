@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,5 +40,6 @@ def root_caches_and_dependencies(deps):
 
     cache_root_path = caches[0].root.path
     cache_dependencies = [caches[0].root, caches[0].pkl_project, caches[0].pkl_project_deps]
+    cache_dependencies.extend([lp.file for lp in caches[0].local_projects])
 
     return cache_root_path, caches, cache_dependencies

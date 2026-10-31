@@ -21,6 +21,14 @@ load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", "pkl_projec
 load("//pkl/private:remote_pkl_package.bzl", "remote_pkl_package")
 
 pkl_project = tag_class(
+    doc = """Declares a PklProject and its PklProject.deps.json.
+
+    Local project dependencies (`dependencies { ["x"] = import("path/to/PklProject") }`) are supported:
+    their `PklProject` files are staged automatically next to the root `PklProject` and watched for changes.
+    Add the local project's sources via a `pkl_library` in the `deps` of `pkl_eval`/`pkl_test`.
+    Limitations: the root `PklProject` must be `//:PklProject` of the main repository when local
+    dependencies are used, and `pkl_package` does not support projects with local dependencies.
+    """,
     attrs = {
         "name": attr.string(
             doc = "Name of the workspace to generate",

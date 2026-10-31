@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ def _pkl_package_impl(ctx):
     executable = pkl_toolchain.cli[DefaultInfo].files_to_run.executable
 
     project_metadata_info = ctx.attr.project[PklMetadataInfo]
+    if project_metadata_info.has_local_dependencies:
+        fail("{}: pkl_package does not support projects with local dependencies".format(ctx.label))
     pkl_project_file = project_metadata_info.pkl_project_file
     pkl_project_deps = project_metadata_info.pkl_project_deps
 
