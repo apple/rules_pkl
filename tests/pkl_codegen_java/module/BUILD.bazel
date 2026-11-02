@@ -27,7 +27,10 @@ pkl_java_library(
     srcs = [
         "module.pkl",
     ],
-    pkl_java_deps = ["//tests/pkl_codegen_java:pkl-config-java-internal"],
+    pkl_java_deps = [
+        "//tests/pkl_codegen_java:pkl-config-java-internal",
+        "@custom_pkl_java_library_maven_deps//:org_jspecify_jspecify",
+    ],
     visibility = ["//tests/pkl_codegen_java:__subpackages__"],
 )
 
