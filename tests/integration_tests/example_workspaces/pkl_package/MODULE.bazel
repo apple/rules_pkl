@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,6 @@ use_repo(
     "pkl-cli-linux-aarch64",
     "pkl-cli-linux-amd64",
     "pkl-cli-macos-aarch64",
-    "pkl-cli-macos-amd64",
     "pklproject_basic",
     "pklproject_strip_prefix",
     "pklproject_version_override",

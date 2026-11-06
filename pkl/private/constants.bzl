@@ -17,6 +17,10 @@ Constants.
 """
 
 PKL_DEPS = {
+    "0.33.0": [
+        "org.pkl-lang:pkl-tools:0.33.0",
+        "com.google.code.gson:gson:2.13.1",
+    ],
     "0.32.2": [
         "org.pkl-lang:pkl-tools:0.32.2",
         "com.google.code.gson:gson:2.13.1",
@@ -44,6 +48,11 @@ PKL_DEPS = {
 }
 
 VERSIONS = {
+    "0.33.0": {
+        "macos-aarch64": "e39c157df0f00a35d34b46270a768784edcaf509aafbf743849b27b4c83ef83b",
+        "linux-aarch64": "edcea361402ecab0f3a93f86b1a896c41d00a9241f4962f70278254b08fbd26d",
+        "linux-amd64": "b9a6ddea6b382b7d4db4cf78e77aa3858e0c8a7e02939d2ba298574b5d1fcc69",
+    },
     "0.32.2": {
         "macos-aarch64": "466952f0b30c93dfa36393a5b3695159917ce4291e3c936a18a0a240cfbe98e9",
         "macos-amd64": "3c4c914a75210d3f3292740b4a8d447f9f832e81b60720bec57221e884717eee",
@@ -83,6 +92,11 @@ VERSIONS = {
 }
 
 DOC_VERSIONS = {
+    "0.33.0": {
+        "macos-aarch64": "f5a3a210bb5f1b99703273b59e42fbb3f9a202579b0044b9786dae9c4d946b0a",
+        "linux-aarch64": "c336696b56858ee4313da53e83d34918fe13c55794597fbd5d73e932ea4b6cba",
+        "linux-amd64": "ffada6120265e8d342644adbfd1d023c4873d55105794ac5060da62e1a356405",
+    },
     "0.32.2": {
         "macos-aarch64": "1dbe2e572835b4accbc79887b45260a808c2dcd68ab90aa81050b92cf4b47ee1",
         "macos-amd64": "56c23ae52614e8a6bc840ac266dc9290c6d1e21a5bdbdb2a422c4860aa9ced71",

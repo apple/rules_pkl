@@ -17,7 +17,9 @@ Module extension for using rules_pkl with bzlmod.
 """
 
 load("//pkl:repositories.bzl", "DEFAULT_PKL_VERSION", "pkl_cli_binaries", "pkl_doc_cli_binaries")
+load("//pkl/private:constants.bzl", "VERSIONS")
 load("//pkl/private:pkl_project.bzl", "parse_pkl_project_deps_json", "pkl_project_http_rewrites", _pkl_project = "pkl_project")
+load("//pkl/private:pkl_toolchains.bzl", "pkl_toolchains")
 load("//pkl/private:remote_pkl_package.bzl", "remote_pkl_package")
 
 pkl_project = tag_class(
@@ -77,6 +79,13 @@ def _toolchain_extension(module_ctx):
             if not mod.is_root:
                 fail("Only the root module can override the Pkl version")
             pkl_version = install.version
+
+    # Not every Pkl version distributes binaries for every platform.
+    pkl_binaries = {
+        "@pkl-cli-{platform}//file:downloaded".format(platform = platform): platform
+        for platform in VERSIONS[pkl_version]
+    }
+    for mod in module_ctx.modules:
         for proj in mod.tags.project:
             if proj.name in workspaces:
                 fail("May only declare workspace with name %s once." % proj.name)
@@ -94,6 +103,7 @@ def _toolchain_extension(module_ctx):
             pkl_project_http_rewrites(
                 name = rewrites_repo_name,
                 pkl_project = proj.pkl_project,
+                pkl_binaries = pkl_binaries,
             )
 
             for package in packages:
@@ -111,6 +121,7 @@ def _toolchain_extension(module_ctx):
                 name = proj.name,
                 pkl_project = proj.pkl_project,
                 pkl_project_deps = proj.pkl_project_deps,
+                pkl_binaries = pkl_binaries,
                 environment = proj.environment,
                 extra_flags = proj.extra_flags,
             )
@@ -119,6 +130,15 @@ def _toolchain_extension(module_ctx):
     direct_deps.extend(cli_binaries)
     doc_cli_binaries = pkl_doc_cli_binaries(version = pkl_version)
     direct_deps.extend(doc_cli_binaries)
+
+    # Only toolchains for platforms that have a binary can be registered, and `use_repo` can't
+    # import repositories that are conditionally generated, so rules_pkl registers them from here.
+    pkl_toolchains(
+        name = "pkl_toolchains",
+        version = pkl_version,
+    )
+    if any([mod.is_root and mod.name == "rules_pkl" for mod in module_ctx.modules]):
+        direct_deps.append("pkl_toolchains")
     return module_ctx.extension_metadata(
         reproducible = True,
         root_module_direct_deps = direct_deps,

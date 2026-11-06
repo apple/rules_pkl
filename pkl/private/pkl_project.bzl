@@ -68,11 +68,23 @@ def parse_pkl_project_local_deps(pkl_deps_json_string):
     """
     return _parse_deps_json(pkl_deps_json_string)[1]
 
+def _host_platform(ctx):
+    """Returns the platform that Bazel is running on, in the form used by the Pkl binaries (e.g. `macos-aarch64`)."""
+    if ctx.os.name == "linux" and ctx.os.arch == "amd64":
+        return "linux-amd64"
+    elif ctx.os.name == "linux" and ctx.os.arch == "aarch64":
+        return "linux-aarch64"
+    elif ctx.os.name == "mac os x" and ctx.os.arch == "x86_64":
+        return "macos-amd64"
+    elif ctx.os.name == "mac os x" and ctx.os.arch == "aarch64":
+        return "macos-aarch64"
+    fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = ctx.os.name, arch = ctx.os.arch))
+
 def _eval_pkl_project(ctx, pkl_project_path, extra_args = [], project_dir = None):
     """Evaluates a PklProject file as JSON and returns the decoded object.
 
     Args:
-        ctx: A repository context or module context.
+        ctx: A repository context. Its rule must have a `pkl_binaries` attribute.
         pkl_project_path: Path to the PklProject file to evaluate.
         extra_args: Additional arguments to pass to `pkl eval`.
         project_dir: If set, passed as `--project-dir` so that Pkl loads the project from this directory
@@ -80,16 +92,14 @@ def _eval_pkl_project(ctx, pkl_project_path, extra_args = [], project_dir = None
     Returns:
         The JSON object output of `pkl eval <pkl_project_path> -f json`.
     """
-    if ctx.os.name == "linux" and ctx.os.arch == "amd64":
-        pkl_executable = ctx.path(Label("@pkl-cli-linux-amd64//file:downloaded"))
-    elif ctx.os.name == "linux" and ctx.os.arch == "aarch64":
-        pkl_executable = ctx.path(Label("@pkl-cli-linux-aarch64//file:downloaded"))
-    elif ctx.os.name == "mac os x" and ctx.os.arch == "x86_64":
-        pkl_executable = ctx.path(Label("@pkl-cli-macos-amd64//file:downloaded"))
-    elif ctx.os.name == "mac os x" and ctx.os.arch == "aarch64":
-        pkl_executable = ctx.path(Label("@pkl-cli-macos-aarch64//file:downloaded"))
-    else:
-        fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = ctx.os.name, arch = ctx.os.arch))
+    platform = _host_platform(ctx)
+    pkl_binaries = {binary_platform: label for label, binary_platform in ctx.attr.pkl_binaries.items()}
+    if platform not in pkl_binaries:
+        fail("No Pkl binary is available for {platform} with the selected Pkl version. Available: {available}. Select a different version with `pkl.install`.".format(
+            platform = platform,
+            available = ", ".join(sorted(pkl_binaries)),
+        ))
+    pkl_executable = ctx.path(pkl_binaries[platform])
 
     project_dir_args = ["--project-dir", str(project_dir)] if project_dir else []
     result = ctx.execute([pkl_executable, "eval", str(pkl_project_path), "--format", "json"] + project_dir_args + extra_args)
@@ -233,6 +243,15 @@ def _pkl_project_http_rewrites_impl(rctx):
     rctx.file("rules.json", content = json.encode(rules))
     rctx.file("BUILD.bazel", content = 'exports_files(["rules.json"])\n')
 
+_PKL_BINARIES_ATTR = attr.label_keyed_string_dict(
+    doc = """The Pkl binaries that are available for the selected Pkl version.
+
+    Each key is the label of the binary, and each value is the platform that it runs on (e.g. `macos-aarch64`).
+    Only the binary for the platform that Bazel is running on is fetched.""",
+    allow_files = True,
+    mandatory = True,
+)
+
 pkl_project_http_rewrites = repository_rule(
     _pkl_project_http_rewrites_impl,
     doc = "Evaluates a PklProject file once to extract HTTP rewrite rules.",
@@ -242,6 +261,7 @@ pkl_project_http_rewrites = repository_rule(
             allow_single_file = True,
             mandatory = True,
         ),
+        "pkl_binaries": _PKL_BINARIES_ATTR,
     },
 )
 
@@ -269,6 +289,7 @@ pkl_project = repository_rule(
             allow_single_file = True,
             mandatory = True,
         ),
+        "pkl_binaries": _PKL_BINARIES_ATTR,
         "extra_flags": attr.string_list(
             doc = """Dictionary of name value pairs used to pass in Pkl external flags.
                 See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval""",
