@@ -21,8 +21,11 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("//pkl/private:constants.bzl", "DOC_VERSIONS", "PKL_DEPS", "VERSIONS")
 load("//pkl/private:repositories.bzl", _project_cache_path_and_dependencies = "root_caches_and_dependencies")
+load("//pkl/private:unsupported_pkl_binary.bzl", "unsupported_pkl_binary")
 
-DEFAULT_PKL_VERSION = "0.32.2"
+DEFAULT_PKL_VERSION = "0.33.0"
+
+_PLATFORMS = ["linux-aarch64", "linux-amd64", "macos-aarch64", "macos-amd64"]
 
 def pkl_cli_binaries(version = DEFAULT_PKL_VERSION):
     """
@@ -47,6 +50,12 @@ def pkl_cli_binaries(version = DEFAULT_PKL_VERSION):
             sha256 = sha256,
             executable = True,
         )
+
+    for arch in _PLATFORMS:
+        if arch not in VERSIONS[version]:
+            cli_name = "pkl-cli-{arch}".format(arch = arch)
+            binary_names.append(cli_name)
+            maybe(unsupported_pkl_binary, name = cli_name, version = version, tool = "pkl", platform = arch)
 
     return binary_names
 
@@ -73,6 +82,12 @@ def pkl_doc_cli_binaries(version = DEFAULT_PKL_VERSION):
             sha256 = sha256,
             executable = True,
         )
+
+    for arch in _PLATFORMS:
+        if arch not in DOC_VERSIONS[version]:
+            cli_name = "pkl-doc-cli-{arch}".format(arch = arch)
+            binary_names.append(cli_name)
+            maybe(unsupported_pkl_binary, name = cli_name, version = version, tool = "pkldoc", platform = arch)
 
     return binary_names
 
