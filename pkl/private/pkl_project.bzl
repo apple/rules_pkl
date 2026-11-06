@@ -91,6 +91,9 @@ def _eval_pkl_project(ctx, pkl_project_path, extra_args = [], project_dir = None
     else:
         fail("Couldn't find pkl executable for os {os} and arch {arch}".format(os = ctx.os.name, arch = ctx.os.arch))
 
+    if not pkl_executable.exists:
+        fail("No Pkl binary is available for {os} {arch} with the selected Pkl version. Use a different Pkl version (via `pkl.install`).".format(os = ctx.os.name, arch = ctx.os.arch))
+
     project_dir_args = ["--project-dir", str(project_dir)] if project_dir else []
     result = ctx.execute([pkl_executable, "eval", str(pkl_project_path), "--format", "json"] + project_dir_args + extra_args)
     if result.return_code != 0:
