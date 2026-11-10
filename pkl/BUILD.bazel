@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_java//java:defs.bzl", "java_binary")
 load("@rules_jvm_external//:defs.bzl", "artifact")
-load(":defs.bzl", "pkl_codegen_java_toolchain", "pkl_doc_toolchain", "pkl_toolchain")
+load(":defs.bzl", "pkl_codegen_java_toolchain", "pkl_toolchain")
 
 filegroup(
     name = "all_files",
@@ -28,27 +28,16 @@ filegroup(
 
 exports_files(["defs.bzl"])
 
+# The binaries depend on the selected Pkl version, so they're defined alongside the toolchains.
 alias(
     name = "pkl",
-    actual = select({
-        "@bazel_tools//src/conditions:darwin_arm64": "@pkl-cli-macos-aarch64//file:downloaded",
-        "@bazel_tools//src/conditions:darwin_arm64e": "@pkl-cli-macos-aarch64//file:downloaded",
-        "@bazel_tools//src/conditions:darwin_x86_64": "@pkl-cli-macos-amd64//file:downloaded",
-        "@bazel_tools//src/conditions:linux_aarch64": "@pkl-cli-linux-aarch64//file:downloaded",
-        "@bazel_tools//src/conditions:linux_x86_64": "@pkl-cli-linux-amd64//file:downloaded",
-    }),
+    actual = "@pkl_toolchains//:pkl",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "pkl_doc_cli",
-    actual = select({
-        "@bazel_tools//src/conditions:darwin_arm64": "@pkl-doc-cli-macos-aarch64//file:downloaded",
-        "@bazel_tools//src/conditions:darwin_arm64e": "@pkl-doc-cli-macos-aarch64//file:downloaded",
-        "@bazel_tools//src/conditions:darwin_x86_64": "@pkl-doc-cli-macos-amd64//file:downloaded",
-        "@bazel_tools//src/conditions:linux_aarch64": "@pkl-doc-cli-linux-aarch64//file:downloaded",
-        "@bazel_tools//src/conditions:linux_x86_64": "@pkl-doc-cli-linux-amd64//file:downloaded",
-    }),
+    actual = "@pkl_toolchains//:pkl_doc_cli",
 )
 
 toolchain_type(
@@ -56,69 +45,7 @@ toolchain_type(
     visibility = ["//visibility:public"],
 )
 
-pkl_toolchain(
-    name = "pkl_macos_aarch64",
-    cli = "@pkl-cli-macos-aarch64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_toolchain_macos_aarch64",
-    exec_compatible_with = [
-        "@platforms//os:macos",
-        "@platforms//cpu:aarch64",
-    ],
-    toolchain = ":pkl_macos_aarch64",
-    toolchain_type = ":toolchain_type",
-)
-
-pkl_toolchain(
-    name = "pkl_macos_amd64",
-    cli = "@pkl-cli-macos-amd64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_toolchain_macos_amd64",
-    exec_compatible_with = [
-        "@platforms//os:macos",
-        "@platforms//cpu:x86_64",
-    ],
-    toolchain = ":pkl_macos_amd64",
-    toolchain_type = ":toolchain_type",
-)
-
-pkl_toolchain(
-    name = "pkl_linux_aarch64",
-    cli = "@pkl-cli-linux-aarch64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_toolchain_linux_aarch64",
-    exec_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
-    ],
-    toolchain = ":pkl_linux_aarch64",
-    toolchain_type = ":toolchain_type",
-)
-
-pkl_toolchain(
-    name = "pkl_linux_amd64",
-    cli = "@pkl-cli-linux-amd64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_toolchain_linux_amd64",
-    exec_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
-    toolchain = ":pkl_linux_amd64",
-    toolchain_type = ":toolchain_type",
-)
+# The toolchains for the Pkl binaries are in `@pkl_toolchains`, as they depend on the selected Pkl version.
 
 java_binary(
     name = "pkl_cli_java",
@@ -163,70 +90,7 @@ toolchain(
 
 toolchain_type(
     name = "doc_toolchain_type",
-)
-
-pkl_doc_toolchain(
-    name = "pkl_doc_macos_aarch64",
-    cli = "@pkl-doc-cli-macos-aarch64//file",
     visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_doc_toolchain_macos_aarch64",
-    exec_compatible_with = [
-        "@platforms//os:macos",
-        "@platforms//cpu:aarch64",
-    ],
-    toolchain = ":pkl_doc_macos_aarch64",
-    toolchain_type = ":doc_toolchain_type",
-)
-
-pkl_doc_toolchain(
-    name = "pkl_doc_macos_amd64",
-    cli = "@pkl-doc-cli-macos-amd64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_doc_toolchain_macos_amd64",
-    exec_compatible_with = [
-        "@platforms//os:macos",
-        "@platforms//cpu:x86_64",
-    ],
-    toolchain = ":pkl_doc_macos_amd64",
-    toolchain_type = ":doc_toolchain_type",
-)
-
-pkl_doc_toolchain(
-    name = "pkl_doc_linux_aarch64",
-    cli = "@pkl-doc-cli-linux-aarch64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_doc_toolchain_linux_aarch64",
-    exec_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:aarch64",
-    ],
-    toolchain = ":pkl_doc_linux_aarch64",
-    toolchain_type = ":doc_toolchain_type",
-)
-
-pkl_doc_toolchain(
-    name = "pkl_doc_linux_amd64",
-    cli = "@pkl-doc-cli-linux-amd64//file",
-    visibility = ["//visibility:public"],
-)
-
-toolchain(
-    name = "pkl_doc_toolchain_linux_amd64",
-    exec_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
-    toolchain = ":pkl_doc_linux_amd64",
-    toolchain_type = ":doc_toolchain_type",
 )
 
 bzl_library(

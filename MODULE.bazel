@@ -41,11 +41,10 @@ use_repo(
     "pkl-cli-linux-aarch64",
     "pkl-cli-linux-amd64",
     "pkl-cli-macos-aarch64",
-    "pkl-cli-macos-amd64",
     "pkl-doc-cli-linux-aarch64",
     "pkl-doc-cli-linux-amd64",
     "pkl-doc-cli-macos-aarch64",
-    "pkl-doc-cli-macos-amd64",
+    "pkl_toolchains",
 )
 
 pkl_dev = use_extension("//pkl/extensions:pkl.bzl", "pkl", dev_dependency = True)
@@ -61,17 +60,11 @@ use_repo(
 
 register_toolchains(
     "@rules_pkl//pkl:pkl_toolchain_codegen_java",
-    "@rules_pkl//pkl:pkl_toolchain_linux_aarch64",
-    "@rules_pkl//pkl:pkl_toolchain_linux_amd64",
-    "@rules_pkl//pkl:pkl_toolchain_macos_aarch64",
-    "@rules_pkl//pkl:pkl_toolchain_macos_amd64",
-    "@rules_pkl//pkl:pkl_doc_toolchain_linux_aarch64",
-    "@rules_pkl//pkl:pkl_doc_toolchain_linux_amd64",
-    "@rules_pkl//pkl:pkl_doc_toolchain_macos_aarch64",
-    "@rules_pkl//pkl:pkl_doc_toolchain_macos_amd64",
+    # Only has toolchains for the platforms that the selected Pkl version has binaries for.
+    "@pkl_toolchains//:all",
 )
 
-pkl_lang_version = "0.32.2"
+pkl_lang_version = "0.33.0"
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(

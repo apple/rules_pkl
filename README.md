@@ -21,6 +21,25 @@ To use `rules_pkl`, enable `bzlmod` within your project, and then add the follow
 bazel_dep(name = "rules_pkl", version = "0.18.0")
 ```
 
+### Toolchains
+
+Toolchains are registered for the platforms that the selected Pkl version publishes binaries for.
+Other platforms fail with `No matching toolchains found`.
+
+Pkl `0.33.0` dropped macOS/amd64. On Intel Macs, select an older version, then run `bazel mod tidy`:
+
+```starlark
+pkl = use_extension("@rules_pkl//pkl/extensions:pkl.bzl", "pkl")
+pkl.install(version = "0.32.2")
+```
+
+#### Upgrading from `rules_pkl` 0.18.0 or earlier
+
+From `0.19.0` onwards, toolchains are generated for the selected Pkl version and registered by `rules_pkl`, instead of being defined in `@rules_pkl//pkl`:
+
+- Remove any `register_toolchains` of `@rules_pkl//pkl:pkl_toolchain_*` or `@rules_pkl//pkl:pkl_doc_toolchain_*`; they no longer exist.
+- With Pkl `0.33.0` or later, remove `pkl-cli-macos-amd64` and `pkl-doc-cli-macos-amd64` from `use_repo` (`bazel mod tidy` does this).
+
 ## Examples
 
 See the `examples/` directory for complete examples of how to use `rules_pkl`.
