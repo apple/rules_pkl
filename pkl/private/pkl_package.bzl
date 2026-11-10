@@ -51,6 +51,8 @@ def _pkl_package_impl(ctx):
 
     for f in ctx.files.srcs:
         f_path = f.short_path
+        if f_path.startswith("../"):
+            f_path = f_path.split("/", 2)[2]
         bin_path = ctx.bin_dir.path + "/"
         if f_path.startswith(bin_path):
             f_path = f_path.removeprefix(bin_path)
