@@ -36,6 +36,8 @@ pkl_package(
     extra_flags = ["--skip-publish-check"],
     project = "@pklproject_strip_prefix//:project",
     strip_prefix = "srcs",
+    # Also built from an external repository by the `pkl_package_external` workspace.
+    visibility = ["//visibility:public"],
 )
 
 pkl_package(

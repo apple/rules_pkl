@@ -100,6 +100,23 @@ bazel_integration_tests(
 )
 
 bazel_integration_tests(
+    name = "pkl_package_external_test",
+    bazel_versions = bazel_binaries.versions.all,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
+        # file permission issues when accessing/writing to the cache.
+        "no-sandbox",
+    ],
+    test_runner = ":simple_test_runner",
+    # Depends on the `pkl_package` workspace via `local_path_override`, so its files are needed too.
+    workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/pkl_package_external") +
+                      integration_test_utils.glob_workspace_files("example_workspaces/pkl_package") + [
+        "//:workspace_files",
+    ],
+    workspace_path = "example_workspaces/pkl_package_external",
+)
+
+bazel_integration_tests(
     name = "pkl_project_test",
     bazel_versions = bazel_binaries.versions.all,
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
@@ -168,6 +185,10 @@ test_suite(
         ) +
         integration_test_utils.bazel_integration_test_names(
             ":pkl_package_test",
+            bazel_binaries.versions.all,
+        ) +
+        integration_test_utils.bazel_integration_test_names(
+            ":pkl_package_external_test",
             bazel_binaries.versions.all,
         ) +
         integration_test_utils.bazel_integration_test_names(

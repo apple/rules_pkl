@@ -19,6 +19,10 @@ tests/integration_tests/example_workspaces/pkl_package/bazel-bin
 tests/integration_tests/example_workspaces/pkl_package/bazel-out
 tests/integration_tests/example_workspaces/pkl_package/bazel-pkl_package
 tests/integration_tests/example_workspaces/pkl_package/bazel-testlogs
+tests/integration_tests/example_workspaces/pkl_package_external/bazel-bin
+tests/integration_tests/example_workspaces/pkl_package_external/bazel-out
+tests/integration_tests/example_workspaces/pkl_package_external/bazel-pkl_package_external
+tests/integration_tests/example_workspaces/pkl_package_external/bazel-testlogs
 tests/integration_tests/example_workspaces/local_project_dependency/bazel-bin
 tests/integration_tests/example_workspaces/local_project_dependency/bazel-out
 tests/integration_tests/example_workspaces/local_project_dependency/bazel-local_project_dependency
