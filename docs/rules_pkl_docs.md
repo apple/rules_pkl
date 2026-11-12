@@ -72,7 +72,7 @@ Evaluate Pkl module(s).
 | <a id="pkl_eval-format"></a>format |  The format of the generated file to pass when calling `pkl`. See https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval.   | String | optional |  `""`  |
 | <a id="pkl_eval-multiple_outputs"></a>multiple_outputs |  Whether to expect to render multiple file outputs. If `outs` is specified then individual generated files will be exposed. Otherwise, a single directory, with the name of the target, containing all generated files will be exposed. (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).   | Boolean | optional |  `False`  |
 | <a id="pkl_eval-no_cache"></a>no_cache |  Disable caching of packages   | Boolean | optional |  `False`  |
-| <a id="pkl_eval-properties"></a>properties |  Dictionary of name value pairs used to pass in Pkl external properties. See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval   | <a href="https://bazel.build/rules/lib/dict">Dictionary: String -> String</a> | optional |  `{}`  |
+| <a id="pkl_eval-properties"></a>properties |  Dictionary of name value pairs used to pass in Pkl external properties. See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval   | <a href="https://bazel.build/rules/lib/core/dict">Dictionary: String -> String</a> | optional |  `{}`  |
 
 
 <a id="pkl_library"></a>
@@ -151,7 +151,7 @@ Create a Pkl test that can be run with Bazel.
 | <a id="pkl_test-format"></a>format |  The format of the generated file to pass when calling `pkl`. See https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval.   | String | optional |  `""`  |
 | <a id="pkl_test-multiple_outputs"></a>multiple_outputs |  Whether to expect to render multiple file outputs. If `outs` is specified then individual generated files will be exposed. Otherwise, a single directory, with the name of the target, containing all generated files will be exposed. (see https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval).   | Boolean | optional |  `False`  |
 | <a id="pkl_test-no_cache"></a>no_cache |  Disable caching of packages   | Boolean | optional |  `False`  |
-| <a id="pkl_test-properties"></a>properties |  Dictionary of name value pairs used to pass in Pkl external properties. See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval   | <a href="https://bazel.build/rules/lib/dict">Dictionary: String -> String</a> | optional |  `{}`  |
+| <a id="pkl_test-properties"></a>properties |  Dictionary of name value pairs used to pass in Pkl external properties. See the Pkl docs: https://pkl-lang.org/main/current/pkl-cli/index.html#command-eval   | <a href="https://bazel.build/rules/lib/core/dict">Dictionary: String -> String</a> | optional |  `{}`  |
 
 
 <a id="pkl_toolchain"></a>

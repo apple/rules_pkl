@@ -34,7 +34,7 @@ cat >"${INPUT_JSON}" <<EOF
     "compatibility_level": "1",
     "deps": [],
     "matrix_platforms": ["debian11", "ubuntu2204", "macos", "macos_arm64"],
-    "matrix_bazel_versions": ["9.x", "8.x", "7.x"],
+    "matrix_bazel_versions": ["9.x", "8.x"],
     "module_dot_bazel": "${RULES_PKL_DIR}/MODULE.bazel",
     "name": "rules_pkl",
     "patches": [],

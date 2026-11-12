@@ -32,7 +32,7 @@ bzl_library(
     visibility = ["//pkl:__subpackages__"],
     deps = [
         ":java_single_jar_bzl",
-        "@rules_jvm_external//:implementation",
+        "@rules_java//java:rules",
     ],
 )
 

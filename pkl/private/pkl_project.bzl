@@ -157,7 +157,7 @@ def _pkl_project_impl(rctx):
     local_projects = {}
     if local_paths:
         label = rctx.attr.pkl_project
-        if label.workspace_name != "" or label.package != "":
+        if label.repo_name != "" or label.package != "":
             fail("Local project dependencies require the root PklProject to be //:PklProject (got {})".format(label))
 
         for path in local_paths:
