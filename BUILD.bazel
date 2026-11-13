@@ -19,9 +19,16 @@ exports_files([
     ".bazelversion",
 ])
 
+# gazelle:exclude .bazelbsp
+# gazelle:exclude examples
+# gazelle:exclude tests
+# gazelle:exclude tools
+
 gazelle_binary(
     name = "gazelle_bin",
-    languages = DEFAULT_LANGUAGES,
+    languages = DEFAULT_LANGUAGES + [
+        "@bazel_skylib_gazelle_plugin//bzl",
+    ],
 )
 
 gazelle(
