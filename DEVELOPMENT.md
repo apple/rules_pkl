@@ -21,8 +21,7 @@ Run `bazel run //:gazelle` to keep them up-to-date.
 
 ## Updating maven lock files
 
-Once the `MODULE.bazel` and `//pkl:private:constants.bzl` files have been updated, you
-can update the maven lock files using:
+Once `MODULE.bazel` has been updated, you can update the maven lock files using:
 
 ```
 bazel run @unpinned_rules_pkl_deps//:pin
@@ -41,16 +40,16 @@ Alternatively, execute Pkl directly with `pkl eval --project-dir .github/ -m .gi
 
 ## Using this as a development dependency of other rules
 
-You'll commonly find that you develop in another WORKSPACE, such as
+You'll commonly find that you develop in another workspace, such as
 some other ruleset that depends on rules_pkl, or in a nested
-WORKSPACE in the integration_tests folder.
+workspace in the integration_tests folder.
 
 To always tell Bazel to use this directory rather than some release
 artifact or a version fetched from the internet, run this from this
 directory:
 
 ```sh
-OVERRIDE="--override_repository=rules_pkl=$(pwd)/rules_pkl"
+OVERRIDE="--override_module=rules_pkl=$(pwd)/rules_pkl"
 echo "common $OVERRIDE" >> ~/.bazelrc
 ```
 

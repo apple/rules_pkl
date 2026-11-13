@@ -18,8 +18,7 @@ Repository rules for defining dependencies.
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@rules_jvm_external//:defs.bzl", "maven_install")
-load("//pkl/private:constants.bzl", "DOC_VERSIONS", "PKL_DEPS", "VERSIONS")
+load("//pkl/private:constants.bzl", "DOC_VERSIONS", "VERSIONS")
 load("//pkl/private:repositories.bzl", _project_cache_path_and_dependencies = "root_caches_and_dependencies")
 
 DEFAULT_PKL_VERSION = "0.33.0"
@@ -75,23 +74,5 @@ def pkl_doc_cli_binaries(version = DEFAULT_PKL_VERSION):
         )
 
     return binary_names
-
-def pkl_setup(version = DEFAULT_PKL_VERSION):
-    """
-    Setup all repositories for Pkl.
-
-    Args:
-          version: the Pkl version you want to use
-    """
-
-    pkl_cli_binaries(version)
-
-    maven_install(
-        name = "rules_pkl_deps",
-        artifacts = PKL_DEPS[version],
-        repositories = [
-            "https://repo1.maven.org/maven2/",
-        ],
-    )
 
 project_cache_path_and_dependencies = _project_cache_path_and_dependencies

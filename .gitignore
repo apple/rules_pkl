@@ -4,6 +4,7 @@
 .DS_STORE
 
 # IntelliJ
+.bazelbsp/
 .idea/
 .ijwb
 *.iml

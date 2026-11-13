@@ -21,7 +21,7 @@ local_path_override(
 bazel_dep(name = "aspect_bazel_lib", version = "2.21.2")
 bazel_dep(name = "rules_shell", version = "0.6.1")
 
-bazel_dep(name = "rules_python", version = "1.4.1", dev_dependency = True)
+bazel_dep(name = "rules_python", version = "1.7.0", dev_dependency = True)
 
 pkl = use_extension("@rules_pkl//pkl/extensions:pkl.bzl", "pkl")
 pkl.project(
@@ -35,6 +35,9 @@ use_repo(
     "pkl-cli-linux-aarch64",
     "pkl-cli-linux-amd64",
     "pkl-cli-macos-aarch64",
+    "pkl-doc-cli-linux-aarch64",
+    "pkl-doc-cli-linux-amd64",
+    "pkl-doc-cli-macos-aarch64",
 )
 
 python = use_extension(

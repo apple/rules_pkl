@@ -20,6 +20,13 @@ load(
     "integration_test_utils",
 )
 
+_INTEGRATION_TEST_TAGS = [
+    "manual",
+    # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
+    # file permission issues when accessing/writing to the cache.
+    "no-sandbox",
+]
+
 default_test_runner(
     name = "simple_test_runner",
 )
@@ -27,11 +34,7 @@ default_test_runner(
 bazel_integration_tests(
     name = "multiple_pkl_projects_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/multiple_pkl_projects") + [
         "//:workspace_files",
@@ -42,11 +45,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "simple_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/simple") + [
         "//:workspace_files",
@@ -57,11 +56,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "override_version_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/override_version") + [
         "//:workspace_files",
@@ -72,11 +67,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "pkl_cache_poisoning_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/pkl_cache") + [
         "//:workspace_files",
@@ -87,11 +78,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "pkl_package_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/pkl_package") + [
         "//:workspace_files",
@@ -102,11 +89,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "pkl_project_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/pkl_project") + [
         "//:workspace_files",
@@ -117,11 +100,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "local_project_dependency_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/local_project_dependency") + [
         "//:workspace_files",
@@ -132,11 +111,7 @@ bazel_integration_tests(
 bazel_integration_tests(
     name = "mirror_rewrite_test",
     bazel_versions = bazel_binaries.versions.all,
-    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-        # Add 'no-sandbox' tag to disable running this test target in the Bazel sandbox to prevent
-        # file permission issues when accessing/writing to the cache.
-        "no-sandbox",
-    ],
+    tags = _INTEGRATION_TEST_TAGS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("example_workspaces/mirror_rewrite") + [
         "//:workspace_files",

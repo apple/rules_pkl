@@ -26,21 +26,11 @@ filegroup(
     ],
 )
 
-bzl_library(
-    name = "docs",
-    srcs = glob(["*.bzl"]),
-    visibility = ["//pkl:__subpackages__"],
-    deps = [
-        ":java_single_jar_bzl",
-        "@rules_jvm_external//:implementation",
-    ],
-)
-
 # Proxy bzl_library for @rules_java//java/common/rules:java_single_jar.bzl, which
 # lacks a public bzl_library target in rules_java, causing stardoc to fail.
 bzl_library(
     name = "java_single_jar_bzl",
-    srcs = ["@rules_java//java/common/rules:java_single_jar.bzl"],
+    srcs = ["@rules_java//java/common/rules:java_single_jar.bzl"],  # keep
 )
 
 sh_binary(
@@ -73,4 +63,126 @@ java_library(
             repository_name = "rules_pkl_deps",
         ),
     ],
+)
+
+bzl_library(
+    name = "pkl",
+    srcs = ["pkl.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [
+        ":providers",
+        ":repositories",
+    ],
+)
+
+bzl_library(
+    name = "pkl_cache",
+    srcs = ["pkl_cache.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [
+        ":pkl_package_names",
+        ":providers",
+    ],
+)
+
+bzl_library(
+    name = "pkl_codegen_java",
+    srcs = ["pkl_codegen_java.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    # keep
+    deps = [
+        ":java_single_jar_bzl",
+        "@rules_java//java:rules",
+        "@rules_java//java/private:proto_support",
+        "@rules_pkl//pkl/private:providers",
+    ],
+)
+
+bzl_library(
+    name = "pkl_library",
+    srcs = ["pkl_library.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [":providers"],
+)
+
+bzl_library(
+    name = "pkl_package",
+    srcs = ["pkl_package.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = ["@rules_pkl//pkl/private:providers"],
+)
+
+bzl_library(
+    name = "pkl_project",
+    srcs = ["pkl_project.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [":pkl_package_names"],
+)
+
+bzl_library(
+    name = "pkl_project_rule",
+    srcs = ["pkl_project_rule.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = ["@rules_pkl//pkl/private:providers"],
+)
+
+bzl_library(
+    name = "pkl_test_suite",
+    srcs = ["pkl_test_suite.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [
+        ":pkl",
+        "@rules_pkl//pkl/private:pkl_library",
+    ],
+)
+
+bzl_library(
+    name = "pkl_toolchains",
+    srcs = ["pkl_toolchains.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [":constants"],
+)
+
+bzl_library(
+    name = "remote_pkl_package",
+    srcs = ["remote_pkl_package.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [":pkl_package_names"],
+)
+
+bzl_library(
+    name = "repositories",
+    srcs = ["repositories.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+    deps = [":providers"],
+)
+
+bzl_library(
+    name = "constants",
+    srcs = ["constants.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+)
+
+bzl_library(
+    name = "pkl_doc",
+    srcs = ["pkl_doc.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+)
+
+bzl_library(
+    name = "pkl_package_names",
+    srcs = ["pkl_package_names.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+)
+
+bzl_library(
+    name = "providers",
+    srcs = ["providers.bzl"],
+    visibility = ["//pkl:__subpackages__"],
+)
+
+bzl_library(
+    name = "toolchain",
+    srcs = ["toolchain.bzl"],
+    visibility = ["//pkl:__subpackages__"],
 )
