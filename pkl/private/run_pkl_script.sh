@@ -70,7 +70,7 @@ fi
 
 cache_args=()
 if [[ -n "$cache_dir" ]]; then
-  mv "$cache_dir" "$working_dir"/../cache
+  ln -sfn "$PWD/$cache_dir" "$working_dir"/../cache
   cache_args=("--cache-dir" "../cache")
 fi
 
