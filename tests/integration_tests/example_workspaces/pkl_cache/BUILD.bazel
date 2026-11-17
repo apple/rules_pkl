@@ -1,4 +1,4 @@
-# Copyright © 2024-2025 Apple Inc. and the Pkl project authors. All rights reserved.
+# Copyright © 2024-2026 Apple Inc. and the Pkl project authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,4 +38,18 @@ diff_test(
     name = "pkl_eval_with_poisoned_cache_diff_test",
     file1 = "expected_output.yaml",
     file2 = ":pkl_eval_with_poisoned_cache",
+)
+
+# Outside a sandbox the cache is a read-only Bazel output, which must still be usable as the Pkl cache.
+pkl_eval(
+    name = "pkl_eval_with_poisoned_cache_no_sandbox",
+    srcs = ["example.pkl"],
+    tags = ["no-sandbox"],
+    deps = [":poisoned_pkl_cache"],
+)
+
+diff_test(
+    name = "pkl_eval_with_poisoned_cache_no_sandbox_diff_test",
+    file1 = "expected_output.yaml",
+    file2 = ":pkl_eval_with_poisoned_cache_no_sandbox",
 )
