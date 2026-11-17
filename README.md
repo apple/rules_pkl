@@ -18,7 +18,7 @@ Add the following to your `MODULE.bazel`:
 
 ```starlark
 # Please check the releases page on GitHub for the latest released version
-bazel_dep(name = "rules_pkl", version = "0.18.0")
+bazel_dep(name = "rules_pkl", version = "0.19.0")
 ```
 
 ### Toolchains
