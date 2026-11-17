@@ -17,7 +17,7 @@
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
 
 # buildifier: disable=bzl-visibility
-load("//pkl/private:constants.bzl", "DOC_VERSIONS", "PKL_DEPS", "VERSIONS")
+load("//pkl/private:constants.bzl", "DOC_VERSIONS", "VERSIONS")
 
 # buildifier: disable=bzl-visibility
 load("//pkl/private:pkl_toolchains.bzl", "pkl_toolchains_build_file")
@@ -68,7 +68,6 @@ macos_aarch64_alias_covers_arm64e_test = unittest.make(_macos_aarch64_alias_cove
 def _every_pkl_version_has_toolchains_test(ctx):
     env = unittest.begin(ctx)
     asserts.equals(env, sorted(VERSIONS), sorted(DOC_VERSIONS))
-    asserts.equals(env, sorted(VERSIONS), sorted(PKL_DEPS))
     for version in VERSIONS:
         build_file = pkl_toolchains_build_file(VERSIONS[version].keys(), DOC_VERSIONS[version].keys())
         for platform in VERSIONS[version]:

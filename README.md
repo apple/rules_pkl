@@ -14,7 +14,7 @@ For further information about Pkl, check out the [official Pkl documentation].
 
 ### Setup
 
-To use `rules_pkl`, enable `bzlmod` within your project, and then add the following to your `MODULE.bazel`:
+Add the following to your `MODULE.bazel`:
 
 ```starlark
 # Please check the releases page on GitHub for the latest released version
@@ -51,6 +51,10 @@ For further information on the rules provided, check out the [`rules_pkl` docume
 [`rules_pkl` documentation]: https://github.com/apple/rules_pkl/blob/main/docs/rules_pkl_docs.md
 
 ## Minimum required versions
+
+### Minimum Bazel version
+
+From `0.19.0` onwards, `rules_pkl` requires a Bazel version greater than or equal to `8.8.1`.
 
 ### Minimum Pkl version
 

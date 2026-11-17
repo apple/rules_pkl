@@ -95,13 +95,16 @@ toolchain_type(
 
 bzl_library(
     name = "defs",
-    srcs = glob(["*.bzl"]),
+    srcs = ["defs.bzl"],
     visibility = ["//visibility:public"],
     deps = [
-        "//pkl/private:docs",
-        "@bazel_tools//tools/build_defs/repo:http.bzl",
-        "@bazel_tools//tools/build_defs/repo:utils.bzl",
-        "@rules_java//java/private:proto_support",
+        "//pkl/private:pkl",
+        "//pkl/private:pkl_codegen_java",
+        "//pkl/private:pkl_doc",
+        "//pkl/private:pkl_library",
+        "//pkl/private:pkl_package",
+        "//pkl/private:pkl_test_suite",
+        "//pkl/private:toolchain",
     ],
 )
 
@@ -116,5 +119,17 @@ java_binary(
             "org.pkl-lang:pkl-tools",
             repository_name = "rules_pkl_deps",
         ),
+    ],
+)
+
+bzl_library(
+    name = "repositories",
+    srcs = ["repositories.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkl/private:constants",
+        "//pkl/private:repositories",
+        "@bazel_tools//tools/build_defs/repo:http.bzl",
+        "@bazel_tools//tools/build_defs/repo:utils.bzl",
     ],
 )

@@ -1,10 +1,3 @@
-common --enable_bzlmod
-
-build --incompatible_default_to_explicit_init_py
-
-# TODO: Remove this once our minimum version is Bazel 8, ref: https://github.com/bazelbuild/bazel/issues/23127
-build --incompatible_use_plus_in_repo_names
-
 # `apple_support` generates a layering check module map listing every header under `DEVELOPER_DIR`, which every C++
 # compile then stats. Opt out of this for this ruleset.
 common --repo_env=APPLE_SUPPORT_LAYERING_CHECK_BETA=0
